@@ -1,0 +1,218 @@
+@using System;
+@using FBG.Market.Web.Identity.Controllers;
+@using FBG.Market.Web.Identity;
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "GridView";
+        settings.CallbackRouteValues = new { Controller = "FBGClients", Action = "ClientsGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "FBGClients", Action = "ClientsGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "FBGClients", Action = "ClientsGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "FBGClients", Action = "ClientsGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+//settings.SettingsBehavior.ConfirmDelete = true;
+
+settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+
+        settings.CommandColumn.ShowNewButton = false;
+//settings.CommandColumn.ShowDeleteButton = true;
+settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "CID";
+
+/*settings.SettingsPager.Visible = true;
+settings.Settings.ShowGroupPanel = true;
+settings.Settings.ShowFilterRow = true;
+settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+*/
+        settings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
+settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
+        settings.ControlStyle.BorderBottom.BorderWidth = 2;
+
+        settings.Styles.Row.CssClass = "customRow";
+//
+settings.EnablePagingGestures = AutoBoolean.False;
+
+        settings.ControlStyle.CssClass = "grid-view";
+        settings.Width = Unit.Percentage(100);
+
+        settings.Styles.Cell.Wrap = DefaultBoolean.False;
+        settings.Styles.PagerBottomPanel.CssClass = "pager";
+        settings.Styles.FocusedRow.CssClass = "focused";
+
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsBehavior.AllowEllipsisInText = true;
+        settings.SettingsBehavior.AllowDragDrop = false;
+
+        settings.SettingsSearchPanel.CustomEditorName = "searchButtonEdit";
+
+//settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+settings.SettingsEditing.EditFormColumnCount = 2;
+
+        settings.SettingsSearchPanel.CustomEditorName = "searchButtonEdit";
+
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.ShowHeaderFilterButton = true;
+
+        settings.SettingsPager.PageSize = 15;
+        settings.SettingsPager.EnableAdaptivity = true;
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+
+        settings.SettingsExport.EnableClientSideExportAPI = true;
+        settings.SettingsExport.ExportSelectedRowsOnly = true;
+
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.MaxWidth = 800;
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Always;
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.VerticalAlign = PopupAdaptiveVerticalAlign.WindowCenter;
+
+        settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+        settings.EditFormLayoutProperties.ColCount = 2;
+
+//settings.Columns.Add("CID").Visible=false;
+//settings.Columns.Add("CName").Caption = "Name";
+settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(200);
+
+            col.FieldName = "CName";
+            col.Caption = "Client Name";
+
+        });
+//settings.Columns.Add("CType").Visible=false;
+//settings.Columns.Add("CCity");
+settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+
+            col.FieldName = "CCity";
+            col.Caption = "City";
+
+        });
+/*settings.Columns.Add("CState");
+settings.Columns.Add("CZip");
+settings.Columns.Add("CCountry");
+settings.Columns.Add("CContactName");
+settings.Columns.Add("CAddress");
+settings.Columns.Add("CPhone");
+settings.Columns.Add("CEmail");
+settings.Columns.Add("CStatus");*/
+        settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+
+            col.FieldName = "CState";
+            col.Caption = "State";
+
+        });
+        settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(80);
+
+            col.FieldName = "CZip";
+            col.Caption = "Zip Code";
+
+        });
+
+        settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+
+            col.FieldName = "CCountry";
+            col.Caption = "Country";
+
+        });
+//settings.Columns.Add("CContactName");
+settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+
+            col.FieldName = "CContactName";
+            col.Caption = "Contact Name";
+
+        });
+//settings.Columns.Add("CAddress");
+settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(200);
+
+            col.FieldName = "CAddress";
+            col.Caption = "Address";
+
+        });
+//settings.Columns.Add("CPhone");
+settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+
+            col.FieldName = "CPhone";
+            col.Caption = "Phone";
+
+        });
+//settings.Columns.Add("CEmail");
+settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(200);
+
+            col.FieldName = "CEmail";
+            col.Caption = "Email";
+
+        });
+        settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(150);
+
+            col.FieldName = "CStatus";
+            col.Caption = "Status";
+
+        });
+//settings.Columns.Add("CStatus");
+//settings.Columns.Add("CComments");
+//settings.Columns.Add("ClientLocations");
+
+settings.CustomJSProperties = (s, e) =>
+    {
+        if (ViewData[FBGClientsController.EditResultKey] != null)
+        {
+            e.Properties["cpMessage"] = ViewData[FBGClientsController.EditResultKey].ToString();
+        }
+        if (ViewData[FBGClientsController.EditErrorKey] != null)
+        {
+            e.Properties["cpError"] = ViewData[FBGClientsController.EditErrorKey].ToString();
+        }
+    };
+
+        settings.ClientSideEvents.EndCallback = "OnEndCallback";
+
+    }).SetEditErrorText((string)ViewData[FBGClientsController.EditErrorKey]).Bind(Model).GetHtml();
+}

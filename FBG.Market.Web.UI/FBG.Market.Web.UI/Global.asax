@@ -1,0 +1,1 @@
+<%@ Application Codebehind="Global.asax.cs" Inherits="FBG.Market.Web.Identity.MvcApplication" Language="C#" %>

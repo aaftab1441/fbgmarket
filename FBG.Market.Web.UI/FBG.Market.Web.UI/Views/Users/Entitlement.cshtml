@@ -1,0 +1,84 @@
+﻿@model IEnumerable<FBG.Market.Web.Identity.Models.UserRoleViewModel>
+
+@{
+    ViewBag.Title = "Users With Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <style type="text/css">
+        .customRow .dxgv {
+            border-bottom: 1px Solid #d1d1d1 !important;
+        }
+
+        .dxflImageItemSys > div.dxflCaptionCellSys {
+            display: none;
+        }
+    </style>
+    ...
+    <!--
+    Attach the jQuery script if the "resources" section of an application's Web.config file contains a reference to the "ThirdParty" libraries.
+    -->
+    <!--<script src="Url.Content("~/Scripts/jquery-3.5.1.min.js")" type="text/javascript"></script-->
+    <!-- The DevExpress ASP.NET MVC Extensions' scripts -->
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.GridView }
+
+    )
+    ...
+</head>
+<script type="text/javascript">
+    var isResetRequired = false;
+
+    function OnSelectedVendorChanged() {
+        isResetRequired = true;
+        GridView.GetEditor("RoleId").PerformCallback();
+    }
+
+    function RoleComboBox_BeginCallback(s, e) {
+        var ele = GridView.GetEditor("VID");
+        e.customArgs["vendorID"] = ele.GetValue();
+    }
+
+    function RoleComboBox_EndCallback(s, e) {
+        if (isResetRequired) {
+            isResetRequired = false;
+            s.SetSelectedIndex(0);
+        }
+    }
+
+</script>
+<div class="container">
+    <!-- HERO SECTION-->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+                <div class="col-lg-6">
+                    <p class="h4 text-uppercase mb-0">Entitlement</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    @*@Html.Action("GridViewPartial", "Users")*@
+
+    @Html.Action("GridViewNewPartial", "Users")
+
+</div>
+
+<div class="container">
+    <!-- HERO SECTION-->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+                <div class="col-lg-6">
+                    <p class="h4 text-uppercase mb-0">Clients</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    @*@Html.Action("GridViewPartial", "Users")*@
+
+    @Html.Action("Index", "FBGClients")
+
+</div>

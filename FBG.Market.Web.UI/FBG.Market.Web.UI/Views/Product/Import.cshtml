@@ -1,0 +1,159 @@
+﻿@model List<FBG.Market.Web.Identity.Models.BrandLocal>
+@{
+    ViewBag.Title = "Import Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/GridView.css")" />
+    <script type="text/javascript" src="@Url.Content("~/Content/productGridView.js")"></script>
+    <style type="text/css">
+        .dxhe-iframe-wrapper {
+            height: 500px;
+        }
+
+        .customRow .dxgv {
+            border-bottom: 1px Solid #d1d1d1 !important;
+        }
+
+        .custom-anchor {
+            padding-left: 0px !important;
+        }
+
+        .dxeBinImgPreviewContainerSys {
+            width: 200px !important;
+            height: 200px !important;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+        }
+
+        .float-container {
+            border: 3px solid #fff;
+            padding: 20px;
+        }
+
+        .float-child {
+            width: 50%;
+            float: left;
+            padding: 20px;
+            border: 2px solid red;
+        }
+
+            .float-child.imageZoomNavigator {
+                margin-right: 20px;
+            }
+    </style>
+    <script>
+        $(document).ready(function () {
+            //var val = brandlistcombo.GetValue();
+            var val = -1;
+            $('#dynamicContentContainer').empty();
+            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Product")?brandId=' + val);
+            console.log("brandlistcombo.GetValue(): " + val);
+        });
+        function selectBox_valueChanged(data) {
+            console.log("brandlistcombo data: " + data);
+            $('#dynamicContentContainer').empty();
+            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Product")?brandId=' + data);
+        }
+        function SelectedIndexChanged() {
+           // var val = brandlistcombo.GetValue();
+            var val = -1;
+            console.log("brandlistcombo.GetValue(): " + val);
+            $('#dynamicContentContainer').empty();
+            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Product")?brandId=' + val);
+        }
+    </script>
+}
+
+@section PageToolbar {
+    @Html.DevExpress().Menu(menuSettings =>
+{
+    menuSettings.Name = "pageToolbar";
+
+    menuSettings.ItemAutoWidth = false;
+    menuSettings.AllowSelectItem = false;
+    menuSettings.ApplyItemStyleToTemplates = true;
+
+    menuSettings.SettingsAdaptivity.Enabled = true;
+    menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+    menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+    menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+    menuSettings.Width = Unit.Percentage(100);
+    menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+    menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+    menuSettings.Styles.Item.CssClass = "item";
+    menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+    menuSettings.Images.Item.Width = Unit.Pixel(16);
+    menuSettings.Images.Item.Height = Unit.Pixel(16);
+
+    menuSettings.Items.Add(item =>
+    {
+        item.Enabled = false;
+        item.SetTemplateContent(template => ViewContext.Writer.Write("<h1>Import Products</h1>"));
+    });
+
+    menuSettings.Items.Add(item =>
+    {
+        item.Name = "New";
+        item.Text = "New";
+        item.Alignment = MenuItemAlignment.Right;
+        item.AdaptivePriority = 2;
+        item.Image.Url = "~/Content/Images/add.svg";
+        item.Target = "_blank";
+        item.NavigateUrl = "~/Product/Add?ProductID=-1";
+    });
+    menuSettings.Items.Add(item =>
+    {
+        item.Name = "ToggleFilterPanel";
+        item.Text = "";
+        item.GroupName = "Filter";
+        item.Alignment = MenuItemAlignment.Right;
+        item.AdaptivePriority = 1;
+        item.Image.Url = "~/Content/Images/search.svg";
+        item.Image.UrlChecked = "~/Content/Images/search-selected.svg";
+    });
+    menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+
+    @Html.DevExpress().Panel(panelSettings =>
+    {
+        panelSettings.Name = "filterPanel";
+        panelSettings.Collapsible = true;
+        panelSettings.ControlStyle.CssClass = "filter-panel";
+        panelSettings.SettingsCollapsing.ExpandEffect = PanelExpandEffect.Slide;
+        panelSettings.SettingsCollapsing.AnimationType = AnimationType.None;
+        panelSettings.SettingsCollapsing.ExpandButton.Visible = false;
+        panelSettings.SetContent(() =>
+        {
+             Html.DevExpress().ButtonEdit(buttonEditSettings =>
+                {
+                    buttonEditSettings.Name = "searchButtonEdit";
+                    buttonEditSettings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.Always;
+                    buttonEditSettings.Properties.Caption = "Search";
+                    buttonEditSettings.Width = Unit.Percentage(100);
+                }).GetHtml();
+        });
+        panelSettings.ClientSideEvents.Expanded = "onFilterPanelExpanded";
+        panelSettings.ClientSideEvents.Collapsed = "adjustPageControls";
+}).GetHtml()
+}
+
+@section LeftPanelContent {
+    @Html.Partial("~/Views/Shared/LeftPanelPartial.cshtml")
+}
+
+
+@section RightPanelContent {
+    <div class="settings-content">
+        <h2>Settings</h2>
+    </div>
+}
+

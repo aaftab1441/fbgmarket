@@ -1,0 +1,166 @@
+<h3 class="section-caption contents-caption">FutureBrands</h3>
+@if (User.Identity.IsAuthenticated)
+{
+    if (!User.IsInRole("SuperAdmin"))
+    {
+        @Html.DevExpress().NavBar(navBarSettings =>
+  {
+      navBarSettings.Name = "navBarAdmin";
+      navBarSettings.AllowSelectItem = true;
+      navBarSettings.ShowGroupHeaders = false;
+      navBarSettings.Width = Unit.Percentage(100);
+      navBarSettings.ControlStyle.CssClass = "filters-navbar";
+      navBarSettings.Styles.Item.CssClass = "item";
+      navBarSettings.ShowExpandButtons = true;
+      //
+      navBarSettings.AllowExpanding = true;
+      navBarSettings.AutoCollapse = true;
+      navBarSettings.AllowSelectItem = true;
+      //navBarSettings.AutoCollapse = false;
+      navBarSettings.EnableHotTrack = true;
+      navBarSettings.EnableAnimation = true;
+      navBarSettings.SaveStateToCookies = true;
+
+      navBarSettings.Groups.Add(group =>
+      {
+          var item = group.Items.Add();
+          item.SetTemplateContent(c =>
+          {
+
+              Html.DevExpress().TreeView(settingsTV =>
+              {
+                  settingsTV.SaveStateToCookies = true;
+                  settingsTV.EnableClientSideAPI = true;
+                  settingsTV.Width = Unit.Percentage(100);
+                  settingsTV.ShowTreeLines = false;
+                  settingsTV.ShowExpandButtons = true;
+
+                  settingsTV.Name = "tv";
+                  settingsTV.Nodes.Add(root =>
+                  {
+                      root.Text = "Products";
+                      root.Nodes.Add(n =>
+                      {
+                          n.Text = "Products";
+                          n.NavigateUrl = "~/Product/Index";
+                      });
+                      root.Nodes.Add(n =>
+                      {
+                          n.Text = "Import";
+                          n.NavigateUrl = "~/Import/Index";
+                      });
+
+                  });
+                
+              }).Render();
+          });
+      });
+
+  }).GetHtml();
+    }
+}
+@if (User.Identity.IsAuthenticated)
+{
+    if (User.IsInRole("SuperAdmin"))
+
+    {
+        @Html.DevExpress().NavBar(navBarSettings =>
+   {
+       navBarSettings.Name = "navBarAdmin";
+
+       navBarSettings.AllowSelectItem = true;
+       navBarSettings.ShowGroupHeaders = false;
+       navBarSettings.Width = Unit.Percentage(100);
+       navBarSettings.ControlStyle.CssClass = "filters-navbar";
+       navBarSettings.Styles.Item.CssClass = "item";
+       navBarSettings.ShowExpandButtons = true;
+
+       //
+       navBarSettings.AllowExpanding = true;
+       navBarSettings.AutoCollapse = true;
+       navBarSettings.AllowSelectItem = true;
+       //navBarSettings.AutoCollapse = false;
+       navBarSettings.EnableHotTrack = true;
+       navBarSettings.EnableAnimation = true;
+       navBarSettings.SaveStateToCookies = true;
+
+       navBarSettings.Groups.Add(group =>
+       {
+           var item = group.Items.Add();
+           item.SetTemplateContent(c =>
+           {
+
+               Html.DevExpress().TreeView(settingsTV =>
+               {
+                   settingsTV.SaveStateToCookies = true;
+                   settingsTV.EnableClientSideAPI = true;
+                   settingsTV.Width = Unit.Percentage(100);
+                   settingsTV.ShowTreeLines = false;
+                   settingsTV.ShowExpandButtons = true;
+
+                   settingsTV.Name = "tv";
+                   settingsTV.Nodes.Add(root =>
+                   {
+                       root.Text = "Products";
+                       root.Nodes.Add(n =>
+                       {
+                           n.Text = "Products";
+                           n.NavigateUrl = "~/Product/Index";
+                       });
+                       root.Nodes.Add(n =>
+                       {
+                           n.Text = "Import";
+                           n.NavigateUrl = "~/Import/Index";
+                       });
+
+                   });
+                   settingsTV.Nodes.Add(root =>
+                   {
+                       root.Text = "Admin";
+
+                       root.Nodes.Add(n =>
+                       {
+                           n.Text = "Entitlement";
+                           n.NavigateUrl = "~/Users/Index";
+                       });
+                       root.Nodes.Add(n =>
+                       {
+                           n.Text = "Vendors";
+                           n.NavigateUrl = "~/Vendor/Index";
+                       });
+                       root.Nodes.Add(n =>
+                       {
+                           n.Text = "Clients";
+                           n.NavigateUrl = "~/FBGClients/Index";
+                       });
+                       root.Nodes.Add(n =>
+                       {
+                           n.Text = "Role";
+                           n.NavigateUrl = "~/Role/Index";
+                       });
+                       root.Nodes.Add(n =>
+                       {
+                           n.Text = "Season";
+                           n.NavigateUrl = "~/Season/Index";
+                       });
+                       root.Nodes.Add(n =>
+                       {
+                           n.Text = "Category";
+                           n.NavigateUrl = "~/Category/Index";
+                       });
+                       root.Nodes.Add(n =>
+                       {
+                           n.Text = "NRF Color";
+                           n.NavigateUrl = "~/Color/Index";
+                       });
+                   });
+
+               }).Render();
+           });
+       });
+
+   }).GetHtml();
+    }
+}
+
+

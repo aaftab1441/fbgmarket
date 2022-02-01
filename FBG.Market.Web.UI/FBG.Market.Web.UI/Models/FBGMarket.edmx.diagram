@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e2456a3d3f364d3991698f7a8cf70c1a" Name="Diagram1">
+        <EntityTypeShape EntityType="FBGMarketModel.AspNetRole" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.AspNetUser" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.Brand" Width="1.5" PointX="3" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.ClientLocation" Width="1.5" PointX="5.25" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.Client" Width="1.5" PointX="3" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.ColorCategory" Width="1.5" PointX="0.75" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.Employee" Width="1.5" PointX="3" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.Inventory" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.OrderCR" Width="1.5" PointX="7.5" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.OrderDetail" Width="1.5" PointX="7.5" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.OrderProcessLog" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.Order" Width="1.5" PointX="5.25" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.ProductImage" Width="1.5" PointX="7.5" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.Product" Width="1.5" PointX="5.25" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.ProductsImport" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.ProductStatu" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.RefCategory" Width="1.5" PointX="9.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.RefClientCategory" Width="1.5" PointX="9.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.RefNRFColorCode" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.RefOrderType" Width="1.5" PointX="3" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.RefProductFamily" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.RefSeason" Width="1.5" PointX="11.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.RefWarehouse" Width="1.5" PointX="11.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.Sales_Report" Width="1.5" PointX="11.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.Vendor" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FBGMarketModel.OrderProcessForce" Width="1.5" PointX="11.75" PointY="12.75" IsExpanded="true" />
+        <AssociationConnector Association="FBGMarketModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.FK_AspNetUsers_Vendor" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.FK_Brand_Vendor" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.FK_Products_Brand" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.T_ClientLocation_T_ClientsT_ClientLocation" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.T_Orders_T_ClientsT_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.FK__RefNRFCol__Color__04E4BC85" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.T_Orders_T_EmployeesT_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.T_OrderCR_T_OrdersT_OrderCR" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.T_OrderDetails__7AF3CB47_96B7_4178_B4BB_FBE0C413F5B1_" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.T_OrderDetails_T_ProductsT_OrderDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.T_Orders_Ref_OrderTypeT_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.FK_ProductImage_Products" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.FK_Products_ProductStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.FK_Products_RefNRFColorCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.FK_Products_Vendor" ManuallyRouted="false" />
+        <AssociationConnector Association="FBGMarketModel.AspNetUserRoles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

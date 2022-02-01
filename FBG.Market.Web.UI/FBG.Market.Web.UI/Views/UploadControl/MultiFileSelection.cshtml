@@ -1,0 +1,45 @@
+﻿@model string
+@using System.Web.UI;
+<script src="~/Scripts/DXUploadedFilesContainer.js"></script>
+
+@using(Html.BeginForm("MultiFileSelection", "UploadControl", FormMethod.Post, new { @class = "upload" })) {
+<div class="uploadContainer">
+    @Html.Hidden("products-path", Model)
+    @Html.DevExpress().UploadControl(
+        settings =>
+             {
+            settings.Name = "ucMultiSelection";
+            settings.CallbackRouteValues = new { Controller = "UploadControl", Action = "MultiSelectionImageUpload" };
+            settings.Width = Unit.Percentage(100);
+            settings.ShowProgressPanel = true;
+            settings.ShowUploadButton = true;
+            settings.AdvancedModeSettings.EnableMultiSelect = true;
+            settings.AdvancedModeSettings.EnableFileList = true;
+            settings.AdvancedModeSettings.EnableDragAndDrop = true;
+            settings.NullText = "Select product images...";
+            settings.ValidationSettings.Assign(FBG.Market.Web.Identity.UploadControlHelper.UploadValidationSettings);
+            settings.ClientSideEvents.FilesUploadStart = "function(s,e) { DXUploadedFilesContainer.Clear(); }";
+            settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadComplete(e); }";
+
+        }).GetHtml()
+
+    @Html.DevExpress().Label(
+        settings =>
+        {
+            settings.Name = "AllowedFileExtensionsLabel";
+            settings.Text = "Allowed file extensions: .jpg, .jpeg, .gif, .png.";
+            settings.ControlStyle.Font.Size = FontUnit.Point(8);
+        }).GetHtml()
+    <br />    
+    @Html.DevExpress().Label(
+        settings =>
+        {
+            settings.Name = "MaxImageDimensions";
+            settings.Text = "Minimum (1500x15000) pixels, white background";
+            settings.ControlStyle.Font.Size = FontUnit.Point(8);
+        }).GetHtml()
+</div>
+    <div class="filesContainer" style="display:none;">
+        @Html.Partial("~/Views/UploadControl/UploadedFilesContainer.cshtml")
+    </div>
+}

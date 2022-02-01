@@ -1,0 +1,40 @@
+@model FBG.Market.Web.Identity.Models.LoginViewModel
+
+@{
+    //var avatarUrl = string.IsNullOrEmpty(Model.AvatarUrl) ? "~/Content/Images/user.svg" : Model.AvatarUrl;
+    var avatarUrl = "~/Content/Images/user.svg";
+    var role = "Admin";
+    if (User.IsInRole("Sale"))
+    {
+        role = "Sale";
+    }
+    else if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+    else if (User.IsInRole("SuperAdmin"))
+    {
+        role = "SuperAdmin";
+    }
+    else if (User.IsInRole("BrandAdmin"))
+    {
+        role = "BrandAdmin";
+    }
+}
+<div class="user-info">
+    <div class="avatar">
+        <img id="AvatarUrl" src="@Url.Content(avatarUrl)" />
+    </div>
+    <div class="text-container">
+        @Html.DevExpress().Label(labelSettings => {
+       labelSettings.Name = "userNameLabel";
+       labelSettings.Text = role;
+       labelSettings.ControlStyle.CssClass = "user-name";
+   }).GetHtml()
+       @Html.DevExpress().Label(labelSettings => {
+      labelSettings.Name = System.Web.HttpContext.Current.User.Identity.Name ;
+      labelSettings.Text = System.Web.HttpContext.Current.User.Identity.Name;
+      labelSettings.ControlStyle.CssClass = "email";
+  }).GetHtml()
+    </div>
+</div>

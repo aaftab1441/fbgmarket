@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "fcc41d1d-01ab-4c58-8d84-96e7705147a6": {
+      "ProjectGuid": "fcc41d1d-01ab-4c58-8d84-96e7705147a6",
+      "DisplayName": "FBG.Market.Web.UI",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}

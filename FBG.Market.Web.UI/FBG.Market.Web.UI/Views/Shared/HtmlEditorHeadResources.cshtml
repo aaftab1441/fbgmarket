@@ -1,0 +1,14 @@
+﻿@Html.DevExpress().GetStyleSheets(
+    new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, ExtensionType = ExtensionType.ImageZoomNavigator },
+
+   
+    new StyleSheet { ExtensionSuite = ExtensionSuite.HtmlEditor, ExtensionType = ExtensionType.HtmlEditor }
+    
+)
+@Html.DevExpress().GetScripts(
+    
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout,ExtensionType = ExtensionType.ImageZoomNavigator },
+
+   
+    new Script { ExtensionSuite = ExtensionSuite.HtmlEditor }
+)

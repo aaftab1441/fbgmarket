@@ -1,0 +1,75 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "GridView";
+        settings.CallbackRouteValues = new { Controller = "Users", Action = "GridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Users", Action = "GridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Users", Action = "GridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Users", Action = "GridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        //settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        //settings.Columns.Add("Id");
+        settings.Columns.Add("Email");
+        settings.Columns.Add("PhoneNumber");
+        settings.Columns.Add("UserName");
+        settings.Columns.Add("LockoutEnabled");
+        //settings.Columns.Add("LockoutEndDateUtc");
+        settings.Columns.Add(d =>
+        {
+            d.FieldName = "LockoutEndDateUtc";
+            d.PropertiesEdit.DisplayFormatString = "dd/MM/YYYY";
+            d.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+        //settings.Columns.Add("VID");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "VID";
+            c.Caption = "Vendor";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "VendorName";
+                p.ValueField = "VendorId";
+                p.ValueType = typeof(int);
+                p.DataSource = Utils.GetVendors();
+            });
+        });
+        /*settings.Columns.Add(c =>
+        {
+            c.FieldName = "RoleId";
+            c.Caption = "Role";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "RoleName";
+                p.ValueField = "RoleId";
+                p.ValueType = typeof(int);
+                p.DataSource = Utils.GetRoles();
+            });
+        });*/
+        //settings.Columns.Add("RoleId");
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

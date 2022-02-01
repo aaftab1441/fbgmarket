@@ -1,0 +1,468 @@
+@{
+    var productGridView = Html.DevExpress().GridView(gridViewSettings =>
+    {
+        gridViewSettings.Name = "productGridView";
+        gridViewSettings.SettingsCookies.Enabled = true;
+        gridViewSettings.CommandColumn.Visible = true;
+        gridViewSettings.CommandColumn.VisibleIndex = 0;
+        gridViewSettings.KeyFieldName = "ID";
+//
+//gridViewSettings.SettingsBehavior.AllowFixedGroups = true;
+gridViewSettings.Settings.ShowGroupPanel = true;
+//
+gridViewSettings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+
+        gridViewSettings.CommandColumn.ShowSelectCheckbox = true;
+        gridViewSettings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+        gridViewSettings.CommandColumn.VisibleIndex = 0;
+        gridViewSettings.CommandColumn.Width = Unit.Pixel(52);
+
+        gridViewSettings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
+        gridViewSettings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
+        gridViewSettings.ControlStyle.BorderBottom.BorderWidth = 2;
+        gridViewSettings.Width = Unit.Percentage(100);
+
+        gridViewSettings.Styles.Row.CssClass = "customRow";
+
+        gridViewSettings.Styles.Cell.Wrap = DefaultBoolean.False;
+        gridViewSettings.Styles.PagerBottomPanel.CssClass = "pager";
+        gridViewSettings.Styles.FocusedRow.CssClass = "focused";
+
+        gridViewSettings.SettingsBehavior.AllowFocusedRow = true;
+        gridViewSettings.SettingsBehavior.AllowSelectByRowClick = true;
+        gridViewSettings.SettingsBehavior.AllowEllipsisInText = true;
+        gridViewSettings.SettingsBehavior.AllowDragDrop = false;
+
+        gridViewSettings.SettingsSearchPanel.CustomEditorName = "searchButtonEdit";
+
+        gridViewSettings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+        gridViewSettings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        gridViewSettings.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        gridViewSettings.SettingsPager.PageSize = 15;
+        gridViewSettings.SettingsPager.EnableAdaptivity = true;
+        gridViewSettings.SettingsPager.PageSizeItemSettings.Visible = true;
+
+        gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+        gridViewSettings.EditFormLayoutProperties.ColCount = 2;
+
+        gridViewSettings.CallbackRouteValues = new { Controller = "Product", Action = "GridViewPartial", brandId = ViewData["BrandId"] };
+//export
+gridViewSettings.SettingsExport.EnableClientSideExportAPI = true;
+        gridViewSettings.SettingsExport.ExportSelectedRowsOnly = true;
+
+        gridViewSettings.Toolbars.Add(t =>
+        {
+            t.ItemAlign = GridToolbarItemAlign.Right;
+            t.SettingsAdaptivity.Enabled = true;
+            t.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+    //t.Items.Add(GridViewToolbarCommand.ExportToPdf);
+    t.Items.Add(GridViewToolbarCommand.ExportToXlsx);
+    //t.Items.Add(GridViewToolbarCommand.ExportToCsv);
+});
+
+
+        gridViewSettings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Product", Action = "BatchEditingUpdateModel" };
+
+        gridViewSettings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+/*gridViewSettings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+gridViewSettings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+gridViewSettings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
+gridViewSettings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = true;
+gridViewSettings.SettingsEditing.BatchEditSettings.KeepChangesOnCallbacks = DefaultBoolean.True;
+gridViewSettings.Settings.VerticalScrollableHeight = 594;*/
+
+//gridViewSettings.CallbackRouteValues = new { Controller = "Product", Action = "GridViewPartial" };
+// gridViewSettings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Product", Action = "ExternalEditFormEdit", ProductID = -1 };
+//gridViewSettings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Product", Action = "ExternalEditFormEdit", ProductID = DataBinder.Eval(tc.) };
+
+gridViewSettings.Columns.Add(c =>
+        {
+            c.Caption = "#";
+            c.SetHeaderTemplateContent(tc =>
+            {
+                ViewContext.Writer.Write(
+                    Html.ActionLink("New", "Add", new { ProductID = -1 }).ToHtmlString()
+                );
+            });
+            c.SetDataItemTemplateContent(tc =>
+            {
+                ViewContext.Writer.Write(
+                    Html.ActionLink("Edit", "ExternalEditFormEdit", new { ProductID = DataBinder.Eval(tc.DataItem, "PID") }) //+ "&nbsp;" +
+                                                                                                                             //Html.ActionLink("Delete", "ExternalEditFormDelete", new { ProductID = DataBinder.Eval(tc.DataItem, "PID") },
+                                                                                                                             //Html.ActionLink("Delete", "ExternalEditFormDelete", new { ProductID = DataBinder.Eval(tc.DataItem, "PID") }                                                                                                                             //  new { onclick = "return confirm('Do you really want to delete this record?')" })
+                );
+            });
+
+            c.Settings.AllowDragDrop = DefaultBoolean.False;
+            c.Settings.AllowSort = DefaultBoolean.False;
+            c.Width = 70;
+        });
+
+        gridViewSettings.BeforeGetCallbackResult = (sender, e) =>
+        {
+            if (ViewBag.GroupedColumns == null)
+                return;
+
+            MVCxGridView grid = (MVCxGridView)sender;
+            string[] columnNames = ViewBag.GroupedColumns.Split(';');
+            grid.ClearSort();
+            foreach (string name in columnNames)
+            {
+                grid.GroupBy(grid.Columns[name]);
+            }
+            grid.ExpandAll();
+        };
+        gridViewSettings.Columns.Add(col =>
+        {
+    //col.Visible = false;
+    col.FieldName = "PID";
+            col.Caption = "PID";
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(70);
+        });
+        gridViewSettings.Columns.Add(c =>
+        {
+
+    //c.GroupIndex = 0;
+    c.FieldName = "BID";
+            c.Caption = "Brand";
+            c.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "BrandName";
+                p.ValueField = "BrandID";
+                p.ValueType = typeof(int);
+                p.DataSource = FBG.Market.Web.Identity.Utils.GetBrands();
+            });
+        });
+
+        gridViewSettings.DataBound = (sender, e) =>
+        {
+            var gridView = sender as MVCxGridView;
+            foreach (GridViewDataColumn col in gridView.DataColumns)
+            {
+                if (col.ReadOnly == true)
+                    col.EditFormSettings.Visible = DefaultBoolean.False;
+            }
+        };
+
+        gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            columnSettings.Width = System.Web.UI.WebControls.Unit.Pixel(170);
+            columnSettings.FieldName = "SKUCode";
+            columnSettings.Caption = "SKUCode";
+            columnSettings.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().HyperLink(hyperLinkSettings =>
+                {
+                    hyperLinkSettings.Properties.Text = (string)DataBinder.Eval(c.DataItem, "SKUCode");
+                    hyperLinkSettings.NavigateUrl = Url.Action("ExternalEditFormEdit", "Product", new { ProductID = DataBinder.Eval(c.DataItem, "PID") });
+
+                }).Render();
+            });
+
+        });
+
+//gridViewSettings.Columns.Add("UPCCode").Caption = "UPC Code";
+gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            columnSettings.FieldName = "UPCCode";
+            columnSettings.Caption = "UPC Code";
+            columnSettings.Width = System.Web.UI.WebControls.Unit.Pixel(120);
+            columnSettings.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().HyperLink(hyperLinkSettings =>
+                {
+                    hyperLinkSettings.Properties.Text = (string)DataBinder.Eval(c.DataItem, "UPCCode");
+                    hyperLinkSettings.NavigateUrl = Url.Action("ExternalEditFormEdit", "Product", new { ProductID = DataBinder.Eval(c.DataItem, "PID") });
+
+                }).Render();
+            });
+
+        });
+
+//gridViewSettings.Columns.Add("PName").Caption = "Style";
+
+gridViewSettings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(150);
+
+            col.FieldName = "PName";
+            col.Caption = "Style";
+
+        });
+        gridViewSettings.Columns.Add(c =>
+        {
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            c.FieldName = "PCategory";
+            c.Caption = "Category";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "CategoryName";
+                p.ValueField = "CategoryID";
+                p.ValueType = typeof(int);
+                p.DataSource = FBG.Market.Web.Identity.Utils.GetCategories();
+            });
+        });
+        gridViewSettings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+    //col.Visible = false;
+    col.FieldName = "PColor";
+            col.Caption = "Color";
+
+        });
+        gridViewSettings.Columns.Add(c =>
+        {
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            c.FieldName = "NRFColorCodeID";
+            c.Caption = "NRF Color";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "ColorCodeName";
+                p.ValueField = "ColorCodeId";
+                p.ValueType = typeof(int);
+                p.DataSource = FBG.Market.Web.Identity.Utils.GetColorCodes();
+            });
+        });
+        gridViewSettings.Columns.Add(c =>
+        {
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            c.FieldName = "SID";
+            c.Caption = "Season";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "SeasonName";
+                p.ValueField = "SeasonID";
+                p.ValueType = typeof(int);
+                p.DataSource = FBG.Market.Web.Identity.Utils.GetSeasons();
+            });
+        });
+
+//PSize
+gridViewSettings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+    //col.Visible = false;
+    col.Settings.AllowAutoFilter = DefaultBoolean.False;
+            col.FieldName = "PSize";
+            col.Caption = "Product Size";
+
+        });
+//VID
+gridViewSettings.Columns.Add(c =>
+        {
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+    //c.Visible = false;
+    c.FieldName = "VID";
+            c.Caption = "Vendor Style Name";
+            c.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "VendorName";
+                p.ValueField = "VendorId";
+                p.ValueType = typeof(int);
+                p.DataSource = FBG.Market.Web.Identity.Utils.GetVendors();
+            });
+        });
+//PSubCategory
+gridViewSettings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+    //col.Visible = false;
+    col.Settings.AllowAutoFilter = DefaultBoolean.False;
+            col.FieldName = "PSubCategory";
+            col.Caption = "Product SubCategory";
+
+        });
+
+//PCoutryofOrigin
+gridViewSettings.Columns.Add(col =>
+        {
+
+    //col.Visible = false;
+    col.Settings.AllowAutoFilter = DefaultBoolean.False;
+            col.FieldName = "PCoutryofOrigin";
+            col.Caption = "Country of Origin";
+
+        });
+
+//
+gridViewSettings.Columns.Add(col =>
+        {
+            col.Visible = true;
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+            col.FieldName = "PFOBCost";
+            col.Caption = "FOB Cost";
+            col.PropertiesEdit.DisplayFormatString = "{0:C}";
+        });
+
+        gridViewSettings.Columns.Add(col =>
+        {
+    //col.Visible = false;
+    col.Settings.AllowAutoFilter = DefaultBoolean.False;
+            col.FieldName = "PLandedCost";
+            col.Caption = "Landed Cost";
+            col.PropertiesEdit.DisplayFormatString = "{0:C}";
+        });
+
+        gridViewSettings.Columns.Add(col =>
+        {
+    //col.Visible = false;
+    col.Settings.AllowAutoFilter = DefaultBoolean.False;
+            col.FieldName = "PWholesalePrice";
+            col.Caption = "Wholesale Price";
+            col.PropertiesEdit.DisplayFormatString = "{0:C}";
+
+        });
+
+        gridViewSettings.Columns.Add(col =>
+        {
+    //col.Visible = false;
+    col.Settings.AllowAutoFilter = DefaultBoolean.False;
+
+            col.FieldName = "PMSRPPrice";
+            col.Caption = "MSRP Price";
+            col.PropertiesEdit.DisplayFormatString = "{0:C}";
+        });
+
+        gridViewSettings.Columns.Add(c =>
+        {
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            c.FieldName = "ProductStatusId";
+            c.Caption = "Status";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "Status";
+                p.ValueField = "Id";
+                p.ValueType = typeof(int);
+                p.DataSource = FBG.Market.Web.Identity.Utils.GetProductStatus();
+            });
+            c.Settings.FilterMode = ColumnFilterMode.DisplayText;
+        });
+        gridViewSettings.Columns.Add(col =>
+        {
+            col.Visible = false;
+
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+    //col.FieldName = "ShopifyPicUrl";
+    col.FieldName = "PPicture";
+            col.Caption = "Picture";
+
+        });
+//PDescription
+gridViewSettings.Columns.Add(col =>
+        {
+            col.Visible = false;
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+            col.FieldName = "PDescription";
+            col.Caption = "Description";
+
+        });
+//PSpecs
+gridViewSettings.Columns.Add(col =>
+        {
+            col.Visible = false;
+            col.Settings.AllowAutoFilter = DefaultBoolean.False;
+            col.FieldName = "PSpecs";
+            col.Caption = "Specs";
+
+        });
+
+//
+gridViewSettings.Settings.ShowFilterRow = true;
+        gridViewSettings.Settings.ShowFilterRowMenu = true;
+        gridViewSettings.CommandColumn.Visible = true;
+        gridViewSettings.CommandColumn.ShowClearFilterButton = true;
+//
+
+gridViewSettings.CellEditorInitialize = (s, e) =>
+        {
+            ASPxEdit editor = (ASPxEdit)e.Editor;
+            editor.ValidationSettings.Display = Display.None;
+        };
+
+        gridViewSettings.SettingsExport.BeforeExport = (sender, e) =>
+        {
+            MVCxGridView gridView = sender as MVCxGridView;
+    //VID
+    gridView.Columns["VID"].Visible = true;
+
+            gridView.Columns[0].Visible = false;
+            gridView.Columns[1].Visible = false;
+    //PID
+    gridView.Columns["PID"].Visible = true;
+    //PPicture
+    gridView.Columns["PPicture"].Visible = true;
+
+    //PSize
+    gridView.Columns["PSize"].Visible = true;
+            gridView.Columns["PColor"].Visible = true;
+
+    //PSubCategory
+    gridView.Columns["PSubCategory"].Visible = true;
+
+
+    //PDescription
+    gridView.Columns["PDescription"].Visible = true;
+    //PSpecs
+    gridView.Columns["PSpecs"].Visible = true;
+    //PCoutryofOrigin
+    gridView.Columns["PCoutryofOrigin"].Visible = true;
+    //PFOBCost
+    gridView.Columns["PFOBCost"].Visible = true;
+    //PLandedCost
+    gridView.Columns["PLandedCost"].Visible = true;
+    //PMSRPPrice
+    gridView.Columns["PMSRPPrice"].Visible = true;
+
+        };
+        gridViewSettings.Init += (s, e) =>
+        {
+            MVCxGridView gridView = (MVCxGridView)s;
+            gridView.AutoFilterByColumn(gridView.Columns["Status"], "Active");
+        };
+
+//"ShopifyPicUrl").Caption = "Picture";
+//gridViewSettings.EnableRowsCache = true;
+/*gridViewSettings.Columns.Add(column =>
+{
+    column.FieldName = "PPicture";
+    column.Caption = "Picture";
+    column.SetDataItemTemplateContent(c =>
+    {
+        var data = DataBinder.Eval(c.DataItem, "PPicture");
+        Html.DevExpress().Image(
+            imageSettings =>
+            {
+
+                imageSettings.Name = "Photo" + c.KeyValue;
+                imageSettings.Width = 50;
+                imageSettings.Height = 50;
+
+            })
+             .Bind(data)
+            .Render();
+    });
+});*/
+    });
+    if (ViewData["EditError"] != null)
+    {
+        productGridView.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@productGridView.Bind(Model).GetHtml()

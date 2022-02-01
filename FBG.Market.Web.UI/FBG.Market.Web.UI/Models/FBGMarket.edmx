@@ -1,0 +1,2119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FBGMarketModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="VID" Type="int" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="BID" />
+          </Key>
+          <Property Name="VID" Type="int" Nullable="false" />
+          <Property Name="BID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrandName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BrandCategory" Type="smallint" Nullable="false" />
+          <Property Name="BrandSubCategory" Type="nvarchar" MaxLength="255" />
+          <Property Name="BrandWebSite" Type="nvarchar(max)" />
+          <Property Name="BrandNotes" Type="nvarchar(max)" />
+          <Property Name="BrandLogo" Type="varchar" MaxLength="8000" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientLocation">
+          <Key>
+            <PropertyRef Name="CLID" />
+          </Key>
+          <Property Name="CLID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CClientID" Type="int" />
+          <Property Name="CLName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CLAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="CLCity" Type="nvarchar" MaxLength="255" />
+          <Property Name="CLState" Type="nvarchar" MaxLength="255" />
+          <Property Name="CLZip" Type="nvarchar" MaxLength="255" />
+          <Property Name="CLCountry" Type="nvarchar" MaxLength="255" />
+          <Property Name="CLPhone" Type="nvarchar" MaxLength="255" />
+          <Property Name="CLComments" Type="nvarchar(max)" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="CID" />
+          </Key>
+          <Property Name="CID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CType" Type="smallint" />
+          <Property Name="CAddress" Type="nvarchar(max)" />
+          <Property Name="CCity" Type="nvarchar" MaxLength="255" />
+          <Property Name="CState" Type="nvarchar" MaxLength="255" />
+          <Property Name="CZip" Type="nvarchar" MaxLength="255" />
+          <Property Name="CCountry" Type="nvarchar" MaxLength="255" />
+          <Property Name="CContactName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CPhone" Type="nvarchar" MaxLength="255" />
+          <Property Name="CEmail" Type="nvarchar" MaxLength="255" />
+          <Property Name="CStatus" Type="nvarchar" MaxLength="255" />
+          <Property Name="CComments" Type="nvarchar(max)" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ColorCategory">
+          <Key>
+            <PropertyRef Name="ColorCategoryID" />
+          </Key>
+          <Property Name="ColorCategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ColorCategoryName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'fbgmaket_dev_fbgmarket.dbo.dest' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="dest">
+          <Property Name="Vendor" Type="nvarchar" MaxLength="255" />
+          <Property Name="Brand" Type="nvarchar" MaxLength="255" />
+          <Property Name="Brands" Type="nvarchar" MaxLength="255" />
+          <Property Name="SKUCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="UPC Code" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Color" Type="nvarchar" MaxLength="255" />
+          <Property Name="NRF Color Code" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Size" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Category" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Subcategory" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Family" Type="nvarchar" MaxLength="255" />
+          <Property Name="Season" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="Specification" Type="nvarchar" MaxLength="255" />
+          <Property Name="Country of Origin" Type="nvarchar" MaxLength="255" />
+          <Property Name="Discontinued" Type="nvarchar" MaxLength="255" />
+          <Property Name="FOB Cost" Type="nvarchar" MaxLength="255" />
+          <Property Name="Landed Cost" Type="float" />
+          <Property Name="Wholesale Price" Type="money" />
+          <Property Name="MSRP Price" Type="money" />
+          <Property Name="Picture" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Status" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EID" />
+          </Key>
+          <Property Name="EID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EName" Type="nvarchar" MaxLength="50" />
+          <Property Name="E-mail Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="Job Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Business Phone" Type="nvarchar" MaxLength="25" />
+          <Property Name="Home Phone" Type="nvarchar" MaxLength="25" />
+          <Property Name="Mobile Phone" Type="nvarchar" MaxLength="25" />
+          <Property Name="Fax Number" Type="nvarchar" MaxLength="25" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="State/Province" Type="nvarchar" MaxLength="50" />
+          <Property Name="ZIP/Postal Code" Type="nvarchar" MaxLength="15" />
+          <Property Name="Country/Region" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="Attachments" Type="varchar" MaxLength="8000" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="IID" />
+          </Key>
+          <Property Name="IID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PID" Type="int" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Status" Type="nvarchar" MaxLength="255" />
+          <Property Name="Warehouse" Type="int" />
+          <Property Name="AvailabiltyDate" Type="datetime2" Precision="0" />
+          <Property Name="CreateDate" Type="datetime2" Precision="0" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderCR">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="int" Nullable="false" />
+          <Property Name="record_no" Type="nvarchar" MaxLength="255" />
+          <Property Name="version" Type="nvarchar" MaxLength="255" />
+          <Property Name="format" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_ref" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_po_no" Type="nvarchar" MaxLength="255" />
+          <Property Name="po_number" Type="nvarchar" MaxLength="255" />
+          <Property Name="carrier" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_code" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_code_description" Type="nvarchar" MaxLength="255" />
+          <Property Name="working_ship_code" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_company" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_title" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_first_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_last_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_address_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_address_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_address_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_city" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_state" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_zip" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_country" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_phone" Type="nvarchar" MaxLength="255" />
+          <Property Name="cust_e_mail" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_company" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_title" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_first_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_last_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_address_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_address_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_address_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_city" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_state" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_zip" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_country" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_phone" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_e_mail" Type="nvarchar" MaxLength="255" />
+          <Property Name="ship_address_type" Type="nvarchar" MaxLength="255" />
+          <Property Name="customer_id" Type="nvarchar" MaxLength="255" />
+          <Property Name="order_date" Type="nvarchar" MaxLength="255" />
+          <Property Name="sub_total" Type="nvarchar" MaxLength="255" />
+          <Property Name="order_discount" Type="nvarchar" MaxLength="255" />
+          <Property Name="sales_tax" Type="nvarchar" MaxLength="255" />
+          <Property Name="shipping_handling" Type="nvarchar" MaxLength="255" />
+          <Property Name="grand_total" Type="nvarchar" MaxLength="255" />
+          <Property Name="balance" Type="nvarchar" MaxLength="255" />
+          <Property Name="currency_code" Type="nvarchar" MaxLength="255" />
+          <Property Name="credit_card_no" Type="nvarchar" MaxLength="255" />
+          <Property Name="expiration_date" Type="nvarchar" MaxLength="255" />
+          <Property Name="order_source" Type="nvarchar" MaxLength="255" />
+          <Property Name="promo_code" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="OrderDetails">
+          <Key>
+            <PropertyRef Name="ODID" />
+          </Key>
+          <Property Name="ODID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ODOID" Type="int" Nullable="false" />
+          <Property Name="ODProductID" Type="int" />
+          <Property Name="ODQuantity" Type="smallint" Nullable="false" />
+          <Property Name="ODUnitPrice" Type="money" />
+          <Property Name="ODDiscount" Type="float" />
+          <Property Name="ODMSRP" Type="money" />
+          <Property Name="ODWholesale" Type="money" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'fbgmaket_dev_fbgmarket.dbo.OrderProcessForce' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="OrderProcessForce">
+          <Key>
+            <PropertyRef Name="SSMA_TimeStamp" />
+          </Key>
+          <Property Name="FetchFrom" Type="datetime2" Precision="0" />
+          <Property Name="FetchTo" Type="datetime2" Precision="0" />
+          <Property Name="Enable" Type="bit" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderProcessLog">
+          <Key>
+            <PropertyRef Name="OrderFetchDT" />
+          </Key>
+          <Property Name="OrderFetchDT" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="OrderFetchStatus" Type="nvarchar" MaxLength="100" />
+          <Property Name="OrderCount" Type="smallint" />
+          <Property Name="ProcessStartDT" Type="datetime2" Precision="0" />
+          <Property Name="ProcessEndDT" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OEmpID" Type="int" Nullable="false" />
+          <Property Name="OClientID" Type="int" Nullable="false" />
+          <Property Name="ODate" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="OType" Type="int" />
+          <Property Name="OShipStartDate" Type="datetime2" Precision="0" />
+          <Property Name="OShipCancelDate" Type="datetime2" Precision="0" />
+          <Property Name="OPOID" Type="nvarchar" MaxLength="255" />
+          <Property Name="OClientLocation" Type="int" />
+          <Property Name="OTaxes" Type="money" />
+          <Property Name="OPaymentType" Type="nvarchar" MaxLength="50" />
+          <Property Name="OPaymentTerms" Type="nvarchar" MaxLength="255" />
+          <Property Name="OPaidDate" Type="datetime2" Precision="0" />
+          <Property Name="ONotes" Type="nvarchar(max)" />
+          <Property Name="OShipNotes" Type="nvarchar(max)" />
+          <Property Name="OStatusID" Type="nvarchar" MaxLength="255" />
+          <Property Name="OExSource" Type="nvarchar" MaxLength="100" />
+          <Property Name="OExSourceOrg" Type="nvarchar" MaxLength="255" />
+          <Property Name="OExSourceID" Type="nvarchar" MaxLength="255" />
+          <Property Name="OProcessFee" Type="money" />
+          <Property Name="OProcessFeeAddPct" Type="real" />
+          <Property Name="OTotalTaxPct" Type="real" />
+          <Property Name="OSHFee" Type="money" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'fbgmaket_dev_fbgmarket.dbo.prod_data' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="prod_data">
+          <Property Name="Vendor" Type="nvarchar" MaxLength="255" />
+          <Property Name="Brand" Type="nvarchar" MaxLength="255" />
+          <Property Name="Brands" Type="nvarchar" MaxLength="255" />
+          <Property Name="SKUCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="UPC Code" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Color" Type="nvarchar" MaxLength="255" />
+          <Property Name="NRF Color Code" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Size" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Category" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Subcategory" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Family" Type="nvarchar" MaxLength="255" />
+          <Property Name="Season" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="Specification" Type="nvarchar" MaxLength="255" />
+          <Property Name="Country of Origin" Type="nvarchar" MaxLength="255" />
+          <Property Name="Discontinued" Type="nvarchar" MaxLength="255" />
+          <Property Name="FOB Cost" Type="nvarchar" MaxLength="255" />
+          <Property Name="Landed Cost" Type="money" />
+          <Property Name="Wholesale Price" Type="money" />
+          <Property Name="MSRP Price" Type="money" />
+          <Property Name="Picture" Type="nvarchar" MaxLength="255" />
+          <Property Name="Product Status" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'fbgmaket_dev_fbgmarket.dbo.prod_desc_dup' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="prod_desc_dup">
+          <Property Name="VariantSKU" Type="nvarchar" MaxLength="255" />
+          <Property Name="Body" Type="nvarchar(max)" />
+          <Property Name="ImageSrc" Type="nchar" MaxLength="10" />
+        </EntityType>-->
+        <EntityType Name="ProductImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ImageUrl" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="BID" Type="int" />
+          <Property Name="PID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SKUCode" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UPCCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PColor" Type="nvarchar" MaxLength="255" />
+          <Property Name="PSize" Type="nvarchar" MaxLength="255" />
+          <Property Name="PCategory" Type="smallint" Nullable="false" />
+          <Property Name="PSubCategory" Type="nvarchar" MaxLength="255" />
+          <Property Name="NRFColorCodeID" Type="int" />
+          <Property Name="SID" Type="int" />
+          <Property Name="PDescription" Type="nvarchar(max)" />
+          <Property Name="PSpecs" Type="nvarchar(max)" />
+          <Property Name="PCoutryofOrigin" Type="nvarchar" MaxLength="255" />
+          <Property Name="PDiscontinued" Type="bit" Nullable="false" />
+          <Property Name="PFOBCost" Type="money" />
+          <Property Name="PLandedCost" Type="money" />
+          <Property Name="PWholesalePrice" Type="money" Nullable="false" />
+          <Property Name="PMSRPPrice" Type="money" />
+          <Property Name="PPicture" Type="nvarchar" MaxLength="500" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ProductStatusId" Type="int" />
+          <Property Name="VID" Type="int" />
+          <Property Name="ColorCategoryId" Type="int" />
+          <Property Name="ShopifyPicUrl" Type="nvarchar" MaxLength="500" />
+          <Property Name="VendorName" Type="nvarchar" MaxLength="50" />
+          <Property Name="GroupId" Type="bigint" />
+          <Property Name="BrandCategoryId" Type="int" />
+          <Property Name="Message" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProductsImport">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BID" Type="int" />
+          <Property Name="PID" Type="nvarchar" MaxLength="100" />
+          <Property Name="SKUCode" Type="nvarchar" MaxLength="100" />
+          <Property Name="UPCCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="PName" Type="nvarchar" MaxLength="50" />
+          <Property Name="VendorName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PColor" Type="nvarchar" MaxLength="255" />
+          <Property Name="PSize" Type="nvarchar" MaxLength="255" />
+          <Property Name="PCategory" Type="smallint" />
+          <Property Name="PSubCategory" Type="nvarchar" MaxLength="255" />
+          <Property Name="NRFColorCodeID" Type="int" />
+          <Property Name="SID" Type="int" />
+          <Property Name="PDescription" Type="nvarchar(max)" />
+          <Property Name="PSpecs" Type="nvarchar(max)" />
+          <Property Name="PCoutryofOrigin" Type="nvarchar" MaxLength="255" />
+          <Property Name="PDiscontinued" Type="bit" Nullable="false" />
+          <Property Name="PFOBCost" Type="nvarchar" MaxLength="50" />
+          <Property Name="PLandedCost" Type="nvarchar" MaxLength="50" />
+          <Property Name="PWholesalePrice" Type="nvarchar" MaxLength="50" />
+          <Property Name="PMSRPPrice" Type="nvarchar" MaxLength="50" />
+          <Property Name="PPicture" Type="nvarchar" MaxLength="500" />
+          <Property Name="ProductStatusId" Type="int" />
+          <Property Name="VID" Type="int" />
+          <Property Name="ColorCategoryId" Type="int" />
+          <Property Name="ShopifyPicUrl" Type="nvarchar" MaxLength="500" />
+          <Property Name="Brand_Category" Type="nvarchar" MaxLength="100" />
+          <Property Name="Message" Type="nvarchar" MaxLength="500" />
+          <Property Name="GroupId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="ProductStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="RefCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="RefClientCategories">
+          <Key>
+            <PropertyRef Name="CCID" />
+          </Key>
+          <Property Name="CCID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CCDesc" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="RefNRFColorCodes">
+          <Key>
+            <PropertyRef Name="NRFColorCodeID" />
+          </Key>
+          <Property Name="NRFColorCodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NRFColorCode" Type="int" />
+          <Property Name="NRFColorName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ColorCategoryID" Type="int" />
+        </EntityType>
+        <EntityType Name="RefOrderType">
+          <Key>
+            <PropertyRef Name="OTID" />
+          </Key>
+          <Property Name="OTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderType" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="RefProductFamily">
+          <Key>
+            <PropertyRef Name="PFID" />
+          </Key>
+          <Property Name="PFID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PFName" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="RefSeason">
+          <Key>
+            <PropertyRef Name="SID" />
+          </Key>
+          <Property Name="SID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Season" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'fbgmaket_dev_fbgmarket.dbo.RefStates' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="RefStates">
+          <Property Name="States" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <EntityType Name="RefWarehouse">
+          <Key>
+            <PropertyRef Name="WID" />
+          </Key>
+          <Property Name="WID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Warehouse" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sales Reports">
+          <Key>
+            <PropertyRef Name="Group By" />
+          </Key>
+          <Property Name="Group By" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Display" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Filter Row Source" Type="nvarchar(max)" />
+          <Property Name="Default" Type="bit" Nullable="false" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'fbgmaket_dev_fbgmarket.dbo.shopify_prod_desc' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="shopify_prod_desc">
+          <Property Name="VariantSKU" Type="nvarchar" MaxLength="255" />
+          <Property Name="Image Src" Type="nvarchar" MaxLength="255" />
+          <Property Name="Body" Type="nvarchar(max)" />
+        </EntityType>-->
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="VID" />
+          </Key>
+          <Property Name="VID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VendorName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="VendorAcronym" Type="nvarchar" MaxLength="50" />
+          <Property Name="VendorAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="VendorCityState" Type="nvarchar" MaxLength="255" />
+          <Property Name="VendorCountry" Type="nvarchar" MaxLength="255" />
+          <Property Name="VendorPhone" Type="nvarchar" MaxLength="255" />
+          <Property Name="VendorEmail" Type="nvarchar" MaxLength="255" />
+          <Property Name="VendorWebsite" Type="nvarchar" MaxLength="255" />
+          <Property Name="VendorContact" Type="nvarchar" MaxLength="255" />
+          <Property Name="VendorLogo" Type="varchar" MaxLength="8000" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__RefNRFCol__Color__0E6E26BF">
+          <End Role="ColorCategory" Type="Self.ColorCategory" Multiplicity="0..1" />
+          <End Role="RefNRFColorCodes" Type="Self.RefNRFColorCodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ColorCategory">
+              <PropertyRef Name="ColorCategoryID" />
+            </Principal>
+            <Dependent Role="RefNRFColorCodes">
+              <PropertyRef Name="ColorCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AspNetUsers_Vendor">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VID" />
+            </Principal>
+            <Dependent Role="AspNetUsers">
+              <PropertyRef Name="VID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Brand_Vendor">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="1" />
+          <End Role="Brand" Type="Self.Brand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VID" />
+            </Principal>
+            <Dependent Role="Brand">
+              <PropertyRef Name="VID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductImage_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductImage" Type="Self.ProductImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="PID" />
+            </Principal>
+            <Dependent Role="ProductImage">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Brand">
+          <End Role="Brand" Type="Self.Brand" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="BID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="BID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductStatus">
+          <End Role="ProductStatus" Type="Self.ProductStatus" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_RefNRFColorCodes">
+          <End Role="RefNRFColorCodes" Type="Self.RefNRFColorCodes" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RefNRFColorCodes">
+              <PropertyRef Name="NRFColorCodeID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ColorCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Vendor">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="VID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_ClientLocation$T_ClientsT_ClientLocation">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="ClientLocation" Type="Self.ClientLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="ClientLocation">
+              <PropertyRef Name="CClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_OrderCR$T_OrdersT_OrderCR">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderCR" Type="Self.OrderCR" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="OrderCR">
+              <PropertyRef Name="OID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_OrderDetails${7AF3CB47-96B7-4178-B4BB-FBE0C413F5B1}">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="ODOID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_OrderDetails$T_ProductsT_OrderDetails">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="PID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="ODProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_Orders$Ref_OrderTypeT_Orders">
+          <End Role="RefOrderType" Type="Self.RefOrderType" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RefOrderType">
+              <PropertyRef Name="OTID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_Orders$T_ClientsT_Orders">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_Orders$T_EmployeesT_Orders">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OEmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FBGMarketModelStoreContainer">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientLocation" EntityType="Self.ClientLocation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ColorCategory" EntityType="Self.ColorCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderCR" EntityType="Self.OrderCR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderProcessLog" EntityType="Self.OrderProcessLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductImage" EntityType="Self.ProductImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductsImport" EntityType="Self.ProductsImport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductStatus" EntityType="Self.ProductStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RefCategory" EntityType="Self.RefCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RefClientCategories" EntityType="Self.RefClientCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RefNRFColorCodes" EntityType="Self.RefNRFColorCodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RefOrderType" EntityType="Self.RefOrderType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RefProductFamily" EntityType="Self.RefProductFamily" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RefSeason" EntityType="Self.RefSeason" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RefWarehouse" EntityType="Self.RefWarehouse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sales Reports" EntityType="Self.Sales Reports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendor" EntityType="Self.Vendor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderProcessForce" EntityType="Self.OrderProcessForce" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [OrderProcessForce].[FetchFrom] AS [FetchFrom], 
+    [OrderProcessForce].[FetchTo] AS [FetchTo], 
+    [OrderProcessForce].[Enable] AS [Enable], 
+    [OrderProcessForce].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
+    FROM [dbo].[OrderProcessForce] AS [OrderProcessForce]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__RefNRFCol__Color__0E6E26BF" Association="Self.FK__RefNRFCol__Color__0E6E26BF">
+            <End Role="ColorCategory" EntitySet="ColorCategory" />
+            <End Role="RefNRFColorCodes" EntitySet="RefNRFColorCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AspNetUsers_Vendor" Association="Self.FK_AspNetUsers_Vendor">
+            <End Role="Vendor" EntitySet="Vendor" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Brand_Vendor" Association="Self.FK_Brand_Vendor">
+            <End Role="Vendor" EntitySet="Vendor" />
+            <End Role="Brand" EntitySet="Brand" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductImage_Products" Association="Self.FK_ProductImage_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductImage" EntitySet="ProductImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Brand" Association="Self.FK_Products_Brand">
+            <End Role="Brand" EntitySet="Brand" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductStatus" Association="Self.FK_Products_ProductStatus">
+            <End Role="ProductStatus" EntitySet="ProductStatus" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_RefNRFColorCodes" Association="Self.FK_Products_RefNRFColorCodes">
+            <End Role="RefNRFColorCodes" EntitySet="RefNRFColorCodes" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Vendor" Association="Self.FK_Products_Vendor">
+            <End Role="Vendor" EntitySet="Vendor" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="T_ClientLocation$T_ClientsT_ClientLocation" Association="Self.T_ClientLocation$T_ClientsT_ClientLocation">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="ClientLocation" EntitySet="ClientLocation" />
+          </AssociationSet>
+          <AssociationSet Name="T_OrderCR$T_OrdersT_OrderCR" Association="Self.T_OrderCR$T_OrdersT_OrderCR">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderCR" EntitySet="OrderCR" />
+          </AssociationSet>
+          <AssociationSet Name="T_OrderDetails${7AF3CB47-96B7-4178-B4BB-FBE0C413F5B1}" Association="Self.T_OrderDetails${7AF3CB47-96B7-4178-B4BB-FBE0C413F5B1}">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="T_OrderDetails$T_ProductsT_OrderDetails" Association="Self.T_OrderDetails$T_ProductsT_OrderDetails">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="T_Orders$Ref_OrderTypeT_Orders" Association="Self.T_Orders$Ref_OrderTypeT_Orders">
+            <End Role="RefOrderType" EntitySet="RefOrderType" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="T_Orders$T_ClientsT_Orders" Association="Self.T_Orders$T_ClientsT_Orders">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="T_Orders$T_EmployeesT_Orders" Association="Self.T_Orders$T_EmployeesT_Orders">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FBGMarketModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VID" Type="Int32" />
+          <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="Vendor" Relationship="Self.FK_AspNetUsers_Vendor" FromRole="AspNetUsers" ToRole="Vendor" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+        </EntityType>
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="BID" />
+          </Key>
+          <Property Name="VID" Type="Int32" Nullable="false" />
+          <Property Name="BID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrandName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BrandCategory" Type="Int16" Nullable="false" />
+          <Property Name="BrandSubCategory" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BrandWebSite" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BrandNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BrandLogo" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Vendor" Relationship="Self.FK_Brand_Vendor" FromRole="Brand" ToRole="Vendor" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_Brand" FromRole="Brand" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="ClientLocation">
+          <Key>
+            <PropertyRef Name="CLID" />
+          </Key>
+          <Property Name="CLID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CClientID" Type="Int32" />
+          <Property Name="CLName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CLAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CLCity" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CLState" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CLZip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CLCountry" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CLPhone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CLComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Client" Relationship="Self.T_ClientLocation_T_ClientsT_ClientLocation" FromRole="ClientLocation" ToRole="Clients" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="CID" />
+          </Key>
+          <Property Name="CID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CType" Type="Int16" />
+          <Property Name="CAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CCity" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CState" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CZip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CCountry" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CContactName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CPhone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CStatus" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ClientLocations" Relationship="Self.T_ClientLocation_T_ClientsT_ClientLocation" FromRole="Clients" ToRole="ClientLocation" />
+          <NavigationProperty Name="Orders" Relationship="Self.T_Orders_T_ClientsT_Orders" FromRole="Clients" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="ColorCategory">
+          <Key>
+            <PropertyRef Name="ColorCategoryID" />
+          </Key>
+          <Property Name="ColorCategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ColorCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RefNRFColorCodes" Relationship="Self.FK__RefNRFCol__Color__04E4BC85" FromRole="ColorCategory" ToRole="RefNRFColorCodes" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EID" />
+          </Key>
+          <Property Name="EID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="E_mail_Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Job_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Business_Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Home_Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile_Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Fax_Number" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="State_Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ZIP_Postal_Code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Country_Region" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Attachments" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Orders" Relationship="Self.T_Orders_T_EmployeesT_Orders" FromRole="Employees" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="IID" />
+          </Key>
+          <Property Name="IID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PID" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Warehouse" Type="Int32" />
+          <Property Name="AvailabiltyDate" Type="DateTime" Precision="0" />
+          <Property Name="CreateDate" Type="DateTime" Precision="0" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="OrderCR">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Int32" Nullable="false" />
+          <Property Name="record_no" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="version" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="format" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_ref" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_po_no" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="po_number" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="carrier" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_code_description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="working_ship_code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_company" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_first_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_last_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_address_1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_address_2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_address_3" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_city" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_state" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_zip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_country" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_phone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cust_e_mail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_company" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_first_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_last_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_address_1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_address_2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_address_3" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_city" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_state" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_zip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_country" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_phone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_e_mail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ship_address_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="customer_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="order_date" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="sub_total" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="order_discount" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="sales_tax" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="shipping_handling" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="grand_total" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="balance" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="currency_code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="credit_card_no" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="expiration_date" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="order_source" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="promo_code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Order" Relationship="Self.T_OrderCR_T_OrdersT_OrderCR" FromRole="OrderCR" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="ODID" />
+          </Key>
+          <Property Name="ODID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ODOID" Type="Int32" Nullable="false" />
+          <Property Name="ODProductID" Type="Int32" />
+          <Property Name="ODQuantity" Type="Int16" Nullable="false" />
+          <Property Name="ODUnitPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ODDiscount" Type="Double" />
+          <Property Name="ODMSRP" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ODWholesale" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Order" Relationship="Self.T_OrderDetails__7AF3CB47_96B7_4178_B4BB_FBE0C413F5B1_" FromRole="OrderDetails" ToRole="Orders" />
+          <NavigationProperty Name="Product" Relationship="Self.T_OrderDetails_T_ProductsT_OrderDetails" FromRole="OrderDetails" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="OrderProcessLog">
+          <Key>
+            <PropertyRef Name="OrderFetchDT" />
+          </Key>
+          <Property Name="OrderFetchDT" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="OrderFetchStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OrderCount" Type="Int16" />
+          <Property Name="ProcessStartDT" Type="DateTime" Precision="0" />
+          <Property Name="ProcessEndDT" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OEmpID" Type="Int32" Nullable="false" />
+          <Property Name="OClientID" Type="Int32" Nullable="false" />
+          <Property Name="ODate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="OType" Type="Int32" />
+          <Property Name="OShipStartDate" Type="DateTime" Precision="0" />
+          <Property Name="OShipCancelDate" Type="DateTime" Precision="0" />
+          <Property Name="OPOID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OClientLocation" Type="Int32" />
+          <Property Name="OTaxes" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OPaymentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OPaymentTerms" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OPaidDate" Type="DateTime" Precision="0" />
+          <Property Name="ONotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OShipNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OStatusID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OExSource" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OExSourceOrg" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OExSourceID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OProcessFee" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OProcessFeeAddPct" Type="Single" />
+          <Property Name="OTotalTaxPct" Type="Single" />
+          <Property Name="OSHFee" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Client" Relationship="Self.T_Orders_T_ClientsT_Orders" FromRole="Orders" ToRole="Clients" />
+          <NavigationProperty Name="Employee" Relationship="Self.T_Orders_T_EmployeesT_Orders" FromRole="Orders" ToRole="Employees" />
+          <NavigationProperty Name="OrderCR" Relationship="Self.T_OrderCR_T_OrdersT_OrderCR" FromRole="Orders" ToRole="OrderCR" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.T_OrderDetails__7AF3CB47_96B7_4178_B4BB_FBE0C413F5B1_" FromRole="Orders" ToRole="OrderDetails" />
+          <NavigationProperty Name="RefOrderType" Relationship="Self.T_Orders_Ref_OrderTypeT_Orders" FromRole="Orders" ToRole="RefOrderType" />
+        </EntityType>
+        <EntityType Name="ProductImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_ProductImage_Products" FromRole="ProductImage" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="BID" Type="Int32" />
+          <Property Name="PID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SKUCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UPCCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PColor" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PSize" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PCategory" Type="Int16" Nullable="false" />
+          <Property Name="PSubCategory" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NRFColorCodeID" Type="Int32" />
+          <Property Name="SID" Type="Int32" />
+          <Property Name="PDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PSpecs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PCoutryofOrigin" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PDiscontinued" Type="Boolean" Nullable="false" />
+          <Property Name="PFOBCost" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PLandedCost" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PWholesalePrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="PMSRPPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PPicture" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ProductStatusId" Type="Int32" />
+          <Property Name="VID" Type="Int32" />
+          <Property Name="ColorCategoryId" Type="Int32" />
+          <Property Name="ShopifyPicUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Brand" Relationship="Self.FK_Products_Brand" FromRole="Products" ToRole="Brand" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.T_OrderDetails_T_ProductsT_OrderDetails" FromRole="Products" ToRole="OrderDetails" />
+          <NavigationProperty Name="ProductImages" Relationship="Self.FK_ProductImage_Products" FromRole="Products" ToRole="ProductImage" />
+          <NavigationProperty Name="ProductStatu" Relationship="Self.FK_Products_ProductStatus" FromRole="Products" ToRole="ProductStatus" />
+          <NavigationProperty Name="RefNRFColorCode" Relationship="Self.FK_Products_RefNRFColorCodes" FromRole="Products" ToRole="RefNRFColorCodes" />
+          <NavigationProperty Name="Vendor" Relationship="Self.FK_Products_Vendor" FromRole="Products" ToRole="Vendor" />
+          <Property Name="VendorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GroupId" Type="Int64" />
+          <Property Name="BrandCategoryId" Type="Int32" />
+          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ProductsImport">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BID" Type="Int32" />
+          <Property Name="PID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SKUCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UPCCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VendorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PColor" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PSize" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PCategory" Type="Int16" />
+          <Property Name="PSubCategory" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NRFColorCodeID" Type="Int32" />
+          <Property Name="SID" Type="Int32" />
+          <Property Name="PDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PSpecs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PCoutryofOrigin" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PDiscontinued" Type="Boolean" Nullable="false" />
+          <Property Name="PFOBCost" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PLandedCost" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PWholesalePrice" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PMSRPPrice" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PPicture" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ProductStatusId" Type="Int32" />
+          <Property Name="VID" Type="Int32" />
+          <Property Name="ColorCategoryId" Type="Int32" />
+          <Property Name="ShopifyPicUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Brand_Category" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GroupId" Type="Int64" />
+        </EntityType>
+        <EntityType Name="ProductStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_ProductStatus" FromRole="ProductStatus" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="RefCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RefClientCategory">
+          <Key>
+            <PropertyRef Name="CCID" />
+          </Key>
+          <Property Name="CCID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CCDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RefNRFColorCode">
+          <Key>
+            <PropertyRef Name="NRFColorCodeID" />
+          </Key>
+          <Property Name="NRFColorCodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NRFColorCode" Type="Int32" />
+          <Property Name="NRFColorName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ColorCategoryID" Type="Int32" />
+          <NavigationProperty Name="ColorCategory" Relationship="Self.FK__RefNRFCol__Color__04E4BC85" FromRole="RefNRFColorCodes" ToRole="ColorCategory" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_RefNRFColorCodes" FromRole="RefNRFColorCodes" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="RefOrderType">
+          <Key>
+            <PropertyRef Name="OTID" />
+          </Key>
+          <Property Name="OTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="Self.T_Orders_Ref_OrderTypeT_Orders" FromRole="RefOrderType" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="RefProductFamily">
+          <Key>
+            <PropertyRef Name="PFID" />
+          </Key>
+          <Property Name="PFID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PFName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RefSeason">
+          <Key>
+            <PropertyRef Name="SID" />
+          </Key>
+          <Property Name="SID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Season" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RefWarehouse">
+          <Key>
+            <PropertyRef Name="WID" />
+          </Key>
+          <Property Name="WID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Warehouse" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sales_Report">
+          <Key>
+            <PropertyRef Name="Group_By" />
+          </Key>
+          <Property Name="Group_By" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Display" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Filter_Row_Source" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Default" Type="Boolean" Nullable="false" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="VID" />
+          </Key>
+          <Property Name="VID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VendorName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VendorAcronym" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VendorAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VendorCityState" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VendorCountry" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VendorPhone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VendorEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VendorWebsite" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VendorContact" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VendorLogo" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_AspNetUsers_Vendor" FromRole="Vendor" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Brands" Relationship="Self.FK_Brand_Vendor" FromRole="Vendor" ToRole="Brand" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_Vendor" FromRole="Vendor" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="OrderProcessForce">
+          <Key>
+            <PropertyRef Name="SSMA_TimeStamp" />
+          </Key>
+          <Property Name="FetchFrom" Type="DateTime" Precision="0" />
+          <Property Name="FetchTo" Type="DateTime" Precision="0" />
+          <Property Name="Enable" Type="Boolean" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AspNetUsers_Vendor">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VID" />
+            </Principal>
+            <Dependent Role="AspNetUsers">
+              <PropertyRef Name="VID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Brand_Vendor">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="1" />
+          <End Role="Brand" Type="Self.Brand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VID" />
+            </Principal>
+            <Dependent Role="Brand">
+              <PropertyRef Name="VID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Brand">
+          <End Role="Brand" Type="Self.Brand" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="BID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="BID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_ClientLocation_T_ClientsT_ClientLocation">
+          <End Role="Clients" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="ClientLocation" Type="Self.ClientLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="ClientLocation">
+              <PropertyRef Name="CClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_Orders_T_ClientsT_Orders">
+          <End Role="Clients" Type="Self.Client" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RefNRFCol__Color__04E4BC85">
+          <End Role="ColorCategory" Type="Self.ColorCategory" Multiplicity="0..1" />
+          <End Role="RefNRFColorCodes" Type="Self.RefNRFColorCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ColorCategory">
+              <PropertyRef Name="ColorCategoryID" />
+            </Principal>
+            <Dependent Role="RefNRFColorCodes">
+              <PropertyRef Name="ColorCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_Orders_T_EmployeesT_Orders">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OEmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_OrderCR_T_OrdersT_OrderCR">
+          <End Role="Orders" Type="Self.Order" Multiplicity="1" />
+          <End Role="OrderCR" Type="Self.OrderCR" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="OrderCR">
+              <PropertyRef Name="OID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_OrderDetails__7AF3CB47_96B7_4178_B4BB_FBE0C413F5B1_">
+          <End Role="Orders" Type="Self.Order" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OrderDetails" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="ODOID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_OrderDetails_T_ProductsT_OrderDetails">
+          <End Role="Products" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="PID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="ODProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_Orders_Ref_OrderTypeT_Orders">
+          <End Role="RefOrderType" Type="Self.RefOrderType" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RefOrderType">
+              <PropertyRef Name="OTID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductImage_Products">
+          <End Role="Products" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductImage" Type="Self.ProductImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="PID" />
+            </Principal>
+            <Dependent Role="ProductImage">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductStatus">
+          <End Role="ProductStatus" Type="Self.ProductStatu" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_RefNRFColorCodes">
+          <End Role="RefNRFColorCodes" Type="Self.RefNRFColorCode" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RefNRFColorCodes">
+              <PropertyRef Name="NRFColorCodeID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ColorCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Vendor">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="VID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="FBGMarketEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+          <EntitySet Name="Brands" EntityType="Self.Brand" />
+          <EntitySet Name="ClientLocations" EntityType="Self.ClientLocation" />
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="ColorCategories" EntityType="Self.ColorCategory" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Inventories" EntityType="Self.Inventory" />
+          <EntitySet Name="OrderCRs" EntityType="Self.OrderCR" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
+          <EntitySet Name="OrderProcessLogs" EntityType="Self.OrderProcessLog" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="ProductImages" EntityType="Self.ProductImage" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="ProductsImports" EntityType="Self.ProductsImport" />
+          <EntitySet Name="ProductStatus" EntityType="Self.ProductStatu" />
+          <EntitySet Name="RefCategories" EntityType="Self.RefCategory" />
+          <EntitySet Name="RefClientCategories" EntityType="Self.RefClientCategory" />
+          <EntitySet Name="RefNRFColorCodes" EntityType="Self.RefNRFColorCode" />
+          <EntitySet Name="RefOrderTypes" EntityType="Self.RefOrderType" />
+          <EntitySet Name="RefProductFamilies" EntityType="Self.RefProductFamily" />
+          <EntitySet Name="RefSeasons" EntityType="Self.RefSeason" />
+          <EntitySet Name="RefWarehouses" EntityType="Self.RefWarehouse" />
+          <EntitySet Name="Sales_Reports" EntityType="Self.Sales_Report" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendor" />
+          <EntitySet Name="OrderProcessForces" EntityType="Self.OrderProcessForce" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AspNetUsers_Vendor" Association="Self.FK_AspNetUsers_Vendor">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Brand_Vendor" Association="Self.FK_Brand_Vendor">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="Brand" EntitySet="Brands" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Brand" Association="Self.FK_Products_Brand">
+            <End Role="Brand" EntitySet="Brands" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="T_ClientLocation_T_ClientsT_ClientLocation" Association="Self.T_ClientLocation_T_ClientsT_ClientLocation">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="ClientLocation" EntitySet="ClientLocations" />
+          </AssociationSet>
+          <AssociationSet Name="T_Orders_T_ClientsT_Orders" Association="Self.T_Orders_T_ClientsT_Orders">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RefNRFCol__Color__04E4BC85" Association="Self.FK__RefNRFCol__Color__04E4BC85">
+            <End Role="ColorCategory" EntitySet="ColorCategories" />
+            <End Role="RefNRFColorCodes" EntitySet="RefNRFColorCodes" />
+          </AssociationSet>
+          <AssociationSet Name="T_Orders_T_EmployeesT_Orders" Association="Self.T_Orders_T_EmployeesT_Orders">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="T_OrderCR_T_OrdersT_OrderCR" Association="Self.T_OrderCR_T_OrdersT_OrderCR">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderCR" EntitySet="OrderCRs" />
+          </AssociationSet>
+          <AssociationSet Name="T_OrderDetails__7AF3CB47_96B7_4178_B4BB_FBE0C413F5B1_" Association="Self.T_OrderDetails__7AF3CB47_96B7_4178_B4BB_FBE0C413F5B1_">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="T_OrderDetails_T_ProductsT_OrderDetails" Association="Self.T_OrderDetails_T_ProductsT_OrderDetails">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="T_Orders_Ref_OrderTypeT_Orders" Association="Self.T_Orders_Ref_OrderTypeT_Orders">
+            <End Role="RefOrderType" EntitySet="RefOrderTypes" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductImage_Products" Association="Self.FK_ProductImage_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductImage" EntitySet="ProductImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductStatus" Association="Self.FK_Products_ProductStatus">
+            <End Role="ProductStatus" EntitySet="ProductStatus" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_RefNRFColorCodes" Association="Self.FK_Products_RefNRFColorCodes">
+            <End Role="RefNRFColorCodes" EntitySet="RefNRFColorCodes" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Vendor" Association="Self.FK_Products_Vendor">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FBGMarketModelStoreContainer" CdmEntityContainer="FBGMarketEntities">
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="FBGMarketModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="FBGMarketModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="FBGMarketModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="FBGMarketModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="VID" ColumnName="VID" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Brands">
+            <EntityTypeMapping TypeName="FBGMarketModel.Brand">
+              <MappingFragment StoreEntitySet="Brand">
+                <ScalarProperty Name="VID" ColumnName="VID" />
+                <ScalarProperty Name="BID" ColumnName="BID" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="BrandCategory" ColumnName="BrandCategory" />
+                <ScalarProperty Name="BrandSubCategory" ColumnName="BrandSubCategory" />
+                <ScalarProperty Name="BrandWebSite" ColumnName="BrandWebSite" />
+                <ScalarProperty Name="BrandNotes" ColumnName="BrandNotes" />
+                <ScalarProperty Name="BrandLogo" ColumnName="BrandLogo" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientLocations">
+            <EntityTypeMapping TypeName="FBGMarketModel.ClientLocation">
+              <MappingFragment StoreEntitySet="ClientLocation">
+                <ScalarProperty Name="CLID" ColumnName="CLID" />
+                <ScalarProperty Name="CClientID" ColumnName="CClientID" />
+                <ScalarProperty Name="CLName" ColumnName="CLName" />
+                <ScalarProperty Name="CLAddress" ColumnName="CLAddress" />
+                <ScalarProperty Name="CLCity" ColumnName="CLCity" />
+                <ScalarProperty Name="CLState" ColumnName="CLState" />
+                <ScalarProperty Name="CLZip" ColumnName="CLZip" />
+                <ScalarProperty Name="CLCountry" ColumnName="CLCountry" />
+                <ScalarProperty Name="CLPhone" ColumnName="CLPhone" />
+                <ScalarProperty Name="CLComments" ColumnName="CLComments" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="FBGMarketModel.Client">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="CID" ColumnName="CID" />
+                <ScalarProperty Name="CName" ColumnName="CName" />
+                <ScalarProperty Name="CType" ColumnName="CType" />
+                <ScalarProperty Name="CAddress" ColumnName="CAddress" />
+                <ScalarProperty Name="CCity" ColumnName="CCity" />
+                <ScalarProperty Name="CState" ColumnName="CState" />
+                <ScalarProperty Name="CZip" ColumnName="CZip" />
+                <ScalarProperty Name="CCountry" ColumnName="CCountry" />
+                <ScalarProperty Name="CContactName" ColumnName="CContactName" />
+                <ScalarProperty Name="CPhone" ColumnName="CPhone" />
+                <ScalarProperty Name="CEmail" ColumnName="CEmail" />
+                <ScalarProperty Name="CStatus" ColumnName="CStatus" />
+                <ScalarProperty Name="CComments" ColumnName="CComments" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ColorCategories">
+            <EntityTypeMapping TypeName="FBGMarketModel.ColorCategory">
+              <MappingFragment StoreEntitySet="ColorCategory">
+                <ScalarProperty Name="ColorCategoryID" ColumnName="ColorCategoryID" />
+                <ScalarProperty Name="ColorCategoryName" ColumnName="ColorCategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="FBGMarketModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EID" ColumnName="EID" />
+                <ScalarProperty Name="EName" ColumnName="EName" />
+                <ScalarProperty Name="E_mail_Address" ColumnName="E-mail Address" />
+                <ScalarProperty Name="Job_Title" ColumnName="Job Title" />
+                <ScalarProperty Name="Business_Phone" ColumnName="Business Phone" />
+                <ScalarProperty Name="Home_Phone" ColumnName="Home Phone" />
+                <ScalarProperty Name="Mobile_Phone" ColumnName="Mobile Phone" />
+                <ScalarProperty Name="Fax_Number" ColumnName="Fax Number" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State_Province" ColumnName="State/Province" />
+                <ScalarProperty Name="ZIP_Postal_Code" ColumnName="ZIP/Postal Code" />
+                <ScalarProperty Name="Country_Region" ColumnName="Country/Region" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Attachments" ColumnName="Attachments" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inventories">
+            <EntityTypeMapping TypeName="FBGMarketModel.Inventory">
+              <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="IID" ColumnName="IID" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+                <ScalarProperty Name="AvailabiltyDate" ColumnName="AvailabiltyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderCRs">
+            <EntityTypeMapping TypeName="FBGMarketModel.OrderCR">
+              <MappingFragment StoreEntitySet="OrderCR">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="record_no" ColumnName="record_no" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="format" ColumnName="format" />
+                <ScalarProperty Name="cust_ref" ColumnName="cust_ref" />
+                <ScalarProperty Name="cust_po_no" ColumnName="cust_po_no" />
+                <ScalarProperty Name="po_number" ColumnName="po_number" />
+                <ScalarProperty Name="carrier" ColumnName="carrier" />
+                <ScalarProperty Name="ship_code" ColumnName="ship_code" />
+                <ScalarProperty Name="ship_code_description" ColumnName="ship_code_description" />
+                <ScalarProperty Name="working_ship_code" ColumnName="working_ship_code" />
+                <ScalarProperty Name="cust_company" ColumnName="cust_company" />
+                <ScalarProperty Name="cust_title" ColumnName="cust_title" />
+                <ScalarProperty Name="cust_first_name" ColumnName="cust_first_name" />
+                <ScalarProperty Name="cust_last_name" ColumnName="cust_last_name" />
+                <ScalarProperty Name="cust_address_1" ColumnName="cust_address_1" />
+                <ScalarProperty Name="cust_address_2" ColumnName="cust_address_2" />
+                <ScalarProperty Name="cust_address_3" ColumnName="cust_address_3" />
+                <ScalarProperty Name="cust_city" ColumnName="cust_city" />
+                <ScalarProperty Name="cust_state" ColumnName="cust_state" />
+                <ScalarProperty Name="cust_zip" ColumnName="cust_zip" />
+                <ScalarProperty Name="cust_country" ColumnName="cust_country" />
+                <ScalarProperty Name="cust_phone" ColumnName="cust_phone" />
+                <ScalarProperty Name="cust_e_mail" ColumnName="cust_e_mail" />
+                <ScalarProperty Name="ship_company" ColumnName="ship_company" />
+                <ScalarProperty Name="ship_title" ColumnName="ship_title" />
+                <ScalarProperty Name="ship_first_name" ColumnName="ship_first_name" />
+                <ScalarProperty Name="ship_last_name" ColumnName="ship_last_name" />
+                <ScalarProperty Name="ship_address_1" ColumnName="ship_address_1" />
+                <ScalarProperty Name="ship_address_2" ColumnName="ship_address_2" />
+                <ScalarProperty Name="ship_address_3" ColumnName="ship_address_3" />
+                <ScalarProperty Name="ship_city" ColumnName="ship_city" />
+                <ScalarProperty Name="ship_state" ColumnName="ship_state" />
+                <ScalarProperty Name="ship_zip" ColumnName="ship_zip" />
+                <ScalarProperty Name="ship_country" ColumnName="ship_country" />
+                <ScalarProperty Name="ship_phone" ColumnName="ship_phone" />
+                <ScalarProperty Name="ship_e_mail" ColumnName="ship_e_mail" />
+                <ScalarProperty Name="ship_address_type" ColumnName="ship_address_type" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="order_date" ColumnName="order_date" />
+                <ScalarProperty Name="sub_total" ColumnName="sub_total" />
+                <ScalarProperty Name="order_discount" ColumnName="order_discount" />
+                <ScalarProperty Name="sales_tax" ColumnName="sales_tax" />
+                <ScalarProperty Name="shipping_handling" ColumnName="shipping_handling" />
+                <ScalarProperty Name="grand_total" ColumnName="grand_total" />
+                <ScalarProperty Name="balance" ColumnName="balance" />
+                <ScalarProperty Name="currency_code" ColumnName="currency_code" />
+                <ScalarProperty Name="credit_card_no" ColumnName="credit_card_no" />
+                <ScalarProperty Name="expiration_date" ColumnName="expiration_date" />
+                <ScalarProperty Name="order_source" ColumnName="order_source" />
+                <ScalarProperty Name="promo_code" ColumnName="promo_code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="FBGMarketModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="ODID" ColumnName="ODID" />
+                <ScalarProperty Name="ODOID" ColumnName="ODOID" />
+                <ScalarProperty Name="ODProductID" ColumnName="ODProductID" />
+                <ScalarProperty Name="ODQuantity" ColumnName="ODQuantity" />
+                <ScalarProperty Name="ODUnitPrice" ColumnName="ODUnitPrice" />
+                <ScalarProperty Name="ODDiscount" ColumnName="ODDiscount" />
+                <ScalarProperty Name="ODMSRP" ColumnName="ODMSRP" />
+                <ScalarProperty Name="ODWholesale" ColumnName="ODWholesale" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderProcessLogs">
+            <EntityTypeMapping TypeName="FBGMarketModel.OrderProcessLog">
+              <MappingFragment StoreEntitySet="OrderProcessLog">
+                <ScalarProperty Name="OrderFetchDT" ColumnName="OrderFetchDT" />
+                <ScalarProperty Name="OrderFetchStatus" ColumnName="OrderFetchStatus" />
+                <ScalarProperty Name="OrderCount" ColumnName="OrderCount" />
+                <ScalarProperty Name="ProcessStartDT" ColumnName="ProcessStartDT" />
+                <ScalarProperty Name="ProcessEndDT" ColumnName="ProcessEndDT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="FBGMarketModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="OEmpID" ColumnName="OEmpID" />
+                <ScalarProperty Name="OClientID" ColumnName="OClientID" />
+                <ScalarProperty Name="ODate" ColumnName="ODate" />
+                <ScalarProperty Name="OType" ColumnName="OType" />
+                <ScalarProperty Name="OShipStartDate" ColumnName="OShipStartDate" />
+                <ScalarProperty Name="OShipCancelDate" ColumnName="OShipCancelDate" />
+                <ScalarProperty Name="OPOID" ColumnName="OPOID" />
+                <ScalarProperty Name="OClientLocation" ColumnName="OClientLocation" />
+                <ScalarProperty Name="OTaxes" ColumnName="OTaxes" />
+                <ScalarProperty Name="OPaymentType" ColumnName="OPaymentType" />
+                <ScalarProperty Name="OPaymentTerms" ColumnName="OPaymentTerms" />
+                <ScalarProperty Name="OPaidDate" ColumnName="OPaidDate" />
+                <ScalarProperty Name="ONotes" ColumnName="ONotes" />
+                <ScalarProperty Name="OShipNotes" ColumnName="OShipNotes" />
+                <ScalarProperty Name="OStatusID" ColumnName="OStatusID" />
+                <ScalarProperty Name="OExSource" ColumnName="OExSource" />
+                <ScalarProperty Name="OExSourceOrg" ColumnName="OExSourceOrg" />
+                <ScalarProperty Name="OExSourceID" ColumnName="OExSourceID" />
+                <ScalarProperty Name="OProcessFee" ColumnName="OProcessFee" />
+                <ScalarProperty Name="OProcessFeeAddPct" ColumnName="OProcessFeeAddPct" />
+                <ScalarProperty Name="OTotalTaxPct" ColumnName="OTotalTaxPct" />
+                <ScalarProperty Name="OSHFee" ColumnName="OSHFee" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductImages">
+            <EntityTypeMapping TypeName="FBGMarketModel.ProductImage">
+              <MappingFragment StoreEntitySet="ProductImage">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="FBGMarketModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="BrandCategoryId" ColumnName="BrandCategoryId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="BID" ColumnName="BID" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="SKUCode" ColumnName="SKUCode" />
+                <ScalarProperty Name="UPCCode" ColumnName="UPCCode" />
+                <ScalarProperty Name="PName" ColumnName="PName" />
+                <ScalarProperty Name="PColor" ColumnName="PColor" />
+                <ScalarProperty Name="PSize" ColumnName="PSize" />
+                <ScalarProperty Name="PCategory" ColumnName="PCategory" />
+                <ScalarProperty Name="PSubCategory" ColumnName="PSubCategory" />
+                <ScalarProperty Name="NRFColorCodeID" ColumnName="NRFColorCodeID" />
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="PDescription" ColumnName="PDescription" />
+                <ScalarProperty Name="PSpecs" ColumnName="PSpecs" />
+                <ScalarProperty Name="PCoutryofOrigin" ColumnName="PCoutryofOrigin" />
+                <ScalarProperty Name="PDiscontinued" ColumnName="PDiscontinued" />
+                <ScalarProperty Name="PFOBCost" ColumnName="PFOBCost" />
+                <ScalarProperty Name="PLandedCost" ColumnName="PLandedCost" />
+                <ScalarProperty Name="PWholesalePrice" ColumnName="PWholesalePrice" />
+                <ScalarProperty Name="PMSRPPrice" ColumnName="PMSRPPrice" />
+                <ScalarProperty Name="PPicture" ColumnName="PPicture" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+                <ScalarProperty Name="ProductStatusId" ColumnName="ProductStatusId" />
+                <ScalarProperty Name="VID" ColumnName="VID" />
+                <ScalarProperty Name="ColorCategoryId" ColumnName="ColorCategoryId" />
+                <ScalarProperty Name="ShopifyPicUrl" ColumnName="ShopifyPicUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductsImports">
+            <EntityTypeMapping TypeName="FBGMarketModel.ProductsImport">
+              <MappingFragment StoreEntitySet="ProductsImport">
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Brand_Category" ColumnName="Brand_Category" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BID" ColumnName="BID" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="SKUCode" ColumnName="SKUCode" />
+                <ScalarProperty Name="UPCCode" ColumnName="UPCCode" />
+                <ScalarProperty Name="PName" ColumnName="PName" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="PColor" ColumnName="PColor" />
+                <ScalarProperty Name="PSize" ColumnName="PSize" />
+                <ScalarProperty Name="PCategory" ColumnName="PCategory" />
+                <ScalarProperty Name="PSubCategory" ColumnName="PSubCategory" />
+                <ScalarProperty Name="NRFColorCodeID" ColumnName="NRFColorCodeID" />
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="PDescription" ColumnName="PDescription" />
+                <ScalarProperty Name="PSpecs" ColumnName="PSpecs" />
+                <ScalarProperty Name="PCoutryofOrigin" ColumnName="PCoutryofOrigin" />
+                <ScalarProperty Name="PDiscontinued" ColumnName="PDiscontinued" />
+                <ScalarProperty Name="PFOBCost" ColumnName="PFOBCost" />
+                <ScalarProperty Name="PLandedCost" ColumnName="PLandedCost" />
+                <ScalarProperty Name="PWholesalePrice" ColumnName="PWholesalePrice" />
+                <ScalarProperty Name="PMSRPPrice" ColumnName="PMSRPPrice" />
+                <ScalarProperty Name="PPicture" ColumnName="PPicture" />
+                <ScalarProperty Name="ProductStatusId" ColumnName="ProductStatusId" />
+                <ScalarProperty Name="VID" ColumnName="VID" />
+                <ScalarProperty Name="ColorCategoryId" ColumnName="ColorCategoryId" />
+                <ScalarProperty Name="ShopifyPicUrl" ColumnName="ShopifyPicUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductStatus">
+            <EntityTypeMapping TypeName="FBGMarketModel.ProductStatu">
+              <MappingFragment StoreEntitySet="ProductStatus">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefCategories">
+            <EntityTypeMapping TypeName="FBGMarketModel.RefCategory">
+              <MappingFragment StoreEntitySet="RefCategory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefClientCategories">
+            <EntityTypeMapping TypeName="FBGMarketModel.RefClientCategory">
+              <MappingFragment StoreEntitySet="RefClientCategories">
+                <ScalarProperty Name="CCID" ColumnName="CCID" />
+                <ScalarProperty Name="CCDesc" ColumnName="CCDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefNRFColorCodes">
+            <EntityTypeMapping TypeName="FBGMarketModel.RefNRFColorCode">
+              <MappingFragment StoreEntitySet="RefNRFColorCodes">
+                <ScalarProperty Name="NRFColorCodeID" ColumnName="NRFColorCodeID" />
+                <ScalarProperty Name="NRFColorCode" ColumnName="NRFColorCode" />
+                <ScalarProperty Name="NRFColorName" ColumnName="NRFColorName" />
+                <ScalarProperty Name="ColorCategoryID" ColumnName="ColorCategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefOrderTypes">
+            <EntityTypeMapping TypeName="FBGMarketModel.RefOrderType">
+              <MappingFragment StoreEntitySet="RefOrderType">
+                <ScalarProperty Name="OTID" ColumnName="OTID" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefProductFamilies">
+            <EntityTypeMapping TypeName="FBGMarketModel.RefProductFamily">
+              <MappingFragment StoreEntitySet="RefProductFamily">
+                <ScalarProperty Name="PFID" ColumnName="PFID" />
+                <ScalarProperty Name="PFName" ColumnName="PFName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefSeasons">
+            <EntityTypeMapping TypeName="FBGMarketModel.RefSeason">
+              <MappingFragment StoreEntitySet="RefSeason">
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="Season" ColumnName="Season" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefWarehouses">
+            <EntityTypeMapping TypeName="FBGMarketModel.RefWarehouse">
+              <MappingFragment StoreEntitySet="RefWarehouse">
+                <ScalarProperty Name="WID" ColumnName="WID" />
+                <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sales_Reports">
+            <EntityTypeMapping TypeName="FBGMarketModel.Sales_Report">
+              <MappingFragment StoreEntitySet="Sales Reports">
+                <ScalarProperty Name="Group_By" ColumnName="Group By" />
+                <ScalarProperty Name="Display" ColumnName="Display" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Filter_Row_Source" ColumnName="Filter Row Source" />
+                <ScalarProperty Name="Default" ColumnName="Default" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendors">
+            <EntityTypeMapping TypeName="FBGMarketModel.Vendor">
+              <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="VID" ColumnName="VID" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="VendorAcronym" ColumnName="VendorAcronym" />
+                <ScalarProperty Name="VendorAddress" ColumnName="VendorAddress" />
+                <ScalarProperty Name="VendorCityState" ColumnName="VendorCityState" />
+                <ScalarProperty Name="VendorCountry" ColumnName="VendorCountry" />
+                <ScalarProperty Name="VendorPhone" ColumnName="VendorPhone" />
+                <ScalarProperty Name="VendorEmail" ColumnName="VendorEmail" />
+                <ScalarProperty Name="VendorWebsite" ColumnName="VendorWebsite" />
+                <ScalarProperty Name="VendorContact" ColumnName="VendorContact" />
+                <ScalarProperty Name="VendorLogo" ColumnName="VendorLogo" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderProcessForces">
+            <EntityTypeMapping TypeName="FBGMarketModel.OrderProcessForce">
+              <MappingFragment StoreEntitySet="OrderProcessForce">
+                <ScalarProperty Name="FetchFrom" ColumnName="FetchFrom" />
+                <ScalarProperty Name="FetchTo" ColumnName="FetchTo" />
+                <ScalarProperty Name="Enable" ColumnName="Enable" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="FBGMarketModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

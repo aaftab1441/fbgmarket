@@ -1,0 +1,273 @@
+@using System;
+@using FBG.Market.Web.Identity.Controllers;
+@using FBG.Market.Web.Identity;
+@{
+    FBG.Market.Web.Identity.Utils Utils = new FBG.Market.Web.Identity.Utils();
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        //settings.Theme = "MaterialCompact";
+        settings.Name = "GridView";
+        settings.CallbackRouteValues = new { Controller = "Users", Action = "GridViewNewPartial" };
+
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Users", Action = "GridViewNewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Users", Action = "GridViewNewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Users", Action = "GridViewNewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+
+        settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+
+        //settings.CommandColumn.ShowNewButton = true;
+        //settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
+        settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
+        settings.ControlStyle.BorderBottom.BorderWidth = 2;
+
+        settings.Styles.Row.CssClass = "customRow";
+        //
+        settings.EnablePagingGestures = AutoBoolean.False;
+
+        settings.ControlStyle.CssClass = "grid-view";
+        settings.Width = Unit.Percentage(100);
+
+        settings.Styles.Cell.Wrap = DefaultBoolean.False;
+        settings.Styles.PagerBottomPanel.CssClass = "pager";
+        settings.Styles.FocusedRow.CssClass = "focused";
+
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsBehavior.AllowEllipsisInText = true;
+        settings.SettingsBehavior.AllowDragDrop = false;
+
+        settings.SettingsSearchPanel.CustomEditorName = "searchButtonEdit";
+
+        //settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+        settings.SettingsEditing.EditFormColumnCount = 2;
+
+        settings.SettingsSearchPanel.CustomEditorName = "searchButtonEdit";
+
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.ShowHeaderFilterButton = true;
+
+        settings.SettingsPager.PageSize = 15;
+        settings.SettingsPager.EnableAdaptivity = true;
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+
+        settings.SettingsExport.EnableClientSideExportAPI = true;
+        settings.SettingsExport.ExportSelectedRowsOnly = true;
+
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.MaxWidth = 800;
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Always;
+        settings.SettingsPopup.EditForm.SettingsAdaptivity.VerticalAlign = PopupAdaptiveVerticalAlign.WindowCenter;
+
+        settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+        settings.EditFormLayoutProperties.ColCount = 2;
+        settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+        //
+        //settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        //settings.Settings.VerticalScrollBarMode = ScrollBarMode.Visible;
+        //settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+        //settings.ClientSideEvents.Init = "OnInit";
+        //settings.ClientSideEvents.EndCallback = "OnEndCallback";
+        //
+
+        //
+        //settings.ControlStyle.BorderBottom.BorderColor = System.Drawing.Color.OrangeRed;
+        //settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
+        //settings.ControlStyle.BorderBottom.BorderWidth = 2;
+        settings.Width = Unit.Percentage(100);
+        //settings.Styles.Row.CssClass = "customRow";
+        settings.Styles.Cell.Wrap = DefaultBoolean.False;
+        //settings.Styles.PagerBottomPanel.CssClass = "pager";
+        //settings.Styles.FocusedRow.CssClass = "focused";
+        //
+
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+
+
+        settings.Columns.Add("Id").Visible = false;
+
+        //settings.Columns.Add("Email");
+
+        /*Delete*/
+        if (ViewData["EditErrorOnUpdate"] != null)
+        {
+            settings.SetFooterRowTemplateContent(c =>
+            {
+                Html.ViewContext.Writer.Write(ViewData["EditErrorOnUpdate"]);
+            });
+        }
+
+        settings.BeforeGetCallbackResult = (s, e) =>
+        {
+            if (ViewData["EditErrorOnUpdate"] != null)
+            {
+                MVCxGridView gridView = (MVCxGridView)s;
+                gridView.Settings.ShowFooter = true;
+            }
+        };
+        /*Delete*/
+        settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(200);
+
+            col.FieldName = "Email";
+            col.Caption = "Email";
+
+        });
+
+        //settings.Columns.Add("UserName").Caption = "User Name";
+        settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+
+            col.FieldName = "UserName";
+            col.Caption = "User Name";
+
+        });
+        //settings.Columns.Add("Password").Caption = "Password";
+        settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            var prop = (col.PropertiesEdit as TextBoxProperties);
+            prop.Password = true;
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+
+            col.FieldName = "Password";
+            col.Caption = "Password";
+
+        });
+        //settings.Columns.Add("ConfirmedPassword").Caption = "ConfirmedPassword";
+        settings.Columns.Add(col =>
+        {
+            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            col.Width = System.Web.UI.WebControls.Unit.Pixel(150);
+            var prop = (col.PropertiesEdit as TextBoxProperties);
+            prop.Password = true;
+
+            col.FieldName = "ConfirmedPassword";
+            col.Caption = "Confirmed Password";
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.Width = System.Web.UI.WebControls.Unit.Pixel(150);
+
+            c.FieldName = "VID";
+            c.Caption = "Vendor";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "VendorName";
+                p.ValueField = "VendorId";
+                p.ValueType = typeof(int);
+                p.ClientSideEvents.SelectedIndexChanged = "OnSelectedVendorChanged";
+                p.DataSource = Utils.GetVendors();
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.Width = System.Web.UI.WebControls.Unit.Pixel(200);
+
+            c.FieldName = "RoleId";
+            c.Caption = "Role";
+            c.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "RoleName";
+                p.ValueField = "RoleId";
+
+                p.CallbackRouteValues = new { Controller = "Users", Action = "GetRoles" };
+                p.ClientSideEvents.BeginCallback = "RoleComboBox_BeginCallback";
+                p.ClientSideEvents.EndCallback = "RoleComboBox_EndCallback";
+                //p.ValueType = typeof(int);
+                p.DataSource = Utils.GetAllRoles();
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+
+            c.FieldName = "IsEnabled";
+            c.Caption = "Status";
+            c.EditorProperties().CheckBox(p =>
+            {
+                p.ValueType = typeof(bool);
+                p.ValueUnchecked = 0;
+                p.ValueChecked = 1;
+
+            });
+        });
+
+        settings.CellEditorInitialize = (sender, e) =>
+        {
+            MVCxGridView gridL = sender as MVCxGridView;
+            ASPxEdit editor = (ASPxEdit)e.Editor;
+            editor.ValidationSettings.Display = Display.Dynamic;
+
+            if (gridL.IsEditing && e.Column.FieldName == "RoleId")
+            {
+                MVCxComboBox comboboxCity = e.Editor as MVCxComboBox;
+                var currentVendor = gridL.GetRowValues(e.VisibleIndex, "VID");
+                if (ViewData["EditError"] != null && ViewData["lastSelectedVendor"] != null)
+                {
+                    comboboxCity.DataSource = Utils.GetRoles(Convert.ToInt32(ViewData["lastSelectedVendor"]));
+                    comboboxCity.DataBindItems();
+                }
+                else
+                {
+                    if (e.KeyValue != DBNull.Value && e.KeyValue != null && currentVendor != null && currentVendor != DBNull.Value)
+                    {
+                        comboboxCity.DataSource = Utils.GetRoles(Convert.ToInt32(currentVendor));
+                        comboboxCity.DataBindItems();
+                    }
+                    else
+                    {
+                        comboboxCity.DataSource = null;
+                        comboboxCity.Items.Clear();
+                    }
+                }
+            }
+        };
+
+        settings.CustomJSProperties = (s, e) =>
+        {
+            if (ViewData[UsersController.EditResultKey] != null)
+            {
+                e.Properties["cpMessage"] = ViewData[UsersController.EditResultKey].ToString();
+            }
+            if (ViewData[UsersController.EditErrorKey] != null)
+            {
+                e.Properties["cpError"] = ViewData[UsersController.EditErrorKey].ToString();
+            }
+        };
+
+        settings.ClientSideEvents.EndCallback = "OnEndCallback";
+
+    }).SetEditErrorText((string)ViewData[UsersController.EditErrorKey]).Bind(Model).GetHtml();
+}

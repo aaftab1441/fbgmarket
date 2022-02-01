@@ -1,0 +1,152 @@
+@model IEnumerable<FBG.Market.Web.Identity.Models.UserRoleViewModel>
+
+@{
+    ViewBag.Title = "Users With Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeadResources{
+    @Html.Partial("GridViewHeadResources")
+
+}
+@section Head {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/GridView.css")" />
+    <link href="~/Content/dx.common.css" rel="stylesheet" />
+    <link href="~/Content/dx.light.css" rel="stylesheet" />
+    <script type="text/javascript" src="@Url.Content("~/Content/GridView.js")"></script>
+    <script src="~/Scripts/dx.all.js"></script>
+    <script type="text/javascript">
+        var isResetRequired = false;
+
+        function OnEndCallback(s, e) {
+
+            if (s.cpMessage) {
+
+                DevExpress.ui.notify(s.cpMessage, "success", 1000);
+                delete s.cpMessage;
+            }
+            if (s.cpError) {
+
+                DevExpress.ui.notify(s.cpError, "error", 1000, closeOnClick = true);
+                delete s.cpError;
+            }
+        }
+        function OnBeginCallback(s, e) {
+            if (e.command == "DELETEROW") {
+                var result = DevExpress.ui.dialog.confirm("<i>Are you sure?</i>", "Confirm changes");
+                result.done(function (dialogResult) {
+                    if (!dialogResult) {
+                        e.customArgs["cancelCallback"] = true;
+                    }
+                });
+            }
+        }
+
+    </script>
+
+    <style type="text/css">
+        .customRow .dxgv {
+            border-bottom: 1px Solid #d1d1d1 !important;
+        }
+
+        .custom-anchor {
+            padding-left: 0px !important;
+        }
+
+        .dxeBinImgPreviewContainerSys {
+            width: 200px !important;
+            height: 200px !important;
+        }
+
+        .dx-toast-content {
+            min-width: 300px;
+            max-width: 400px;
+        }
+    </style>
+}
+
+@section PageToolbar {
+    @Html.DevExpress().Menu(menuSettings =>
+    {
+    menuSettings.Name = "pageToolbar";
+
+    menuSettings.ItemAutoWidth = false;
+    menuSettings.AllowSelectItem = false;
+    menuSettings.ApplyItemStyleToTemplates = true;
+
+    menuSettings.SettingsAdaptivity.Enabled = true;
+    menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+    menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+    menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+    menuSettings.Width = Unit.Percentage(100);
+    menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+    menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+    menuSettings.Styles.Item.CssClass = "item";
+    menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+    menuSettings.Images.Item.Width = Unit.Pixel(16);
+    menuSettings.Images.Item.Height = Unit.Pixel(16);
+
+    menuSettings.Items.Add(item =>
+        {
+            item.Enabled = false;
+        item.SetTemplateContent(template => ViewContext.Writer.Write("<h1>Users</h1>"));
+    });
+    menuSettings.Items.Add(item =>
+        {
+        item.Name = "ToggleFilterPanel";
+        item.Text = "";
+        item.GroupName = "Filter";
+        item.Alignment = MenuItemAlignment.Right;
+        item.AdaptivePriority = 1;
+        item.Image.Url = "~/Content/Images/search.svg";
+        item.Image.UrlChecked = "~/Content/Images/search-selected.svg";
+    });
+    menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+
+    @Html.DevExpress().Panel(panelSettings =>
+    {
+        panelSettings.Name = "filterPanel";
+    panelSettings.Collapsible = true;
+    panelSettings.ControlStyle.CssClass = "filter-panel";
+
+    panelSettings.SettingsCollapsing.ExpandEffect = PanelExpandEffect.Slide;
+    panelSettings.SettingsCollapsing.AnimationType = AnimationType.None;
+    panelSettings.SettingsCollapsing.ExpandButton.Visible = false;
+
+    panelSettings.SetContent(() =>
+        {
+            Html.DevExpress().ButtonEdit(buttonEditSettings =>
+            {
+            buttonEditSettings.Name = "searchButtonEdit";
+            buttonEditSettings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.Always;
+            buttonEditSettings.Properties.Caption = "Search";
+            buttonEditSettings.Width = Unit.Percentage(100);
+        }).GetHtml();
+    });
+
+    panelSettings.ClientSideEvents.Expanded = "onFilterPanelExpanded";
+    panelSettings.ClientSideEvents.Collapsed = "adjustPageControls";
+}).GetHtml()
+}
+
+@section LeftPanelContent {
+    @Html.Partial("~/Views/Shared/LeftPanelPartial.cshtml")
+}
+
+
+@section RightPanelContent {
+    <div class="settings-content">
+        <h2>Settings</h2>
+        <p>Place your content here</p>
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Action("ClientsGridViewPartial", "FBGClients")
+}
+
+

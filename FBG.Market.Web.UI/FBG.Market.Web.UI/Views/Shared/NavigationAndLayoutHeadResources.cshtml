@@ -1,0 +1,13 @@
+﻿@Html.DevExpress().GetStyleSheets(
+    new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, ExtensionType = ExtensionType.Menu },
+    new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, ExtensionType = ExtensionType.NavBar },
+    new StyleSheet { ExtensionSuite = ExtensionSuite.HtmlEditor, ExtensionType = ExtensionType.HtmlEditor },
+    new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, ExtensionType = ExtensionType.GridView }
+)
+@Html.DevExpress().GetScripts(
+    new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout,ExtensionType = ExtensionType.Menu },
+    new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout, ExtensionType = ExtensionType.NavBar },
+
+    new Script { ExtensionSuite = ExtensionSuite.GridView, ExtensionType = ExtensionType.GridView},
+    new Script { ExtensionSuite = ExtensionSuite.HtmlEditor }
+)

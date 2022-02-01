@@ -1,0 +1,177 @@
+@using System;
+@{
+    var grid = Html.DevExpress().GridView(gridViewSettings =>
+    {
+        gridViewSettings.ControlStyle.CssClass = "grid-view";
+        gridViewSettings.Styles.Row.CssClass = "customRow";
+        gridViewSettings.Width = Unit.Percentage(95);
+        gridViewSettings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
+        gridViewSettings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
+        gridViewSettings.ControlStyle.BorderBottom.BorderWidth = 2;
+
+
+
+        gridViewSettings.EnablePagingGestures = AutoBoolean.False;
+
+        gridViewSettings.Styles.Cell.Wrap = DefaultBoolean.False;
+
+        gridViewSettings.Styles.PagerBottomPanel.CssClass = "pager";
+        gridViewSettings.Styles.FocusedRow.CssClass = "focused";
+
+        gridViewSettings.SettingsBehavior.AllowSelectByRowClick = true;
+        gridViewSettings.SettingsBehavior.AllowEllipsisInText = false;
+        gridViewSettings.SettingsBehavior.AllowDragDrop = false;
+
+        gridViewSettings.SettingsSearchPanel.CustomEditorName = "searchButtonEdit";
+
+        gridViewSettings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+        gridViewSettings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        gridViewSettings.Settings.ShowHeaderFilterButton = true;
+
+        gridViewSettings.SettingsPager.PageSize = 15;
+        gridViewSettings.SettingsPager.EnableAdaptivity = true;
+        gridViewSettings.SettingsPager.PageSizeItemSettings.Visible = true;
+
+        gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+        gridViewSettings.EditFormLayoutProperties.ColCount = 3;
+
+        gridViewSettings.KeyFieldName = "BID";
+
+        gridViewSettings.Name = "detailGrid_" + ViewData["VID"];
+        gridViewSettings.SettingsDetail.MasterGridName = "vendorGrid";
+
+        gridViewSettings.CallbackRouteValues = new { Controller = "VendorsBrands", Action = "Brands", VID = ViewData["VID"] };
+        gridViewSettings.SettingsEditing.AddNewRowRouteValues = new { Controller = "VendorsBrands", Action = "EditBrand", VID = ViewData["VID"] };
+        gridViewSettings.SettingsEditing.UpdateRowRouteValues = new { Controller = "VendorsBrands", Action = "EditBrand", VID = ViewData["VID"] };
+        gridViewSettings.SettingsEditing.DeleteRowRouteValues = new { Controller = "VendorsBrands", Action = "DeleteBrand", VID = ViewData["VID"] };
+
+        gridViewSettings.Columns.Add("BID").Visible=false;
+
+        gridViewSettings.CommandColumn.Visible = true;
+        gridViewSettings.CommandColumn.ShowEditButton = true;
+        gridViewSettings.CommandColumn.ShowNewButtonInHeader = true;
+        //gridViewSettings.CommandColumn.ShowDeleteButton = true;
+
+        /*gridViewSettings.Columns.Add(c =>
+        {
+            c.FieldName = "BrandLogo";
+            c.EditorProperties().BinaryImage(p =>
+            {
+                p.ImageHeight = 70;
+                p.ImageWidth = 70;
+                p.EnableServerResize = true;
+                p.ImageSizeMode = ImageSizeMode.FitProportional;
+                p.CallbackRouteValues = new { Action = "BinaryImageColumnPhotoUpdate", Controller = "Brand" };
+                p.EditingSettings.Enabled = true;
+                p.EditingSettings.UploadSettings.UploadValidationSettings.MaxFileSize = 4194304;
+            });
+        });*/
+        gridViewSettings.Columns.Add(column =>
+        {
+            column.FieldName = "BrandName";
+            column.Caption = "Name";
+            column.MinWidth = 100;
+            column.MaxWidth = 200;
+            column.Width = Unit.Percentage(20);
+        });
+
+        gridViewSettings.Columns.Add(column =>
+        {
+            column.FieldName = "BrandCategory";
+            column.Caption = "Category";
+            column.MinWidth = 100;
+            column.MaxWidth = 200;
+            column.Width = Unit.Percentage(20);
+            column.EditorProperties().ComboBox(p =>
+            {
+                p.TextField = "CategoryName";
+                p.ValueField = "CategoryID";
+                p.ValueType = typeof(int);
+                p.DataSource = FBG.Market.Web.Identity.Utils.GetCategories();
+            });
+        });
+
+
+        gridViewSettings.Columns.Add(column =>
+        {
+            column.FieldName = "BrandSubCategory";
+            column.Caption = "Sub Category";
+            column.MinWidth = 100;
+            column.MaxWidth = 200;
+            column.Width = Unit.Percentage(20);
+        });
+        gridViewSettings.Columns.Add(column =>
+        {
+            column.FieldName = "BrandWebSite";
+            column.Caption = "Website";
+            column.MinWidth = 100;
+            column.MaxWidth = 200;
+            column.Width = Unit.Percentage(20);
+        });
+        gridViewSettings.Columns.Add(column =>
+        {
+            column.FieldName = "BrandNotes";
+            MVCxColumnTextBoxProperties editorProperties = column.PropertiesEdit as MVCxColumnTextBoxProperties;
+            editorProperties.ValidationSettings.RequiredField.IsRequired = true;
+            column.ColumnType = MVCxGridViewColumnType.Memo;
+            editorProperties.ValidationSettings.RequiredField.ErrorText = "Notes are Required";
+            column.Caption = "Notes";
+            column.MinWidth = 230;
+            column.MaxWidth = 400;
+            column.Width = Unit.Percentage(27);
+        });
+
+        gridViewSettings.EditFormLayoutProperties.ColCount = 2;
+        gridViewSettings.CommandColumn.AdaptivePriority = 3;
+        gridViewSettings.CommandColumn.MinWidth = 100;
+        gridViewSettings.CommandColumn.MaxWidth = 160;
+        gridViewSettings.CommandColumn.Width = Unit.Percentage(18);
+
+        /*gridViewSettings.EditFormLayoutProperties.Items.Add(itemSettings =>
+        {
+            itemSettings.ColumnName = "Photo";
+            itemSettings.Width = Unit.Pixel(170);
+            itemSettings.RowSpan = 4;
+            itemSettings.ShowCaption = DefaultBoolean.False;
+        });*/
+
+        gridViewSettings.EditFormLayoutProperties.Items.Add(itemSettings =>
+        {
+            itemSettings.ColumnName = "BrandName";
+        });
+
+        gridViewSettings.EditFormLayoutProperties.Items.Add(itemSettings =>
+        {
+            itemSettings.ColumnName = "BrandCategory";
+        });
+
+        gridViewSettings.EditFormLayoutProperties.Items.Add(itemSettings =>
+        {
+            itemSettings.ColumnName = "BrandSubCategory";
+        });
+
+        gridViewSettings.EditFormLayoutProperties.Items.Add(itemSettings =>
+        {
+            itemSettings.ColumnName = "BrandWebSite";
+        });
+        gridViewSettings.EditFormLayoutProperties.Items.Add(itemSettings =>
+        {
+            itemSettings.ColumnName = "BrandNotes";
+        });
+
+        gridViewSettings.EditFormLayoutProperties.Items.AddCommandItem(i =>
+        {
+            i.ShowUpdateButton = true;
+            i.ShowCancelButton = true;
+            i.ColumnSpan = 2;
+            i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+        });
+
+        gridViewSettings.DataBinding = (sender, e) =>
+        {
+            ((MVCxGridView)sender).ForceDataRowType(typeof(FBG.Market.Web.Identity.Models.BrandViewModel));
+        };
+    });
+}
+@grid.Bind(Model).GetHtml()

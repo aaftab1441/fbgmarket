@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Nodes>
+  <TreeViewNode Text="Products" NavigateUrl="#" />
+  <TreeViewNode Text="Brands" NavigateUrl="#" />
+  <TreeViewNode Text="Vendor" NavigateUrl="#" />
+  <TreeViewNode Text="Entitlements" NavigateUrl="#" />
+  <TreeViewNode Text="Users" NavigateUrl="#" />
+</Nodes>

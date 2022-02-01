@@ -1,0 +1,156 @@
+@using FBG.Market.Web.Identity.Controllers;
+
+@{
+    var grid = Html.DevExpress().GridView(gridViewSettings =>
+    {
+        gridViewSettings.Name = "vendorGrid";
+        gridViewSettings.ControlStyle.CssClass = "grid-view";
+        gridViewSettings.Styles.Row.CssClass = "customRow";
+        gridViewSettings.Width = Unit.Percentage(100);
+        gridViewSettings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
+        gridViewSettings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
+        gridViewSettings.ControlStyle.BorderBottom.BorderWidth = 2;
+
+        gridViewSettings.EnablePagingGestures = AutoBoolean.False;
+
+        gridViewSettings.Styles.Cell.Wrap = DefaultBoolean.False;
+
+        gridViewSettings.Styles.PagerBottomPanel.CssClass = "pager";
+        gridViewSettings.Styles.FocusedRow.CssClass = "focused";
+
+        gridViewSettings.SettingsBehavior.AllowSelectByRowClick = true;
+        gridViewSettings.SettingsBehavior.AllowEllipsisInText = false;
+        gridViewSettings.SettingsBehavior.AllowDragDrop = false;
+
+        gridViewSettings.SettingsSearchPanel.CustomEditorName = "searchButtonEdit";
+
+        gridViewSettings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+        gridViewSettings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        gridViewSettings.Settings.ShowHeaderFilterButton = true;
+
+        gridViewSettings.SettingsPager.PageSize = 15;
+        gridViewSettings.SettingsPager.EnableAdaptivity = true;
+        gridViewSettings.SettingsPager.PageSizeItemSettings.Visible = true;
+
+        gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+        gridViewSettings.EditFormLayoutProperties.ColCount = 3;
+
+        gridViewSettings.KeyFieldName = "VID";
+
+        gridViewSettings.CommandColumn.Visible = true;
+        gridViewSettings.CommandColumn.ShowEditButton = true;
+        gridViewSettings.CommandColumn.ShowNewButtonInHeader = true;
+        gridViewSettings.CommandColumn.ShowDeleteButton = true;
+
+        gridViewSettings.CallbackRouteValues = new { Controller = "Vendor", Action = "Vendors" };
+
+        gridViewSettings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Vendor", Action = "EditVendor" };
+        gridViewSettings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Vendor", Action = "EditVendor" };
+        gridViewSettings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Vendor", Action = "DeleteVendor", VID = ViewData["VID"] };
+        gridViewSettings.SettingsBehavior.ConfirmDelete = true;
+        gridViewSettings.SettingsText.ConfirmDelete = "Are you sure you want delete the vendor?";
+
+        gridViewSettings.SettingsEditing.Mode = GridViewEditingMode.Inline;
+
+        gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.FieldName = "VendorName";
+            columnSettings.Caption = "Name";
+        });
+
+        gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.FieldName = "VendorAcronym";
+            columnSettings.Caption = "Acronym";
+        });
+
+        gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.FieldName = "VendorEmail";
+            columnSettings.Caption = "Email";
+            columnSettings.Width = Unit.Pixel(200);
+        });
+        gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.FieldName = "VendorWebsite";
+            columnSettings.Caption = "Website";
+            columnSettings.Width = Unit.Pixel(200);
+        });
+        gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.FieldName = "VendorPhone";
+            columnSettings.Caption = "Phone";
+            columnSettings.EditorProperties().TextBox(p =>
+            {
+                p.MaskSettings.Mask = "(999) 000-0000";
+                p.ValidationSettings.Display = Display.Dynamic;
+            });
+        });
+
+        gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.FieldName = "VendorCountry";
+            columnSettings.Caption = "Country";
+        });
+        gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.FieldName = "VendorCityState";
+            columnSettings.Caption = "City/State";
+        });
+        gridViewSettings.Columns.Add(columnSettings =>
+        {
+            columnSettings.FieldName = "VendorAddress";
+            columnSettings.Caption = "Address";
+        });
+
+        gridViewSettings.EditFormLayoutProperties.Items.Add("VendorName");
+        gridViewSettings.EditFormLayoutProperties.Items.Add("VendorAcronym");
+        gridViewSettings.EditFormLayoutProperties.Items.Add("VendorEmail");
+        gridViewSettings.EditFormLayoutProperties.Items.Add("VendorPhone");
+        gridViewSettings.EditFormLayoutProperties.Items.Add("VendorWebsite");
+        gridViewSettings.EditFormLayoutProperties.Items.Add("VendorCountry");
+        gridViewSettings.EditFormLayoutProperties.Items.Add("VendorCityState");
+        gridViewSettings.EditFormLayoutProperties.Items.Add("VendorAddress");
+        gridViewSettings.EditFormLayoutProperties.Items.AddCommandItem(i =>
+        {
+            i.ShowUpdateButton = true;
+            i.ShowCancelButton = true;
+            i.ColumnSpan = 3;
+            i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+        });
+
+
+        gridViewSettings.SettingsDetail.AllowOnlyOneMasterRowExpanded = false;
+        gridViewSettings.SettingsDetail.ShowDetailRow = true;
+
+        gridViewSettings.SetDetailRowTemplateContent(c =>
+        {
+            ViewContext.Writer.Write(
+                "<b>" + "Brands: " + "</b>" + "<br />" + "<br />"
+            );
+            Html.RenderAction("Index", "Brand", new { VID = DataBinder.Eval(c.DataItem, "VID") });
+        });
+        gridViewSettings.CustomJSProperties = (s, e) =>
+        {
+            e.Properties.Add("cpResult", ViewBag.Result);
+        };
+
+        gridViewSettings.CustomJSProperties = (s, e) =>
+        {
+            if (ViewData[VendorController.EditResultKey] != null)
+            {
+                e.Properties["cpMessage"] = ViewData[VendorController.EditResultKey].ToString();
+            }
+            if (ViewData[VendorController.EditErrorKey] != null)
+            {
+                e.Properties["cpError"] = ViewData[VendorController.EditErrorKey].ToString();
+            }
+        };
+
+        gridViewSettings.ClientSideEvents.EndCallback = "OnEndCallback";
+
+    }).SetEditErrorText((string)ViewData[VendorController.EditErrorKey]).Bind(Model).GetHtml();
+}
+
+

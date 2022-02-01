@@ -1,0 +1,509 @@
+﻿@model List<FBG.Market.Web.Identity.Models.ProductsImport>
+@{
+    ViewBag.Title = "Import Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeadResources{
+    @Html.Partial("ImportGridViewHeadResources")
+
+}
+@section Head {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/GridView.css")" />
+    <link href="~/Content/dx.common.css" rel="stylesheet" />
+    <link href="~/Content/dx.light.css" rel="stylesheet" />
+    <script type="text/javascript" src="@Url.Content("~/Content/productGridView.js")"></script>
+    <script src="~/Scripts/dx.all.js"></script>
+    <script type="text/javascript">
+        function OnContextMenuItemClick(s, e) {
+            console.log(e.item.name);
+            if (e.item.name == "GroupProducts") {
+                //if (confirm('Do you really want to group the product(s)?'))
+                {
+                    if (selectedIDs != undefined)
+                        GroupProducts();
+                }
+
+            }
+            if (e.item.name == "PublishProducts") {
+                if (selectedIDs == undefined || selectedIDs == "") {
+                    alert("Please select product(s) to publish")
+                    return;
+                }
+                if (confirm('Do you really want to publish the record(s)?')) {
+                    if (selectedIDs != undefined)
+                        OnSubmitClick();
+                }
+
+            } else if (e.item.name == "DeleteProducts") {
+                if (selectedIDs == undefined || selectedIDs == "") {
+                    alert("Please select product(s) to delete")
+                    return;
+                }
+                //alert("Do you really want to delete the record");
+                if (confirm('Do you really want to delete the record(s)?'))
+                    OnDeleteClick();
+            }
+        }
+        var oldKey = null;
+        function OnMouseMove(element, event, key) {
+            //alert('OnMouseMove')
+            if (typeof productsimport.cpTooltipList[key] != "undefined" && oldKey != key) {
+                oldKey = key;
+                PopupControl.ShowAtPos(event.clientX, event.clientY);
+                //ToolTipLabel.SetText("ImportID " + key + "<br/>" + productsimport.cpTooltipList[key]);
+                ToolTipLabel.SetText(productsimport.cpTooltipList[key]);
+            }
+        }
+        function GroupProducts(s, e) {
+            console.log('GroupProducts');
+            console.log("GroupProducts: " + selectedIDs);
+            //Write all selected keys to hidden input. Pass them on post action.
+            $("#selectedIDsHFPublish").val(selectedIDs);
+            const data = { selectedIDsHFToGroup: selectedIDs };
+            if (confirm('Do you really want to group the record(s)?')) {
+
+                fetch('/Import/GroupProducts', {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        productsimport.Refresh();
+                        alert(data.message);
+
+                    })
+                    .catch((error) => {
+                        productsimport.Refresh();
+                        console.error('Error:', error);
+
+                    });
+            }
+            else {
+                //alert('Else called');
+                //e.preventDefault();
+            }
+        }
+        // Required for speed-up of call backs (http://www.devexpress.com/Support/Center/Question/Details/Q569354)
+        function Grid_SelectionChanged(s, e) {
+
+            if (e.isChangedOnServer) return;
+
+            var key = s.GetRowKey(e.visibleIndex);
+            if (e.isSelected)
+                s.cpSelectedKeys.push(key);
+            else
+                s.cpSelectedKeys = RemoveElementFromArray(s.cpSelectedKeys, key);
+
+            // do custom action with the s.cpSelectedKeys
+
+            selectedIDs = "";
+            for (var index = 0; index < s.cpSelectedKeys.length; index++) {
+                selectedIDs += s.cpSelectedKeys[index] + ",";
+            }
+            if (selectedIDs.length > 0) {
+                selectedIDs = selectedIDs.substring(0, selectedIDs.length - 1);
+            }
+        }
+
+        // Required for speed-up of call backs (http://www.devexpress.com/Support/Center/Question/Details/Q569354)
+        function RemoveElementFromArray(array, element) {
+            var index = array.indexOf(element);
+            if (index < 0) return array;
+            array[index] = null;
+            var result = [];
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] === null)
+                    continue;
+                result.push(array[i]);
+            }
+            return result;
+        }
+        var selectedIDs;
+        function OnBeginCallback(s, e) {
+            console.log("OnBeginCallback");
+            //Pass all selected keys to GridView callback action
+            e.customArgs["selectedIDs"] = selectedIDs;
+        }
+        function OnSelectionChanged(s, e) {
+
+            s.GetSelectedFieldValues("ID", GetSelectedFieldValuesCallback);
+        }
+        function GetSelectedFieldValuesCallback(values) {
+            //Capture all selected keys
+            selectedIDs = values.join(',');
+            console.log("GetSelectedFieldValuesCallback: " + selectedIDs);
+
+        }
+        function OnClick(s, e) {
+            //Show all selected keys on client side
+            alert(selectedIDs);
+        }
+        function OnSubmitClick(s, e) {
+            console.log('OnSubmitClick');
+            console.log("OnSubmitClick: " + selectedIDs);
+            //Write all selected keys to hidden input. Pass them on post action.
+            $("#selectedIDsHFPublish").val(selectedIDs);
+            //document.getElementById("publishForm").submit();
+            //e.preventDefault();
+            if (selectedIDs == undefined || selectedIDs == "") {
+                alert("Please select product(s) to publish");
+                return;
+            }
+            const data = { selectedIDsHFPublish: selectedIDs };
+            if (confirm('Do you really want to publish the record(s)?')) {
+
+                fetch('/Import/Publish', {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        productsimport.Refresh();
+                        alert(data.message);
+
+                    })
+                    .catch((error) => {
+                        productsimport.Refresh();
+                        console.error('Error:', error);
+
+                    });
+            }
+            else {
+                //alert('Else called');
+                //e.preventDefault();
+            }
+        }
+        function OnExportClick(s, e) {
+            console.log("OnExportClick: " + selectedIDs);
+            //Write all selected keys to hidden input. Pass them on post action.
+            $("#selectedIDsHF").val(selectedIDs);
+            //if (confirm('Do you really want to export the record(s
+            if (selectedIDs == undefined || selectedIDs == "") {
+                alert("Please select product(s) to export");
+                return;
+            }
+            else {
+                document.getElementById("exportForm").submit();
+            }
+        }
+        function OnDeleteClick(s, e) {
+            console.log('OnDeleteClick');
+            console.log("OnDeleteClick: " + selectedIDs);
+            console.log("OnDeleteClick: " + selectedIDs);
+            //Write all selected keys to hidden input. Pass them on post action.
+            $("#selectedIDsHF").val(selectedIDs);
+            if (selectedIDs == undefined || selectedIDs == "") {
+                alert("Please select product(s) to delete");
+                return;
+            }
+            else if (confirm('Do you really want to delete the product(s)?')) {
+                document.getElementById("deleteForm").submit();
+            }
+            else {
+                //alert('Else called');
+                //e.preventDefault();
+            }
+
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/GridView.css")" />
+    <script type="text/javascript" src="@Url.Content("~/Content/productGridView.js")"></script>
+    <style type="text/css">
+        #UploadControlFile_Upload > a {
+            display: inline-block;
+            outline: none;
+            cursor: pointer;
+            border: solid 1px #da7c0c;
+            color: white;
+            background-color: #337ab7;
+            padding: 1px;
+            font: 10px 'Segoe UI', Helvetica, 'Droid Sans', Tahoma, Geneva, sans-serif;
+            text-align: center;
+            text-decoration: none;
+            font: 10px/100% Arial, Helvetica, sans-serif;
+            padding: .5em 2em .55em;
+            text-shadow: 0 1px 1px rgba(0,0,0,.3);
+            -webkit-border-radius: .5em;
+            -moz-border-radius: .5em;
+            box-shadow: 0 1px 2px rgba(0,0,0,.2);
+        }
+
+        my-css {
+            background-color: lightyellow;
+            font-weight: bold;
+        }
+
+        .my-css.my-focused-row {
+            background-color: #5066ac;
+        }
+
+        .dxhe-iframe-wrapper {
+            height: 500px;
+        }
+
+        .customRow .dxgv {
+            border-bottom: 1px Solid #d1d1d1 !important;
+        }
+
+        .custom-anchor {
+            padding-left: 0px !important;
+        }
+
+        .dxeBinImgPreviewContainerSys {
+            width: 200px !important;
+            height: 200px !important;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+        }
+
+        .float-container {
+            border: 3px solid #fff;
+            padding: 20px;
+        }
+
+        .float-child {
+            width: 50%;
+            float: left;
+            padding: 20px;
+            border: 2px solid red;
+        }
+
+            .float-child.imageZoomNavigator {
+                margin-right: 20px;
+            }
+    </style>
+    <script>
+        $(document).ready(function () {
+            debugger
+            var val = -1;
+            $('#dynamicContentContainer').empty();
+            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Product")?brandId=' + val);
+            console.log("brandlistcombo.GetValue(): " + val);
+        });
+        function selectBox_valueChanged(data) {
+            console.log("brandlistcombo data: " + data);
+            $('#dynamicContentContainer').empty();
+            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Product")?brandId=' + data);
+        }
+        function SelectedIndexChanged() {
+           // var val = brandlistcombo.GetValue();
+            var val = -1;
+            console.log("brandlistcombo.GetValue(): " + val);
+            $('#dynamicContentContainer').empty();
+            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Product")?brandId=' + val);
+        }
+    </script>
+}
+
+@section PageToolbar {
+    @Html.DevExpress().Menu(menuSettings =>
+{
+    menuSettings.Name = "pageToolbar";
+
+    menuSettings.ItemAutoWidth = false;
+    menuSettings.AllowSelectItem = false;
+    menuSettings.ApplyItemStyleToTemplates = true;
+
+    menuSettings.SettingsAdaptivity.Enabled = true;
+    menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+    menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+    menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+    menuSettings.Width = Unit.Percentage(100);
+    menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+    menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+    menuSettings.Styles.Item.CssClass = "item";
+    menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+    menuSettings.Images.Item.Width = Unit.Pixel(16);
+    menuSettings.Images.Item.Height = Unit.Pixel(16);
+
+    menuSettings.Items.Add(item =>
+    {
+        item.Enabled = false;
+        item.SetTemplateContent(template => ViewContext.Writer.Write("<h1>Import Products</h1>"));
+    });
+
+    menuSettings.Items.Add(item =>
+    {
+        item.Name = "ToggleFilterPanel";
+        item.Text = "";
+        item.GroupName = "Filter";
+        item.Alignment = MenuItemAlignment.Right;
+        item.AdaptivePriority = 1;
+        item.Image.Url = "~/Content/Images/search.svg";
+        item.Image.UrlChecked = "~/Content/Images/search-selected.svg";
+    });
+    menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+
+    @Html.DevExpress().Panel(panelSettings =>
+    {
+        panelSettings.Name = "filterPanel";
+        panelSettings.Collapsible = true;
+        panelSettings.ControlStyle.CssClass = "filter-panel";
+        panelSettings.SettingsCollapsing.ExpandEffect = PanelExpandEffect.Slide;
+        panelSettings.SettingsCollapsing.AnimationType = AnimationType.None;
+        panelSettings.SettingsCollapsing.ExpandButton.Visible = false;
+        panelSettings.SetContent(() =>
+        {
+             Html.DevExpress().ButtonEdit(buttonEditSettings =>
+                {
+                    buttonEditSettings.Name = "searchButtonEdit";
+                    buttonEditSettings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.Always;
+                    buttonEditSettings.Properties.Caption = "Search";
+                    buttonEditSettings.Width = Unit.Percentage(100);
+                }).GetHtml();
+        });
+        panelSettings.ClientSideEvents.Expanded = "onFilterPanelExpanded";
+        panelSettings.ClientSideEvents.Collapsed = "adjustPageControls";
+}).GetHtml()
+}
+
+@section LeftPanelContent {
+    @Html.Partial("~/Views/Shared/LeftPanelPartial.cshtml")
+}
+
+
+@section RightPanelContent {
+    <div class="settings-content">
+        <h2>Settings</h2>
+    </div>
+}
+<div style="
+     margin-left: 2px;
+     padding-bottom: 10px;
+     padding-top: 50px;
+     ">
+    @using (Html.BeginForm("UploadControlUpload", "Import", FormMethod.Post))
+    {
+        @Html.DevExpress().UploadControl(settings =>
+   {
+       settings.Name = "UploadControlFile";
+       settings.Width = System.Web.UI.WebControls.Unit.Percentage(60);
+       settings.CallbackRouteValues = new { Controller = "Import", Action = "UploadControlUpload" };
+       settings.ShowUploadButton = true;
+       settings.ShowProgressPanel = true;
+       settings.NullText = "Browse product excel file (XLSX)...";
+       settings.PreRender = (sender, e) =>
+       {
+           ASPxUploadControl control = (ASPxUploadControl)sender;
+           control.BrowseButton.Text = "Import File";
+       };
+       settings.ClientSideEvents.FileUploadComplete = "function(s, e) { productsimport.PerformCallback({ path: e.callbackData}); }";
+   }).GetHtml()}
+</div>
+
+@*@Html.DevExpress().Button(settings =>
+    {
+      settings.Name = "btn";
+      settings.Text = "Publish Products";
+      settings.ClientSideEvents.Click = "OnClick";
+    }).GetHtml()*@
+@Html.DevExpress().Button(settings =>
+{
+    settings.Name = "NewButton";
+    settings.Style.Add("float", "right");
+    settings.Style.Add("margin-right", "20px");
+    //settings.Style.Add("margin-left", "20px");
+    settings.UseSubmitBehavior = false;
+    settings.Text = "New Product";
+    settings.RouteValues = new { Controller = "Product", Action = "Add", Id = "-1" };
+}).GetHtml()
+
+@{ Html.BeginForm("ExportTo", "Import", FormMethod.Post, new { id = "exportForm" });}
+@Html.Hidden("selectedIDsHF")
+@Html.DevExpress().Button(settings =>
+{
+    settings.Name = "Button";
+    settings.Style.Add("float", "right");
+    settings.Style.Add("margin-right", "20px");
+    settings.Style.Add("margin-left", "20px");
+    settings.UseSubmitBehavior = false;
+    settings.Text = "Export to XLSX";
+    settings.ClientSideEvents.Click = "OnExportClick";
+    //settings.RouteValues = new { Controller = "Import", Action = "ExportTo" };
+}).GetHtml()
+@{ Html.EndForm(); }
+
+@{ Html.BeginForm("Delete", "Import", FormMethod.Post, new { id = "deleteForm" });}
+@Html.Hidden("selectedIDsHF")
+@Html.DevExpress().Button(settings =>
+    {
+        settings.Style.Add("float", "right");
+        //settings.Style.Add("margin-right", "20px");
+        settings.Style.Add("margin-left", "20px");
+        settings.Name = "btnDelete";
+        settings.Text = "Delete Products";
+        settings.UseSubmitBehavior = false;
+        settings.ClientSideEvents.Click = "OnDeleteClick";
+    }).GetHtml()
+@{ Html.EndForm(); }
+
+@{ Html.BeginForm("Publish", "Import", FormMethod.Post, new { id = "publishForm" });}
+@Html.Hidden("selectedIDsHFPublish")
+@Html.DevExpress().Button(settings =>
+    {
+        settings.Style.Add("float", "right");
+        settings.Name = "btnSubmit";
+        settings.Text = "Publish Products";
+        settings.UseSubmitBehavior = false;
+        settings.ClientSideEvents.Click = "OnSubmitClick";
+    }).GetHtml()
+@Html.Action("ImportGridViewPartial", Model)
+
+@{ Html.EndForm(); }
+@Html.DevExpress().PopupControl(settings =>
+{
+    settings.Name = "PopupControl";
+    settings.ShowHeader = false;
+    settings.AllowDragging = false;
+    settings.AllowResize = false;
+    settings.Width = 150;
+
+    settings.Height = 100;
+    settings.ScrollBars = ScrollBars.Auto;
+    settings.SetContent(() =>
+    {
+        Html.DevExpress().Label(ls =>
+        {
+            ls.Name = "ToolTipLabel";
+            ls.Properties.EnableClientSideAPI = true;
+            ls.ControlStyle.Wrap = DefaultBoolean.True;
+        }).Render();
+    });
+}).GetHtml()
+@*@Html.DevExpress().PopupControl(settings =>
+    {
+        settings.Name = "PopupControl2";
+        settings.ShowHeader = false;
+        settings.AllowDragging = false;
+        settings.AllowResize = false;
+        settings.Width = 200;
+        settings.Height = 200;
+        settings.ScrollBars = ScrollBars.Auto;
+        settings.SetContent(() =>
+        {
+            Html.DevExpress().Label(ls =>
+            {
+                ls.Name = "ToolTipLabel2";
+                ls.Properties.EnableClientSideAPI = true;
+                ls.ControlStyle.Wrap = DefaultBoolean.True;
+            }).Render();
+        });
+    }).GetHtml()
+*@
+

@@ -1,0 +1,75 @@
+@using FBG.Market.Web.Identity.Controllers;
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "GridView";
+        settings.CallbackRouteValues = new { Controller = "Category", Action = "CategoryGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Category", Action = "CategoryGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Category", Action = "CategoryGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Category", Action = "CategoryGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+//settings.CommandColumn.ShowNewButton = true;
+settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "ID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+//
+settings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
+settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
+        settings.ControlStyle.BorderBottom.BorderWidth = 2;
+        settings.Width = Unit.Percentage(30);
+        settings.Styles.Row.CssClass = "customRow";
+        settings.Styles.Cell.Wrap = DefaultBoolean.False;
+        settings.Styles.PagerBottomPanel.CssClass = "pager";
+        settings.Styles.FocusedRow.CssClass = "focused";
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsBehavior.AllowEllipsisInText = true;
+
+//
+//settings.Columns.Add("ID");
+settings.Columns.Add(col =>
+        {
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+
+            col.ReadOnly = true;
+    //col.Settings.AllowAutoFilter = DefaultBoolean.False;
+    col.FieldName = "ID";
+            col.Caption = "Id";
+
+        });
+        settings.Columns.Add("Category");
+        settings.CustomJSProperties = (s, e) =>
+     {
+         if (ViewData[CategoryController.EditResultKey] != null)
+         {
+             e.Properties["cpMessage"] = ViewData[CategoryController.EditResultKey].ToString();
+         }
+         if (ViewData[CategoryController.EditErrorKey] != null)
+         {
+             e.Properties["cpError"] = ViewData[CategoryController.EditErrorKey].ToString();
+         }
+     };
+
+        settings.ClientSideEvents.EndCallback = "OnEndCallback";
+
+    }).SetEditErrorText((string)ViewData[CategoryController.EditErrorKey]).Bind(Model).GetHtml();
+}
