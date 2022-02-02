@@ -150,8 +150,8 @@ namespace FBG.Market.Web.Identity.Controllers
                 c.Caption = "Category";
                 c.EditorProperties().ComboBox(p =>
                 {
-                    p.TextField = "CategoryName";
-                    p.ValueField = "CategoryID";
+                    p.TextField = "Name";
+                    p.ValueField = "Id";
                     p.ValueType = typeof(int);
                     p.DataSource = Utils.GetCategories();
                 });

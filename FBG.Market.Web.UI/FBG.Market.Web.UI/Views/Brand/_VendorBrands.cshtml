@@ -94,8 +94,8 @@
             column.Width = Unit.Percentage(20);
             column.EditorProperties().ComboBox(p =>
             {
-                p.TextField = "CategoryName";
-                p.ValueField = "CategoryID";
+                p.TextField = "Name";
+                p.ValueField = "Id";
                 p.ValueType = typeof(int);
                 p.DataSource = Utils.GetCategories();
             });

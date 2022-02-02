@@ -121,8 +121,8 @@
                        ii.NestedExtension().ComboBox(s =>
                        {
                            s.Width = Unit.Percentage(80);
-                           s.Properties.TextField = "CategoryName";
-                           s.Properties.ValueField = "CategoryId";
+                           s.Properties.TextField = "Name";
+                           s.Properties.ValueField = "Id";
                            s.Properties.ValueType = typeof(int);
                            s.Properties.DataSource = Utils.GetCategories();
                            s.ShowModelErrors = true;
