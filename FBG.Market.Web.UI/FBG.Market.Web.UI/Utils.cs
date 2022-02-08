@@ -8,7 +8,7 @@ using System.Web;
 
 namespace FBG.Market.Web.Identity
 {
-    
+
     public class Utils
     {
         //public static IEnumerable<TSource> DistinctBy<TSource, TKey>
@@ -35,12 +35,12 @@ namespace FBG.Market.Web.Identity
 
         public List<ProductFamilyLocal> GetProductFamilies()
         {
-        var query = from family in db.RefProductFamilies
+            var query = from family in db.RefProductFamilies
                         select new ProductFamilyLocal
                         {
                             FamilyId = family.PFID,
                             FamilyName = family.PFName,
-                            
+
                         };
             return query.ToList();
         }
@@ -52,7 +52,7 @@ namespace FBG.Market.Web.Identity
                             Id = colorCode.NRFColorCodeID,
                             Name = db.ColorCategories.Where(s => s.ColorCategoryID == colorCode.ColorCategoryID).FirstOrDefault().ColorCategoryName + " " + colorCode.NRFColorCode + " " + colorCode.NRFColorName,
                         };
-            return query.OrderBy(item=>item.Name).ToList();
+            return query.OrderBy(item => item.Name).ToList();
         }
         public List<ColorCategoryViewModel> GetColorCategories()
         {
@@ -91,14 +91,14 @@ namespace FBG.Market.Web.Identity
         public List<BrandLocal> GetBrands()
         {
             var query = from brand in db.Brands
-                            select new BrandLocal
-                            {
-                                BrandID = brand.BID,
-                                BrandName = brand.BrandName,
-                                Description = brand.BrandNotes,
-                                Picture = brand.BrandLogo
-                            };
-            
+                        select new BrandLocal
+                        {
+                            BrandID = brand.BID,
+                            BrandName = brand.BrandName,
+                            Description = brand.BrandNotes,
+                            Picture = brand.BrandLogo
+                        };
+
             return query.ToList();
         }
 
@@ -158,7 +158,7 @@ namespace FBG.Market.Web.Identity
         public List<AspNetUsersLocal> GetRoles(int vendorId)
         {
             var vendorName = db.Vendors.Where(vendor => vendor.VID == vendorId).FirstOrDefault().VendorName;
-            if(vendorName.ToLower()=="future")
+            if (vendorName.ToLower() == "future")
             {
                 return db.AspNetRoles.Where(item => item.Name.ToLower() == "admin").Select(role =>
                 new AspNetUsersLocal
@@ -169,12 +169,12 @@ namespace FBG.Market.Web.Identity
             }
             else
             {
-                return db.AspNetRoles.Where(item=>item.Name.ToLower()!="admin").Select(role =>
-                new AspNetUsersLocal
-                {
-                    RoleId = role.Id,
-                    RoleName = role.Name
-                }).ToList();
+                return db.AspNetRoles.Where(item => item.Name.ToLower() != "admin").Select(role =>
+                    new AspNetUsersLocal
+                    {
+                        RoleId = role.Id,
+                        RoleName = role.Name
+                    }).ToList();
             }
 
         }
@@ -189,6 +189,18 @@ namespace FBG.Market.Web.Identity
                         };
             var abc = query.ToList();
             return query.ToList();
+        }
+
+        public static bool DirectoryExists(string path)
+        {
+            return (Directory.Exists(path));
+        }
+
+        public static bool CreateDirectoryIfNotPresent(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            return true;
         }
     }
 }

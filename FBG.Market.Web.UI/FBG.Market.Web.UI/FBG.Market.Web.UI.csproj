@@ -352,6 +352,7 @@
     <Content Include="Content\SignInRegister.css" />
     <Content Include="Content\SignInRegister.js" />
     <Content Include="Content\UploadControl\UploadFolder\sblvfwra.2jz_White Background.jpg" />
+    <Content Include="Docs.txt" />
     <Content Include="Global.asax" />
     <Content Include="img\bag.png" />
     <Content Include="img\login.jpg" />

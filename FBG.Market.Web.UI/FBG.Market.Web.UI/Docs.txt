@@ -1,0 +1,19 @@
+﻿
+
+
+Query for syncing the Products in the Database to correct Product Picture path. convention is -- ~/brands/Jelavu/Ata Bali/JELB_ATAB-YEL/
+
+Update Products set PPicture = t.[imagepath]
+from 
+(
+Select p.PID,
+p.BID,
+p.PName,
+p.SKUCode,
+p.PPicture, 
+b.BrandName,
+CONCAT('~/brands/', b.brandname ,'/',p.PName,'/',p.SKUCode ) [imagepath]
+from Products p inner join Brand b on b.BID = p.BID
+where p.PPicture is null or p.PPicture = ''
+) t
+where Products.PPicture is null and t.PID=Products.PID 
