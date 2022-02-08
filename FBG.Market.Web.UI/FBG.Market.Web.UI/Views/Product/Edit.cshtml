@@ -360,6 +360,27 @@
 
                    });
                });
+
+
+               g.Items.AddGroupItem(item =>
+               {
+                   item.Caption = "Images";
+
+                   item.Items.Add(model => model.PPicture, i =>
+                   {
+                       i.ShowCaption = DefaultBoolean.True;
+                       i.Caption = "";
+                       i.SetNestedContent(() =>
+                       {
+                           Html.DevExpress().ImageGallery(h =>
+                           {
+                               h.Name = "PPictures";
+                               h.Width = Unit.Percentage(100);
+                           }).Bind(Model.PPicture).Render();
+                       });
+
+                   });
+               });
            });
 
 
