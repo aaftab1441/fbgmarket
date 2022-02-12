@@ -199,7 +199,7 @@ namespace FBG.Market.Web.Identity
         public static bool CreateDirectoryIfNotPresent(string path)
         {
             if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(HttpContext.Current.Server.MapPath(path));
             return true;
         }
     }
