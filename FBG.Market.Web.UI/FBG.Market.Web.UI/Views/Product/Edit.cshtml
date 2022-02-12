@@ -22,7 +22,7 @@
     function onDeleteImageClick(s, e) {
         debugger
         if (confirm("Are you sure to delete the selected image?")) {
-            var path =$("imagezoomnav-root-path").val();
+            var path =$("#imagezoomnav-root-path").val();
             var pid = $("#current-prod-id").val();
             var activeItem = zoomNavigator.GetActiveItem();
             cbpImageNavigator.PerformCallback({ productID: pid, operation: "Delete", item: activeItem.imageUrl, path: path });
