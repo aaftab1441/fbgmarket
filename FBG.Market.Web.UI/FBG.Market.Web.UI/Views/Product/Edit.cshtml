@@ -422,6 +422,7 @@
             @Html.Partial("~/Views/Product/ImageZoomNavigator.cshtml", path.ToString())
 
             @{
+                FBG.Market.Web.Identity.Utils.CreateDirectoryIfNotPresent(path);
                 string[] filePaths = Directory.GetFiles(Server.MapPath(path.ToString()));
                 if (filePaths.Length > 0)
                 {
