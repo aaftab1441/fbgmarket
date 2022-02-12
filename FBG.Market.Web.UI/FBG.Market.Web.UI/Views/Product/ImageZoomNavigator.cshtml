@@ -1,7 +1,7 @@
 ﻿@model string
 @{
     @Html.Hidden("products-path", Model)
-    if ((!string.IsNullOrEmpty(Model)) && FBG.Market.Web.Identity.Utils.CreateDirectoryIfNotPresent(Model))
+    if ((!string.IsNullOrEmpty(Model)) && FBG.Market.Web.Identity.Utils.CreateDirectoryIfNotPresent(Model.Trim()))
     {
         @Html.DevExpress().ImageZoom(settings =>
         {

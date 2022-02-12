@@ -198,8 +198,8 @@ namespace FBG.Market.Web.Identity
 
         public static bool CreateDirectoryIfNotPresent(string path)
         {
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (!Directory.Exists(HttpContext.Current.Server.MapPath(path)))
+                Directory.CreateDirectory(HttpContext.Current.Server.MapPath(path));
             return true;
         }
     }
