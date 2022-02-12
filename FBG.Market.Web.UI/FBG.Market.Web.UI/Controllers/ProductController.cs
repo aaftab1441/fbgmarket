@@ -379,7 +379,7 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             if (operation == "Delete")
             {
-                var imageFileName = System.IO.Path.GetFileName(item);
+                var imageFileName = Path.GetFileName(item);
                 int paramIndex = imageFileName.IndexOf("?");
 
                 if (paramIndex > 0)
@@ -393,9 +393,12 @@ namespace FBG.Market.Web.Identity.Controllers
                     System.IO.File.Delete(fullFileName);
                 }
             }
-            return RedirectToAction("Edit", new { Id = productID });
+            return Redirect(Request.UrlReferrer.ToString());
         }
-
+        public PartialViewResult ImageZoomNavigator(string productPath)
+        {
+            return PartialView("ImageZoomNavigator", productPath);
+        }
         public ActionResult HtmlEditorPartialImageSelectorUpload()
         {
             HtmlEditorExtension.SaveUploadedImage("ProductDescriptionHtmlEditor", PDescHtmlEditorSettings.ImageSelectorSettings);
@@ -409,6 +412,11 @@ namespace FBG.Market.Web.Identity.Controllers
         public ActionResult HtmlEditorPartial(string PDescription)
         {
             return PartialView("_HtmlEditorPartial", PDescription);
+        }
+        [Authorize]
+        public PartialViewResult MultiFileSelection(string productPath)
+        {
+            return PartialView("~/Views/UploadControl/MultiFileSelection.cshtml", productPath);
         }
 
         #region utility functions

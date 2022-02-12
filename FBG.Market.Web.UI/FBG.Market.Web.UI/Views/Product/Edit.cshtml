@@ -20,7 +20,6 @@
 <script src="~/Scripts/DXUploadedFilesContainer.js"></script>
 <script>
     function onDeleteImageClick(s, e) {
-        debugger
         if (confirm("Are you sure to delete the selected image?")) {
             var path =$("#imagezoomnav-root-path").val();
             var pid = $("#current-prod-id").val();
@@ -30,15 +29,12 @@
     }
 </script>
 
-
-
 @section LeftPanelContent {
     @Html.Partial("~/Views/Shared/LeftPanelPartial.cshtml")
 }
 
 @section RightPanelContent {
 }
-
 
 <div class="grid-container">
     <div id="product-edit-form">
@@ -366,20 +362,14 @@
                g.Items.AddGroupItem(item =>
                {
                    item.Caption = "Images";
-
-                   item.Items.Add(model => model.PPicture, i =>
+                   item.Items.Add(i =>
                    {
-                       i.ShowCaption = DefaultBoolean.True;
-                       i.Caption = "";
+                       i.ShowCaption = DefaultBoolean.False;
                        i.SetNestedContent(() =>
                        {
-                           Html.DevExpress().ImageGallery(h =>
-                           {
-                               h.Name = "PPictures";
-                               h.Width = Unit.Percentage(100);
-                           }).Bind(Model.PPicture).Render();
+                           @Html.RenderAction("ImageZoomNavigator", "Product", new { productPath = path.ToString() });
+                           @Html.RenderAction("MultiFileSelection", "Product", new { productPath = path.ToString() });
                        });
-
                    });
                });
            });
@@ -421,43 +411,18 @@
             }).Render();
 
         }
-
-
-
         @{ Html.EndForm(); }
     </div>
 
-
     <div id="float-container">
         <div class="float-child imageZoomNavigator" id="imageZoomNavigator">
-
             @Html.Hidden("imagezoomnav-root-path", @Model.PPicture)
             @Html.Hidden("current-prod-id", @Model.PID)
-            @Html.Partial("~/Views/Product/ImageZoomNavigator.cshtml", path.ToString())
-
-
-            @Html.DevExpress().Button(btnSettings =>
-       {
-           btnSettings.Name = "btnDeleteImage";
-           btnSettings.Text = "Delete";
-           btnSettings.Style.Add("margin-top", "10px");
-           btnSettings.Style.Add("margin-left", "73%");
-           btnSettings.ClientSideEvents.Click = "onDeleteImageClick";
-       }).GetHtml()
         </div>
-        <div class="float-child" id="imagesUpload" style="padding-top:20px; width:90%">
-            @Html.Partial("~/Views/UploadControl/MultiFileSelection.cshtml", path.ToString())
+        <div class="float-child" id="imagesUpload" style="padding-top:20px; padding-bottom:20px; width:90%">
         </div>
     </div>
-
-
 </div>
-
-
-
-
-
-
 
 <hr />
 <div id="htmlEditor">

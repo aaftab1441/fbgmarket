@@ -88,16 +88,12 @@
 function onFileUploadComplete(e) {
     var productPath = $("#products-path").val();
     console.log(productPath);
-    //alert(productPath);
     window.location.href = '/Product/Edit/' + $("#current-prod-id").val();
-    //$("#imageZoomNavigator").load('ImageZoomNavigator', { productPath: productPath});
-    //console.log($("#imageZoomNavigator").load('ImageZoomNavigator'));
-    //$("#").load("#imageZoomNavigator");
+
     if (e.callbackData) {
         var fileData = e.callbackData.split('|');
         var fileName = fileData[0],
             fileUrl = fileData[1],
             fileSize = fileData[2];
-       // DXUploadedFilesContainer.AddFile(fileName, fileUrl, fileSize);
     }
 }
