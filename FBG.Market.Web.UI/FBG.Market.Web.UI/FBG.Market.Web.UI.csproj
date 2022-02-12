@@ -506,7 +506,6 @@
     <Content Include="Views\Account\TabControlPartial.cshtml" />
     <Content Include="Views\Account\UserMenuItemPartial.cshtml" />
     <Content Include="Views\Product\Add.cshtml" />
-    <Content Include="Views\Product\_HtmlEditorPartial.cshtml" />
     <Content Include="Views\FBGClients\Index.cshtml" />
     <Content Include="Views\FBGClients\_ClientsGridViewPartial.cshtml" />
     <Content Include="Views\Product\Import.cshtml" />
@@ -525,7 +524,6 @@
     <Content Include="Views\Shared\GridViewHeadResources.cshtml" />
     <Content Include="Views\Shared\HtmlEditorHeadResources.cshtml" />
     <Content Include="Views\Shared\ImportGridViewHeadResources.cshtml" />
-    <Content Include="Views\Product\CallbackPartial.cshtml" />
     <Content Include="Views\Brand\_VendorBrands.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
