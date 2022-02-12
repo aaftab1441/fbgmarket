@@ -153,17 +153,17 @@ namespace FBG.Market.Web.Identity.Controllers
                     {
                         string imageUrl = product.PPicture;
 
-                        if (!string.IsNullOrEmpty(product.ShopifyPicUrl))
-                        {
-                            await DownloadProductImage(product.ShopifyPicUrl, imageUrl, product.PID);
-                        }
-                        if (images.Count > 0)
-                        {
-                            foreach (var image in images)
-                            {
-                                await DownloadProductImage(image, imageUrl, product.PID);
-                            }
-                        }
+                        //if (!string.IsNullOrEmpty(product.ShopifyPicUrl))
+                        //{
+                        //    await DownloadProductImage(product.ShopifyPicUrl, imageUrl, product.PID);
+                        //}
+                        //if (images.Count > 0)
+                        //{
+                        //    foreach (var image in images)
+                        //    {
+                        //        await DownloadProductImage(image, imageUrl, product.PID);
+                        //    }
+                        //}
                     }
                     if (images.Count > 0)
                     {
@@ -190,6 +190,13 @@ namespace FBG.Market.Web.Identity.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(ProductViewModel model)
         {
+
+            //if(HttpContext.Request.Url)
+            if (HttpContext.Request.Url.AbsolutePath == "/Product/Edit/ImageZoomNavigator")
+            {
+                return View(model);
+            }
+
             var productsImagePath = System.Web.HttpContext.Current.Request.Params["products-path"];
             model.PID = Convert.ToInt32(System.Web.HttpContext.Current.Request.Params["PID"]);
 
@@ -277,7 +284,7 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             return View();
         }
-        
+
         public ActionResult ExportTo(string selectedIDsHF)
         {
             if (string.IsNullOrEmpty(selectedIDsHF))
@@ -293,7 +300,7 @@ namespace FBG.Market.Web.Identity.Controllers
                 return GridViewExtension.ExportToXlsx(GetGridSettings(), modelDb.ToList());
             }
         }
-        
+
         public async Task<ActionResult> BatchEditingUpdateModelAsync(MVCxGridViewBatchUpdateValues<ProductViewModel, int> updateValues)
         {
             foreach (var product in updateValues.Insert)
@@ -306,10 +313,11 @@ namespace FBG.Market.Web.Identity.Controllers
                 if (updateValues.IsValid(product))
                     await UpdateProductNewAsync(product);
             }
-            
-            return GetProductPartialView(-1); 
+
+            return GetProductPartialView(-1);
         }
 
+        [HttpGet]
         public ActionResult CallbackPanelPartial()
         {
             if (!string.IsNullOrEmpty(Request.Params["ShowGrid"]))
@@ -318,7 +326,7 @@ namespace FBG.Market.Web.Identity.Controllers
             return PartialView("CallbackPartial");
         }
 
-        public ActionResult ProductPartialView(int brandId=-1)
+        public ActionResult ProductPartialView(int brandId = -1)
         {
             return GetProductPartialView(brandId);
         }
@@ -383,7 +391,14 @@ namespace FBG.Market.Web.Identity.Controllers
             return PartialView("_Products", GetEntityServerModeSource(brandId));
         }
 
-        public ActionResult CallbackPanelPartial(int productID, string operation, string item,string path)
+        [HttpPost]
+        public ActionResult ReloadZoomPartial()
+        {
+            return PartialView("ImageZoomNavigator");
+        }
+
+        [HttpPost]
+        public ActionResult CallbackPanelPartial(int productID, string operation, string item, string path)
         {
             if (operation == "Delete")
             {
@@ -403,7 +418,7 @@ namespace FBG.Market.Web.Identity.Controllers
             }
             return View(Request.UrlReferrer.ToString());
         }
-        
+
         [HttpPost]
         public ActionResult BinaryImageColumnPhotoUpdate()
         {
@@ -417,7 +432,7 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             return PartialView("_HtmlEditorPartial", PDescription);
         }
-        
+
         public ActionResult HtmlEditorPartialImageSelectorUpload()
         {
             HtmlEditorExtension.SaveUploadedImage("ProductDescriptionHtmlEditor", PDescHtmlEditorSettings.ImageSelectorSettings);
@@ -745,7 +760,7 @@ namespace FBG.Market.Web.Identity.Controllers
             };
             return gridViewSettings;
         }
-        
+
         private async Task UpdateProductNewAsync(ProductViewModel model)
         {
             var product = db.Products.FirstOrDefault(p => p.PID == model.PID);
@@ -783,39 +798,39 @@ namespace FBG.Market.Web.Identity.Controllers
             await db.SaveChangesAsync();
             ViewData[EditResultKey] = "Product is updated successfully.";
         }
-        
-        private async Task DownloadProductImage(string url, string path, int pid)
-        {
-            try
-            {
-                using (WebClient webClient = new WebClient())
-                {
-                    var uri = new Uri(url);
-                    byte[] data = await webClient.DownloadDataTaskAsync(uri);
 
-                    using (MemoryStream mem = new MemoryStream(data))
-                    {
-                        using (var yourImage = Image.FromStream(mem))
-                        {
+        //private async Task DownloadProductImage(string url, string path, int pid)
+        //{
+        //    try
+        //    {
+        //        using (WebClient webClient = new WebClient())
+        //        {
+        //            var uri = new Uri(url);
+        //            byte[] data = await webClient.DownloadDataTaskAsync(uri);
 
-                            var guid = Guid.NewGuid();
-                            var imagePath = Path.Combine(Server.MapPath(path), $"{guid}-product-image-{pid}.png");
-                            if (System.IO.File.Exists(imagePath))
-                            {
-                                System.IO.File.Delete(imagePath);
-                            }
-                            // If you want it as Png
-                            yourImage.Save(imagePath, ImageFormat.Png);
-                        }
-                    }
+        //            using (MemoryStream mem = new MemoryStream(data))
+        //            {
+        //                using (var yourImage = Image.FromStream(mem))
+        //                {
 
-                }
-            }
-            catch (Exception ex)
-            {
+        //                    var guid = Guid.NewGuid();
+        //                    var imagePath = Path.Combine(Server.MapPath(path), $"{guid}-product-image-{pid}.png");
+        //                    if (System.IO.File.Exists(imagePath))
+        //                    {
+        //                        System.IO.File.Delete(imagePath);
+        //                    }
+        //                    // If you want it as Png
+        //                    yourImage.Save(imagePath, ImageFormat.Png);
+        //                }
+        //            }
 
-            }
-        }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
         #endregion
     }
     public class PDescHtmlEditorSettings
