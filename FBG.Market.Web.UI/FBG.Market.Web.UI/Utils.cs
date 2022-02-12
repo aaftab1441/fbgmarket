@@ -11,18 +11,6 @@ namespace FBG.Market.Web.Identity
 
     public class Utils
     {
-        //public static IEnumerable<TSource> DistinctBy<TSource, TKey>
-        //(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-        //{
-        //    HashSet<TKey> seenKeys = new HashSet<TKey>();
-        //    foreach (TSource element in source)
-        //    {
-        //        if (seenKeys.Add(keySelector(element)))
-        //        {
-        //            yield return element;
-        //        }
-        //    }
-        //}
         FBGMarketEntities db = new FBGMarketEntities();
 
         public List<Product> Products
@@ -201,6 +189,39 @@ namespace FBG.Market.Web.Identity
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(HttpContext.Current.Server.MapPath(path));
             return true;
+        }
+
+        public void CreateBrandProdDir(Product product)
+        {
+            try
+            {
+                FBGMarketEntities db = new FBGMarketEntities();
+                var prodBrand = db.Brands.FirstOrDefault(item => item.BID == product.BID);
+                if (prodBrand != null || !string.IsNullOrEmpty(prodBrand.BrandName) || !string.IsNullOrEmpty(product.PName))
+                {
+                    var brandRootDir = $"~/brands/{prodBrand.BrandName.Trim()}";
+                    if (!Directory.Exists(System.Web.HttpContext.Current.Server.MapPath(brandRootDir)))
+                        Directory.CreateDirectory(System.Web.HttpContext.Current.Server.MapPath(brandRootDir));
+                    var styleDir = $"~/brands/{prodBrand.BrandName.Trim()}/{product.PName.Trim()}/";
+                    if (!Directory.Exists(System.Web.HttpContext.Current.Server.MapPath(styleDir)))
+                        Directory.CreateDirectory(System.Web.HttpContext.Current.Server.MapPath(styleDir));
+
+                    var prodDir = $"~/brands/{prodBrand.BrandName.Trim()}/{product.PName.Trim()}/{product.SKUCode.Trim()}/";
+
+                    product.PPicture = prodDir;
+                    if (!Directory.Exists(System.Web.HttpContext.Current.Server.MapPath(prodDir)))
+                    {
+                        if (!Directory.Exists(System.Web.HttpContext.Current.Server.MapPath(prodDir)))
+                        {
+                            Directory.CreateDirectory(System.Web.HttpContext.Current.Server.MapPath(prodDir));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
