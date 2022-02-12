@@ -469,7 +469,8 @@ namespace FBG.Market.Web.Identity.Controllers
                 {
                     DeleteProductImport(prod.ID);
                 }
-                return PartialView("Index", modelDb.ToList());
+                //return PartialView("Index", modelDb.ToList(),);
+                return Json(new { success = true, message = "Product(s) deleted successfully", status = 200 });
             }
         }
         [Authorize]
@@ -621,7 +622,9 @@ namespace FBG.Market.Web.Identity.Controllers
                      ).FirstOrDefault();
                     //var retVal = db.Products.Where(pro => pro.UPCCode.ToLower() == prod.UPCCode.ToLower() || pro.SKUCode.ToLower() == prod.SKUCode.ToLower()).FirstOrDefault();
                     //Product does not exists in the product DB, insert it
-                    if (retVal == null)
+                    var skuOrUpc = db.Products.Where(pro => pro.UPCCode.ToLower() == prod.UPCCode.ToLower() ||
+                   pro.SKUCode.ToLower() == prod.SKUCode.ToLower()).FirstOrDefault();
+                    if (retVal == null && skuOrUpc == null)
                     {
                         //Insert a new product
                         var model = db.Products;
@@ -654,6 +657,7 @@ namespace FBG.Market.Web.Identity.Controllers
                         };
                         try
                         {
+                            Utils.CreateBrandProdDir(product);
                             model.Add(product);
                             db.SaveChanges();
                             DeleteProductImport(prod.ID);
@@ -1188,11 +1192,6 @@ namespace FBG.Market.Web.Identity.Controllers
                         sb.Append("*Invalid FOB cost*").AppendLine();
                     }
                 }
-                /*if (importProd.NRFColorCodeID <= 0)
-                {
-                    sb.AppendLine();
-                    sb.Append("**Invalid NRF color code id*").AppendLine();
-                }*/
                 importProd.Message = sb.ToString();
             }
             var modelLL = modelL.ToList();
@@ -1207,17 +1206,13 @@ namespace FBG.Market.Web.Identity.Controllers
                 {
                     modelLL = modelLL.Select(n =>
                     {
-                        if (n.SKUCode == dup.Key.SKUCode
-&& n.UPCCode == dup.Key.UPCCode
-&& n.BID == dup.Key.BID
-&& n.VID == dup.Key.VID
-&& n.PColor == dup.Key.PColor
-&& n.PName == dup.Key.PName) { n.PDiscontinued = true; n.Message += "*duplicate product*"; }
+                        if (n.SKUCode == dup.Key.SKUCode && n.UPCCode == dup.Key.UPCCode && n.BID == dup.Key.BID 
+                        && n.VID == dup.Key.VID && n.PColor == dup.Key.PColor && n.PName == dup.Key.PName) 
+                        { n.PDiscontinued = true; n.Message += "*duplicate product*"; }
                         return n;
                     }).ToList();
                 }
             }
-            //modelL.ToList().ForEach(x => x.Message = "Test message goes here");
             return PartialView("_ImportGridViewPartial", modelLL);
         }
 
@@ -1290,9 +1285,7 @@ namespace FBG.Market.Web.Identity.Controllers
         private void UpdateProductImport(ProductsImport product)
         {
             var productsImagePath = System.Web.HttpContext.Current.Request.Params["products-path"];
-            //product.PID = Convert.ToInt32(System.Web.HttpContext.Current.Request.Params["PID"]);
             var model = db.ProductsImports;
-            //var temp = model.ToList();
             {
                 try
                 {
@@ -1352,11 +1345,11 @@ namespace FBG.Market.Web.Identity.Controllers
                     UpdateProductImport(product);
                 //UpdateProduct(product, updateValues);
             }
-            foreach (var productID in updateValues.DeleteKeys)
-            {
-                //DeleteProduct(productID, updateValues);
-            }
-            return RedirectToAction("Index");
+            //foreach (var productID in updateValues.DeleteKeys)
+            //{
+            //    //DeleteProduct(productID, updateValues);
+            //}
+            return PartialView("_ImportGridViewPartial", db.ProductsImports.ToList());
         }
     }
     public class ImportControllerUploadControlSettings
@@ -1384,5 +1377,4 @@ namespace FBG.Market.Web.Identity.Controllers
             }
         }
     }
-
 }

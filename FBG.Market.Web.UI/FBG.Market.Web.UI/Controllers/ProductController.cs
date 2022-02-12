@@ -469,7 +469,6 @@ namespace FBG.Market.Web.Identity.Controllers
 
             return esms;
         }
-        // Returns the settings of the exported GridView.
         private GridViewSettings GetGridSettings()
         {
             var gridViewSettings = new GridViewSettings();
@@ -819,14 +818,14 @@ namespace FBG.Market.Web.Identity.Controllers
             MaxFileSize = 4000000
         };
 
-        static DevExpress.Web.Mvc.MVCxHtmlEditorImageSelectorSettings imageSelectorSettings;
-        public static DevExpress.Web.Mvc.MVCxHtmlEditorImageSelectorSettings ImageSelectorSettings
+        static MVCxHtmlEditorImageSelectorSettings imageSelectorSettings;
+        public static MVCxHtmlEditorImageSelectorSettings ImageSelectorSettings
         {
             get
             {
                 if (imageSelectorSettings == null)
                 {
-                    imageSelectorSettings = new DevExpress.Web.Mvc.MVCxHtmlEditorImageSelectorSettings(null);
+                    imageSelectorSettings = new MVCxHtmlEditorImageSelectorSettings(null);
                     imageSelectorSettings.Enabled = true;
                     imageSelectorSettings.UploadCallbackRouteValues = new { Controller = "Product", Action = "HtmlEditorPartialImageSelectorUpload" };
                     imageSelectorSettings.CommonSettings.RootFolder = ImageUploadDirectory;
