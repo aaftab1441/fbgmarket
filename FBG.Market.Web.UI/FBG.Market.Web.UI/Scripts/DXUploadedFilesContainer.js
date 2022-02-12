@@ -86,8 +86,10 @@
 })();
 
 function onFileUploadComplete(e) {
+
     var productPath = $("#products-path").val();
     console.log(productPath);
+
     window.location.href = '/Product/Edit/' + $("#current-prod-id").val();
 
     if (e.callbackData) {

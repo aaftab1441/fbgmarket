@@ -41,342 +41,339 @@
 
         @Html.Hidden("PID", @Model.PID)
         @Html.DevExpress().FormLayout(settings =>
-   {
-       FBG.Market.Web.Identity.Utils Utils = new FBG.Market.Web.Identity.Utils();
+        {
+           FBG.Market.Web.Identity.Utils Utils = new FBG.Market.Web.Identity.Utils();
 
-       settings.Width = Unit.Percentage(100);
+           settings.Width = Unit.Percentage(100);
 
-       settings.Name = "FormLayout";
+           settings.Name = "FormLayout";
 
-       settings.Items.AddGroupItem(group =>
-       {
-           group.GridSettings.StretchLastItem = DefaultBoolean.True;
-           group.GridSettings.ChangeCaptionLocationAtWidth = 660;
-           group.GridSettings.Breakpoints.Add(new LayoutBreakpoint() { Name = "S", ColumnCount = 1, MaxWidth = 500 });
-           group.GridSettings.Breakpoints.Add(new LayoutBreakpoint() { Name = "M", ColumnCount = 2, MaxWidth = 800 });
-
-           group.Items.AddTabbedGroupItem(g =>
+           settings.Items.AddGroupItem(group =>
            {
-               g.Items.AddGroupItem(i =>
+               group.GridSettings.StretchLastItem = DefaultBoolean.True;
+               group.GridSettings.ChangeCaptionLocationAtWidth = 660;
+               group.GridSettings.Breakpoints.Add(new LayoutBreakpoint() { Name = "S", ColumnCount = 1, MaxWidth = 500 });
+               group.GridSettings.Breakpoints.Add(new LayoutBreakpoint() { Name = "M", ColumnCount = 2, MaxWidth = 800 });
+
+               group.Items.AddTabbedGroupItem(g =>
                {
-                   i.ColumnCount = 2;
-                   i.Caption = "Product Information";
-                   i.Items.Add(model => model.VID, ii =>
+                   g.Items.AddGroupItem(i =>
                    {
-                       ii.Caption = "Vendor";
-                       ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       ii.NestedExtension().ComboBox(s =>
+                       i.ColumnCount = 2;
+                       i.Caption = "Product Information";
+                       i.Items.Add(model => model.VID, ii =>
                        {
-                           s.Properties.TextField = "VendorName";
-                           s.Properties.ValueField = "VendorId";
-                           s.Properties.ValueType = typeof(int);
-                           s.Properties.DataSource = Utils.GetVendors();
-                           s.ShowModelErrors = true;
-                           s.Properties.ValidationSettings.Display = Display.Dynamic;
-                           s.Width = Unit.Percentage(80);
-                       });
+                           ii.Caption = "Vendor";
+                           ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           ii.NestedExtension().ComboBox(s =>
+                           {
+                               s.Properties.TextField = "VendorName";
+                               s.Properties.ValueField = "VendorId";
+                               s.Properties.ValueType = typeof(int);
+                               s.Properties.DataSource = Utils.GetVendors();
+                               s.ShowModelErrors = true;
+                               s.Properties.ValidationSettings.Display = Display.Dynamic;
+                               s.Width = Unit.Percentage(80);
+                           });
 
-                   });
-                   i.Items.Add(model => model.BID, ii =>
-                   {
-                       ii.Caption = "Brand";
-                       ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       ii.NestedExtension().ComboBox(s =>
-                       {
-                           s.Properties.TextField = "BrandName";
-                           s.Properties.ValueField = "BrandId";
-                           s.Properties.ValueType = typeof(int);
-                           s.Properties.DataSource = Utils.GetBrands();
-                           s.ShowModelErrors = true;
-                           s.Properties.ValidationSettings.Display = Display.Dynamic;
-                           s.Width = Unit.Percentage(80);
                        });
+                       i.Items.Add(model => model.BID, ii =>
+                       {
+                           ii.Caption = "Brand";
+                           ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           ii.NestedExtension().ComboBox(s =>
+                           {
+                               s.Properties.TextField = "BrandName";
+                               s.Properties.ValueField = "BrandId";
+                               s.Properties.ValueType = typeof(int);
+                               s.Properties.DataSource = Utils.GetBrands();
+                               s.ShowModelErrors = true;
+                               s.Properties.ValidationSettings.Display = Display.Dynamic;
+                               s.Width = Unit.Percentage(80);
+                           });
 
-                   });
-                   /*i.Items.Add(model => model.BrandCategoryId, ii =>
-                   {
-                       ii.Caption = "Brand & Category";
-                       ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       ii.NestedExtension().ComboBox(s =>
-                       {
-                           s.Properties.TextField = "BrandName";
-                           s.Properties.ValueField = "BrandID";
-                           s.Properties.ValueType = typeof(int);
-                           s.Properties.DataSource = Utils.GetBrandsCategories();
-                           s.ShowModelErrors = true;
-                           s.Properties.ValidationSettings.Display = Display.Dynamic;
-                           s.Width = Unit.Percentage(80);
                        });
+                       /*i.Items.Add(model => model.BrandCategoryId, ii =>
+                       {
+                           ii.Caption = "Brand & Category";
+                           ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           ii.NestedExtension().ComboBox(s =>
+                           {
+                               s.Properties.TextField = "BrandName";
+                               s.Properties.ValueField = "BrandID";
+                               s.Properties.ValueType = typeof(int);
+                               s.Properties.DataSource = Utils.GetBrandsCategories();
+                               s.ShowModelErrors = true;
+                               s.Properties.ValidationSettings.Display = Display.Dynamic;
+                               s.Width = Unit.Percentage(80);
+                           });
 
-                   });*/
-                   i.Items.Add(model => model.PCategory, ii =>
-                   {
-                       ii.Caption = "Category";
-                       ii.ColumnSpan = 1;
-                       ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       ii.NestedExtension().ComboBox(s =>
+                       });*/
+                       i.Items.Add(model => model.PCategory, ii =>
                        {
-                           s.Width = Unit.Percentage(80);
-                           s.Properties.TextField = "Name";
-                           s.Properties.ValueField = "Id";
-                           s.Properties.ValueType = typeof(int);
-                           s.Properties.DataSource = Utils.GetCategories();
-                           s.ShowModelErrors = true;
-                           s.Properties.ValidationSettings.Display = Display.Dynamic;
+                           ii.Caption = "Category";
+                           ii.ColumnSpan = 1;
+                           ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           ii.NestedExtension().ComboBox(s =>
+                           {
+                               s.Width = Unit.Percentage(80);
+                               s.Properties.TextField = "Name";
+                               s.Properties.ValueField = "Id";
+                               s.Properties.ValueType = typeof(int);
+                               s.Properties.DataSource = Utils.GetCategories();
+                               s.ShowModelErrors = true;
+                               s.Properties.ValidationSettings.Display = Display.Dynamic;
+                           });
                        });
-                   });
-                   i.Items.Add(model => model.PSubCategory, item =>
-                   {
-                       item.Caption = "Sub Category";
-                       item.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
+                       i.Items.Add(model => model.PSubCategory, item =>
                        {
-                           s.Name = "PSubCategory";
-                           s.Width = Unit.Percentage(80);
-                       });
-                   });
-                   i.Items.Add(model => model.VendorName, item =>
-                   {
-                       item.Caption = "Vendor Style #";
-                       item.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
-                       {
-                           s.Name = "VendorName";
-                           s.Width = Unit.Percentage(80);
-                       });
-                   });
-                   i.Items.Add(model => model.PName, item =>
-                   {
-                       item.Caption = "Style";
-                       item.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
-                       {
-                           s.Name = "PName";
-                           s.Width = Unit.Percentage(80);
-                       });
-                   });
-                   i.Items.Add(model => model.PColor, item =>
-                   {
-                       item.Caption = "Color";
-                       item.VerticalAlign = DevExpress.Web.FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
-                       {
-                           s.Name = "PColor";
-                           s.Width = System.Web.UI.WebControls.Unit.Percentage(80);
-                       });
-                   });
-                   i.Items.Add(model => model.NRFColorCodeID, ii =>
-                   {
-                       ii.Caption = "NRF Color";
-                       ii.ColumnSpan = 1;
-                       ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       ii.NestedExtension().ComboBox(s =>
-                       {
-                           s.Width = Unit.Percentage(80);
-                           s.Properties.TextField = "Name";
-                           s.Properties.ValueField = "Id";
-                           s.Properties.ValueType = typeof(int);
-                           s.Properties.DataSource = Utils.GetColors();
-                           s.ShowModelErrors = true;
-                           s.Properties.ValidationSettings.Display = Display.Dynamic;
-                       });
-                   });
-                   i.Items.Add(model => model.SKUCode, item =>
-                   {
-                       item.Caption = "SKU Code";
-                       item.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
-                       {
-                           s.Name = "SKUCode";
-                           s.Width = Unit.Percentage(80);
-                       });
-
-                   });
-                   i.Items.Add(model => model.UPCCode, item =>
-                   {
-                       item.Caption = "UPC Code";
-                       item.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
-                       {
-                           s.Name = "UPCCode";
-                           s.Width = Unit.Percentage(80);
-                       });
-                   });
-                   i.Items.Add(model => model.SID, ii =>
-                   {
-                       ii.Caption = "Season";
-                       ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       ii.NestedExtension().ComboBox(s =>
-                       {
-                           s.Width = Unit.Percentage(80);
-                           s.Properties.TextField = "SeasonName";
-                           s.Properties.ValueField = "SeasonId";
-                           s.Properties.ValueType = typeof(int);
-                           s.Properties.DataSource = Utils.GetSeasons();
-                           s.ShowModelErrors = true;
-                           s.Properties.ValidationSettings.Display = Display.Dynamic;
-                       });
-
-                   });
-                   i.Items.Add(model => model.PSize, item =>
-                   {
-                       item.Caption = "Product Size";
-                       item.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
-                       {
-                           s.Name = "PSize";
-                           s.Width = Unit.Percentage(80);
-                       });
-
-                   });
-                   i.Items.Add(model => model.PCoutryofOrigin, item =>
-                   {
-                       item.Caption = "Country of Origin";
-                       item.ColumnSpan = 1;
-                       item.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
-                       {
-                           s.Name = "PCoutryofOrigin";
-                           s.Width = Unit.Percentage(80);
-                       });
-                   });
-                   if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
-                   {
-                       i.Items.Add(model => model.PFOBCost, item =>
-                       {
-                           item.Caption = "FOB Cost";
+                           item.Caption = "Sub Category";
                            item.VerticalAlign = FormLayoutVerticalAlign.Middle;
                            item.NestedExtension().TextBox(s =>
                            {
-                               s.Name = "PFOBCost";
+                               s.Name = "PSubCategory";
                                s.Width = Unit.Percentage(80);
                            });
                        });
-                       i.Items.Add(model => model.PLandedCost, item =>
+                       i.Items.Add(model => model.VendorName, item =>
                        {
-                           item.Caption = "Landed Cost";
+                           item.Caption = "Vendor Style #";
+                           item.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           item.NestedExtension().TextBox(s =>
+                           {
+                               s.Name = "VendorName";
+                               s.Width = Unit.Percentage(80);
+                           });
+                       });
+                       i.Items.Add(model => model.PName, item =>
+                       {
+                           item.Caption = "Style";
+                           item.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           item.NestedExtension().TextBox(s =>
+                           {
+                               s.Name = "PName";
+                               s.Width = Unit.Percentage(80);
+                           });
+                       });
+                       i.Items.Add(model => model.PColor, item =>
+                       {
+                           item.Caption = "Color";
                            item.VerticalAlign = DevExpress.Web.FormLayoutVerticalAlign.Middle;
                            item.NestedExtension().TextBox(s =>
                            {
-                               s.Name = "PLandedCost";
+                               s.Name = "PColor";
+                               s.Width = System.Web.UI.WebControls.Unit.Percentage(80);
+                           });
+                       });
+                       i.Items.Add(model => model.NRFColorCodeID, ii =>
+                       {
+                           ii.Caption = "NRF Color";
+                           ii.ColumnSpan = 1;
+                           ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           ii.NestedExtension().ComboBox(s =>
+                           {
+                               s.Width = Unit.Percentage(80);
+                               s.Properties.TextField = "Name";
+                               s.Properties.ValueField = "Id";
+                               s.Properties.ValueType = typeof(int);
+                               s.Properties.DataSource = Utils.GetColors();
+                               s.ShowModelErrors = true;
+                               s.Properties.ValidationSettings.Display = Display.Dynamic;
+                           });
+                       });
+                       i.Items.Add(model => model.SKUCode, item =>
+                       {
+                           item.Caption = "SKU Code";
+                           item.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           item.NestedExtension().TextBox(s =>
+                           {
+                               s.Name = "SKUCode";
+                               s.Width = Unit.Percentage(80);
+                           });
+
+                       });
+                       i.Items.Add(model => model.UPCCode, item =>
+                       {
+                           item.Caption = "UPC Code";
+                           item.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           item.NestedExtension().TextBox(s =>
+                           {
+                               s.Name = "UPCCode";
+                               s.Width = Unit.Percentage(80);
+                           });
+                       });
+                       i.Items.Add(model => model.SID, ii =>
+                       {
+                           ii.Caption = "Season";
+                           ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           ii.NestedExtension().ComboBox(s =>
+                           {
+                               s.Width = Unit.Percentage(80);
+                               s.Properties.TextField = "SeasonName";
+                               s.Properties.ValueField = "SeasonId";
+                               s.Properties.ValueType = typeof(int);
+                               s.Properties.DataSource = Utils.GetSeasons();
+                               s.ShowModelErrors = true;
+                               s.Properties.ValidationSettings.Display = Display.Dynamic;
+                           });
+
+                       });
+                       i.Items.Add(model => model.PSize, item =>
+                       {
+                           item.Caption = "Product Size";
+                           item.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           item.NestedExtension().TextBox(s =>
+                           {
+                               s.Name = "PSize";
+                               s.Width = Unit.Percentage(80);
+                           });
+
+                       });
+                       i.Items.Add(model => model.PCoutryofOrigin, item =>
+                       {
+                           item.Caption = "Country of Origin";
+                           item.ColumnSpan = 1;
+                           item.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           item.NestedExtension().TextBox(s =>
+                           {
+                               s.Name = "PCoutryofOrigin";
+                               s.Width = Unit.Percentage(80);
+                           });
+                       });
+                       if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+                       {
+                           i.Items.Add(model => model.PFOBCost, item =>
+                           {
+                               item.Caption = "FOB Cost";
+                               item.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                               item.NestedExtension().TextBox(s =>
+                               {
+                                   s.Name = "PFOBCost";
+                                   s.Width = Unit.Percentage(80);
+                               });
+                           });
+                           i.Items.Add(model => model.PLandedCost, item =>
+                           {
+                               item.Caption = "Landed Cost";
+                               item.VerticalAlign = DevExpress.Web.FormLayoutVerticalAlign.Middle;
+                               item.NestedExtension().TextBox(s =>
+                               {
+                                   s.Name = "PLandedCost";
+                                   s.Width = System.Web.UI.WebControls.Unit.Percentage(80);
+                               });
+
+                           });
+                       }
+                       i.Items.Add(model => model.PWholesalePrice, item =>
+                       {
+                           item.Caption = "Wholesale Price";
+                           item.VerticalAlign = DevExpress.Web.FormLayoutVerticalAlign.Middle;
+                           item.NestedExtension().TextBox(s =>
+                           {
+                               s.Name = "PWholesalePrice";
                                s.Width = System.Web.UI.WebControls.Unit.Percentage(80);
                            });
 
                        });
-                   }
-                   i.Items.Add(model => model.PWholesalePrice, item =>
-                   {
-                       item.Caption = "Wholesale Price";
-                       item.VerticalAlign = DevExpress.Web.FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
+                       i.Items.Add(model => model.PMSRPPrice, item =>
                        {
-                           s.Name = "PWholesalePrice";
-                           s.Width = System.Web.UI.WebControls.Unit.Percentage(80);
-                       });
-
-                   });
-                   i.Items.Add(model => model.PMSRPPrice, item =>
-                   {
-                       item.Caption = "MSRP";
-                       item.VerticalAlign = DevExpress.Web.FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().TextBox(s =>
-                       {
-                           s.Name = "PMSRPPrice";
-                           s.Width = System.Web.UI.WebControls.Unit.Percentage(80);
-                       });
-
-                   });
-                   i.Items.Add(model => model.ProductStatusId, item =>
-                   {
-                       item.Caption = "Status";
-                       item.ColumnSpan = 1;
-                       item.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       item.NestedExtension().ComboBox(cbi =>
-                       {
-                           cbi.Properties.TextField = "Status";
-                           cbi.Properties.ValueField = "Id";
-                           cbi.Properties.ValueType = typeof(int);
-                           cbi.Properties.DataSource = Utils.GetProductStatus();
-                           cbi.ShowModelErrors = true;
-                           cbi.Properties.ValidationSettings.Display = Display.Dynamic;
-                           cbi.Width = Unit.Percentage(80);
-                           cbi.Properties.ClientSideEvents.SelectedIndexChanged = "StatusSelectedIndexChanged";
-                       });
-
-                   });
-
-               });
-
-               g.Items.AddGroupItem(item =>
-               {
-                   item.Caption = "Description";
-
-                   item.Items.Add(model => model.PDescription, i =>
-                   {
-                       i.ShowCaption = DefaultBoolean.True;
-                       i.Caption = "";
-                       i.SetNestedContent(() =>
-                       {
-                           Html.DevExpress().HtmlEditor(h =>
+                           item.Caption = "MSRP";
+                           item.VerticalAlign = DevExpress.Web.FormLayoutVerticalAlign.Middle;
+                           item.NestedExtension().TextBox(s =>
                            {
-                               h.Settings.AllowDesignView = true;
-                               h.Settings.AllowHtmlView = true;
-                               h.Name = "PDescription";
-                               h.Html = Model.PDescription;
-                               h.CallbackRouteValues = new { Controller = "Product", Action = "HtmlEditorPartial" };
-                               h.Width = Unit.Percentage(100);
-                               h.ToolbarMode = HtmlEditorToolbarMode.Menu;
-                               h.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "Product", Action = "HtmlEditorPartialImageUpload" };
-                               h.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadFolder = FBG.Market.Web.Identity.Controllers.PDescHtmlEditorSettings.ImageUploadDirectory;
-                               h.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(FBG.Market.Web.Identity.Controllers.PDescHtmlEditorSettings.ImageUploadValidationSettings);
-                               h.SettingsDialogs.InsertImageDialog.SettingsImageSelector.Assign(FBG.Market.Web.Identity.Controllers.PDescHtmlEditorSettings.ImageSelectorSettings);
-                           }).Bind(Model.PDescription).Render();
+                               s.Name = "PMSRPPrice";
+                               s.Width = System.Web.UI.WebControls.Unit.Percentage(80);
+                           });
+
                        });
-                   });
-               });
-
-               g.Items.AddGroupItem(item =>
-               {
-                   item.Caption = "Specs";
-
-                   item.Items.Add(model => model.PSpecs, i =>
-                   {
-                       i.ShowCaption = DefaultBoolean.True;
-                       i.Caption = "";
-                       i.SetNestedContent(() =>
+                       i.Items.Add(model => model.ProductStatusId, item =>
                        {
-                           Html.DevExpress().HtmlEditor(h =>
+                           item.Caption = "Status";
+                           item.ColumnSpan = 1;
+                           item.VerticalAlign = FormLayoutVerticalAlign.Middle;
+                           item.NestedExtension().ComboBox(cbi =>
                            {
-                               h.Name = "PSpecs";
-                               h.Html = Model.PSpecs;
-                               h.Width = Unit.Percentage(100);
-                               h.ToolbarMode = HtmlEditorToolbarMode.Menu;
-                               h.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(FBG.Market.Web.Identity.Controllers.PDescHtmlEditorSettings.ImageUploadValidationSettings);
-                           }).Bind(Model.PSpecs).Render();
+                               cbi.Properties.TextField = "Status";
+                               cbi.Properties.ValueField = "Id";
+                               cbi.Properties.ValueType = typeof(int);
+                               cbi.Properties.DataSource = Utils.GetProductStatus();
+                               cbi.ShowModelErrors = true;
+                               cbi.Properties.ValidationSettings.Display = Display.Dynamic;
+                               cbi.Width = Unit.Percentage(80);
+                               cbi.Properties.ClientSideEvents.SelectedIndexChanged = "StatusSelectedIndexChanged";
+                           });
+
                        });
 
                    });
+
+                   g.Items.AddGroupItem(item =>
+                   {
+                       item.Caption = "Description";
+
+                       item.Items.Add(model => model.PDescription, i =>
+                       {
+                           i.ShowCaption = DefaultBoolean.True;
+                           i.Caption = "";
+                           i.SetNestedContent(() =>
+                           {
+                               Html.DevExpress().HtmlEditor(h =>
+                               {
+                                   h.Settings.AllowDesignView = true;
+                                   h.Settings.AllowHtmlView = true;
+                                   h.Name = "PDescription";
+                                   h.Html = Model.PDescription;
+                                   h.CallbackRouteValues = new { Controller = "Product", Action = "HtmlEditorPartial" };
+                                   h.Width = Unit.Percentage(100);
+                                   h.ToolbarMode = HtmlEditorToolbarMode.Menu;
+                                   h.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "Product", Action = "HtmlEditorPartialImageUpload" };
+                                   h.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadFolder = FBG.Market.Web.Identity.Controllers.PDescHtmlEditorSettings.ImageUploadDirectory;
+                                   h.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(FBG.Market.Web.Identity.Controllers.PDescHtmlEditorSettings.ImageUploadValidationSettings);
+                                   h.SettingsDialogs.InsertImageDialog.SettingsImageSelector.Assign(FBG.Market.Web.Identity.Controllers.PDescHtmlEditorSettings.ImageSelectorSettings);
+                               }).Bind(Model.PDescription).Render();
+                           });
+                       });
+                   });
+
+                   g.Items.AddGroupItem(item =>
+                   {
+                       item.Caption = "Specs";
+
+                       item.Items.Add(model => model.PSpecs, i =>
+                       {
+                           i.ShowCaption = DefaultBoolean.True;
+                           i.Caption = "";
+                           i.SetNestedContent(() =>
+                           {
+                               Html.DevExpress().HtmlEditor(h =>
+                               {
+                                   h.Name = "PSpecs";
+                                   h.Html = Model.PSpecs;
+                                   h.Width = Unit.Percentage(100);
+                                   h.ToolbarMode = HtmlEditorToolbarMode.Menu;
+                                   h.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(FBG.Market.Web.Identity.Controllers.PDescHtmlEditorSettings.ImageUploadValidationSettings);
+                               }).Bind(Model.PSpecs).Render();
+                           });
+
+                       });
+                   });
                });
+
+
            });
-
-
-       });
-       if(ViewData.ModelState.Values.Any(x => x.Errors.Count >= 1))
-        {
-           @Html.DevExpress().Label(lblsettings =>
+           if(ViewData.ModelState.Values.Any(x => x.Errors.Count >= 1))
            {
-               lblsettings.Name = "ErrorMsg";
-               lblsettings.Style.Add("margin-top", "20px");
-               lblsettings.Style.Add("margin-left", "20%");
-               lblsettings.Text = "Error: "+ViewData.ModelState["Error"].Errors[0].ErrorMessage;
-               lblsettings.ControlStyle.ForeColor = System.Drawing.Color.Red;
-           }).GetHtml();
-       }
+              @Html.DevExpress().Label(lblsettings =>
+               {
+                   lblsettings.Name = "ErrorMsg";
+                   lblsettings.Style.Add("margin-top", "20px");
+                   lblsettings.Style.Add("margin-left", "20%");
+                   lblsettings.Text = "Error: "+ViewData.ModelState["Error"].Errors[0].ErrorMessage;
+                   lblsettings.ControlStyle.ForeColor = System.Drawing.Color.Red;
+               }).GetHtml();
+           }
+        }).GetHtml()
 
-
-   }).GetHtml()
-
-       
         @{
             Html.DevExpress().Button(b =>
             {
@@ -397,18 +394,8 @@
                 b.UseSubmitBehavior = true;
                 //b.ClientSideEvents.Click = "addClicked";
             }).Render();
-
         }
-
 
         @{ Html.EndForm(); }
     </div>
-    @*<div id="float-container">
-        <div class="float-child imageZoomNavigator" id="imageZoomNavigator">
-            @Html.Partial("~/Views/Product/ImageZoomNavigator.cshtml", path.ToString())
-        </div>
-        <div class="float-child" id="imagesUpload" style="padding-top:20px; width:90%">
-            @Html.Partial("~/Views/UploadControl/MultiFileSelection.cshtml", path.ToString())
-        </div>
-    </div>*@
 </div> 

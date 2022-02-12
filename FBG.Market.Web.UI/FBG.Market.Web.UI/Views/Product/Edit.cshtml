@@ -3,31 +3,56 @@
 @section HeadResources{
     @Html.Partial("HtmlEditorHeadResources")
 }
-@{
-    ViewBag.Title = "Product";
+@{ ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string path = @Model.PPicture;
     if (string.IsNullOrEmpty(path))
-        path = "";
-
-}
+        path = ""; }
 <style>
+    #FormLayout_PC_0_0_TC {
+        font-size: 15px;
+    }
+
     .dxhe-iframe-wrapper {
         height: 500px;
     }
 </style>
+<script type="text/javascript">
+    var isResetRequired = false;
 
+    function OnSelectedVendorChanged() {
+        isResetRequired = true;
+        add_form.GetEditor("BID").PerformCallback();
+    }
+
+    function BrandComboBox_BeginCallback(s, e) {
+
+        console.log("BrandComboBox_BeginCallback");
+        //e.customArgs["VID"] = add_form.GetEditor("VID").GetValue();
+    }
+
+    function BrandComboBox_EndCallback(s, e) {
+        console.log("BrandComboBox_EndCallback");
+        if (isResetRequired) {
+            isResetRequired = false;
+            s.SetSelectedIndex(0);
+        }
+    }
+
+</script>
 <script src="~/Scripts/DXUploadedFilesContainer.js"></script>
 <script>
     function onDeleteImageClick(s, e) {
         if (confirm("Are you sure to delete the selected image?")) {
-            var path =$("#imagezoomnav-root-path").val();
+            var path = $("#imagezoomnav-root-path").val();
             var pid = $("#current-prod-id").val();
             var activeItem = zoomNavigator.GetActiveItem();
             cbpImageNavigator.PerformCallback({ productID: pid, operation: "Delete", item: activeItem.imageUrl, path: path });
         }
     }
 </script>
+
+
 
 @section LeftPanelContent {
     @Html.Partial("~/Views/Shared/LeftPanelPartial.cshtml")
@@ -36,9 +61,10 @@
 @section RightPanelContent {
 }
 
+
 <div class="grid-container">
     <div id="product-edit-form">
-        @{ Html.BeginForm("Edit", "Product", System.Web.Mvc.FormMethod.Post, new { @class = "edit_form" }); }
+        @{ Html.BeginForm("Edit", "Product", FormMethod.Post, new { @class = "edit_form" }); }
         @Html.Hidden("PID", @Model.PID)
 
         @Html.DevExpress().FormLayout(settings =>
@@ -75,7 +101,11 @@
                            s.ShowModelErrors = true;
                            s.Properties.ValidationSettings.Display = Display.Dynamic;
                            s.Width = Unit.Percentage(80);
+                           //s.ClientSideEvents.SelectedIndexChanged = "OnSelectedVendorChanged";
+                           s.Properties.ClientSideEvents.SelectedIndexChanged = "function(s, e) { BID.PerformCallback({ VID: s.GetValue() }); }";
+
                        });
+
 
                    });
                    i.Items.Add(model => model.BID, ii =>
@@ -84,6 +114,10 @@
                        ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
                        ii.NestedExtension().ComboBox(s =>
                        {
+                           s.CallbackRouteValues = new { Controller = "Product", Action = "GetBrands" };
+                           s.Properties.ClientSideEvents.BeginCallback = "BrandComboBox_BeginCallback";
+                           s.Properties.ClientSideEvents.EndCallback = "BrandComboBox_EndCallback";
+
                            s.Properties.TextField = "BrandName";
                            s.Properties.ValueField = "BrandId";
                            s.Properties.ValueType = typeof(int);
@@ -94,22 +128,6 @@
                        });
 
                    });
-                   /*i.Items.Add(model => model.BrandCategoryId, ii =>
-                   {
-                       ii.Caption = "Brand & Category";
-                       ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
-                       ii.NestedExtension().ComboBox(s =>
-                       {
-                           s.Properties.TextField = "BrandName";
-                           s.Properties.ValueField = "BrandID";
-                           s.Properties.ValueType = typeof(int);
-                           s.Properties.DataSource = FBG.Market.Web.Identity.Utils.GetBrandsCategories();
-                           s.ShowModelErrors = true;
-                           s.Properties.ValidationSettings.Display = Display.Dynamic;
-                           s.Width = Unit.Percentage(80);
-                       });
-
-                   });*/
                    i.Items.Add(model => model.PCategory, ii =>
                    {
                        ii.Caption = "Category";
@@ -358,23 +376,7 @@
                    });
                });
 
-
-               g.Items.AddGroupItem(item =>
-               {
-                   item.Caption = "Images";
-                   item.Items.Add(i =>
-                   {
-                       i.ShowCaption = DefaultBoolean.False;
-                       i.SetNestedContent(() =>
-                       {
-                           @Html.RenderAction("ImageZoomNavigator", "Product", new { productPath = path.ToString() });
-                           @Html.RenderAction("MultiFileSelection", "Product", new { productPath = path.ToString() });
-                       });
-                   });
-               });
            });
-
-
        });
        if (ViewData.ModelState.Values.Any(x => x.Errors.Count >= 1))
        {
@@ -389,8 +391,7 @@
        }
    }).GetHtml()
 
-        @{
-            Html.DevExpress().Button(b =>
+        @{ Html.DevExpress().Button(b =>
             {
                 b.Name = "CancelBtn";
                 b.Text = "Cancel";
@@ -413,17 +414,34 @@
         }
         @{ Html.EndForm(); }
     </div>
-
     <div id="float-container">
         <div class="float-child imageZoomNavigator" id="imageZoomNavigator">
+
             @Html.Hidden("imagezoomnav-root-path", @Model.PPicture)
             @Html.Hidden("current-prod-id", @Model.PID)
+            @Html.Partial("~/Views/Product/ImageZoomNavigator.cshtml", path.ToString())
+
+            @{
+                string[] filePaths = Directory.GetFiles(Server.MapPath(path.ToString()));
+                if (filePaths.Length > 0)
+                {
+                    Html.DevExpress().Button(btnSettings =>
+                    {
+                        btnSettings.Name = "btnDeleteImage";
+                        btnSettings.Text = "Delete";
+                        btnSettings.Style.Add("margin-top", "10px");
+                        btnSettings.Style.Add("margin-left", "70%");
+                        btnSettings.ClientSideEvents.Click = "onDeleteImageClick";
+                    }).GetHtml();
+                }
+            }
         </div>
-        <div class="float-child" id="imagesUpload" style="padding-top:20px; padding-bottom:20px; width:90%">
+        <div class="float-child" id="imagesUpload" style="padding-top:20px; width:90%">
+            @Html.Partial("~/Views/UploadControl/MultiFileSelection.cshtml", path.ToString())
         </div>
     </div>
+
 </div>
 
-<hr />
 <div id="htmlEditor">
 </div>

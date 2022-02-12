@@ -1,8 +1,7 @@
 ﻿@model string
 @{
-    string[] filePaths = Directory.GetFiles(Server.MapPath(Model.ToString()));
     @Html.Hidden("products-path", Model)
-    if (Model != null && filePaths.Length > 0)
+    if ((!string.IsNullOrEmpty(Model)) && FBG.Market.Web.Identity.Utils.CreateDirectoryIfNotPresent(Model))
     {
         @Html.DevExpress().ImageZoom(settings =>
         {
@@ -42,16 +41,5 @@
                 });
             }
         ).GetHtml()
-        if (filePaths.Length > 0)
-        {
-            @Html.DevExpress().Button(btnSettings =>
-            {
-                btnSettings.Name = "btnDeleteImage";
-                btnSettings.Text = "Delete";
-                btnSettings.Style.Add("margin-top", "10px");
-                btnSettings.Style.Add("margin-left", "86%");
-                btnSettings.ClientSideEvents.Click = "onDeleteImageClick";
-            }).GetHtml()
-        }
      }
 }
