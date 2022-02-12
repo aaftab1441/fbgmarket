@@ -525,6 +525,7 @@
     <Content Include="Views\Shared\HtmlEditorHeadResources.cshtml" />
     <Content Include="Views\Shared\ImportGridViewHeadResources.cshtml" />
     <Content Include="Views\Brand\_VendorBrands.cshtml" />
+    <Content Include="Views\Product\_HtmlEditorPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

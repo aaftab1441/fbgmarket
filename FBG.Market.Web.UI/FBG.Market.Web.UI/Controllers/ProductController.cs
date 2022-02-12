@@ -406,6 +406,10 @@ namespace FBG.Market.Web.Identity.Controllers
             HtmlEditorExtension.SaveUploadedFile("ProductDescriptionHtmlEditor", PDescHtmlEditorSettings.ImageUploadValidationSettings, PDescHtmlEditorSettings.ImageUploadDirectory);
             return null;
         }
+        public ActionResult HtmlEditorPartial(string PDescription)
+        {
+            return PartialView("_HtmlEditorPartial", PDescription);
+        }
 
         #region utility functions
         private Boolean isAdminUser()
