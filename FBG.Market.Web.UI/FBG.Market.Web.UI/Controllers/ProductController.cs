@@ -148,23 +148,23 @@ namespace FBG.Market.Web.Identity.Controllers
                         Directory.CreateDirectory(System.Web.HttpContext.Current.Server.MapPath(product.PPicture));
                     }
 
-                    var totalImages = Directory.GetFiles(System.Web.HttpContext.Current.Server.MapPath(product.PPicture), "*.*", SearchOption.AllDirectories).Length;
-                    if (totalImages == 0)
-                    {
-                        string imageUrl = product.PPicture;
+                    //var totalImages = Directory.GetFiles(System.Web.HttpContext.Current.Server.MapPath(product.PPicture), "*.*", SearchOption.AllDirectories).Length;
+                    //if (totalImages == 0)
+                    //{
+                    //    string imageUrl = product.PPicture;
 
-                        if (!string.IsNullOrEmpty(product.ShopifyPicUrl))
-                        {
-                            await DownloadProductImage(product.ShopifyPicUrl, imageUrl, product.PID);
-                        }
-                        if (images.Count > 0)
-                        {
-                            foreach (var image in images)
-                            {
-                                await DownloadProductImage(image, imageUrl, product.PID);
-                            }
-                        }
-                    }
+                    //    if (!string.IsNullOrEmpty(product.ShopifyPicUrl))
+                    //    {
+                    //        await DownloadProductImage(product.ShopifyPicUrl, imageUrl, product.PID);
+                    //    }
+                    //    if (images.Count > 0)
+                    //    {
+                    //        foreach (var image in images)
+                    //        {
+                    //            await DownloadProductImage(image, imageUrl, product.PID);
+                    //        }
+                    //    }
+                    //}
                     if (images.Count > 0)
                     {
                         await UpdateProductNewAsync(productVM);
