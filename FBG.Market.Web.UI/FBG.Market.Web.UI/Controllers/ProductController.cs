@@ -310,14 +310,6 @@ namespace FBG.Market.Web.Identity.Controllers
             return GetProductPartialView(-1); 
         }
 
-        public ActionResult CallbackPanelPartial()
-        {
-            if (!string.IsNullOrEmpty(Request.Params["ShowGrid"]))
-                ViewData["ShowGrid"] = Convert.ToBoolean(Request.Params["ShowGrid"]);
-
-            return PartialView("CallbackPartial");
-        }
-
         public ActionResult ProductPartialView(int brandId=-1)
         {
             return GetProductPartialView(brandId);
@@ -382,8 +374,8 @@ namespace FBG.Market.Web.Identity.Controllers
 
             return PartialView("_Products", GetEntityServerModeSource(brandId));
         }
-
-        public ActionResult CallbackPanelPartial(int productID, string operation, string item,string path)
+        [HttpPost]
+        public ActionResult Delete(int productID, string operation, string item,string path)
         {
             if (operation == "Delete")
             {
@@ -401,21 +393,7 @@ namespace FBG.Market.Web.Identity.Controllers
                     System.IO.File.Delete(fullFileName);
                 }
             }
-            return View(Request.UrlReferrer.ToString());
-        }
-        
-        [HttpPost]
-        public ActionResult BinaryImageColumnPhotoUpdate()
-        {
-            return BinaryImageEditExtension.GetCallbackResult();
-        }
-        public PartialViewResult ImageZoomNavigator(string productPath)
-        {
-            return PartialView("ImageZoomNavigator", productPath);
-        }
-        public ActionResult HtmlEditorPartial(string PDescription)
-        {
-            return PartialView("_HtmlEditorPartial", PDescription);
+            return RedirectToAction("Edit", new { Id = productID });
         }
         
         public ActionResult HtmlEditorPartialImageSelectorUpload()
