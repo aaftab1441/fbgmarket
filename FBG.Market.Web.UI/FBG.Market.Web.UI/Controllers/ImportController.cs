@@ -34,11 +34,12 @@ namespace FBG.Market.Web.Identity.Controllers
                    .Where(x => x.Skip(1).Any());
             var hasDupes = modelDBList.GroupBy(x => new { x.SKUCode, x.UPCCode, x.BID, x.VID, x.PCategory, x.PColor, x.PName })
                    .Where(x => x.Skip(1).Any()).Any();
-            if (dupes!=null && dupes.Any())
+            if (dupes != null && dupes.Any())
             {
                 foreach (var dup in dupes)
                 {
-                    modelDBList = modelDBList.Select(n => {
+                    modelDBList = modelDBList.Select(n =>
+                    {
                         if (n.SKUCode == dup.Key.SKUCode
 && n.UPCCode == dup.Key.UPCCode
 && n.BID == dup.Key.BID
@@ -488,7 +489,95 @@ namespace FBG.Market.Web.Identity.Controllers
 
             }
         }
-                [Authorize]
+
+        private List<string> ValidateImportRecord(ProductsImport import)
+        {
+            List<string> errors = new List<string>();
+
+            if (string.IsNullOrEmpty(import.PColor))
+            {
+                errors.Add("Product Color should not be empty.");
+            }
+            if (import.VID <= 0)
+            {
+                errors.Add("Vendor ID should not be less than 0.");
+            }
+            if (import.BID <= 0)
+            {
+                errors.Add("Brand ID should not be less than 0.");
+            }
+            if (import.PCategory == null)
+            {
+                errors.Add("Category should not be Null.");
+            }
+            if (import.PCategory == null || import.PCategory <= 0)
+            {
+                errors.Add("Category should not be Null or less than 0.");
+            }
+            if (string.IsNullOrEmpty(import.PName))
+            {
+                errors.Add("Product Name should not be Null or Empty.");
+            }
+            if (string.IsNullOrEmpty(import.PColor))
+            {
+                errors.Add("Product Color should not be Null or Empty.");
+            }
+
+
+            // Check Numberic values for the MSRP, FOB, Landed and Wholesale Prices
+            decimal decimalValue;
+            bool isDecimal = Decimal.TryParse(import.PWholesalePrice, out decimalValue);
+            if (!isDecimal)
+            {
+                errors.Add("Whole Sale price should not be valid Number.");
+            }
+            isDecimal = Decimal.TryParse(import.PMSRPPrice, out decimalValue);
+            if (!isDecimal)
+            {
+                errors.Add("MSRP price should not be valid Number.");
+            }
+            isDecimal = Decimal.TryParse(import.PFOBCost, out decimalValue);
+            if (!isDecimal)
+            {
+                errors.Add("FOB cost should not be valid Number.");
+            }
+            isDecimal = Decimal.TryParse(import.PLandedCost, out decimalValue);
+            if (!isDecimal)
+            {
+                errors.Add("Landed Cost price should not be valid Number.");
+            }
+
+            // DB existing Data Check
+            if (!string.IsNullOrEmpty(import.SKUCode))
+            {
+                var skuRetVal = db.Products.FirstOrDefault(item => item.SKUCode.ToLower() == import.SKUCode.ToLower());
+                if (skuRetVal != null)
+                {
+                    errors.Add("SKU Code already exists.");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(import.UPCCode))
+            {
+                var upcRetVal = db.Products.FirstOrDefault(item => item.UPCCode.ToLower() == import.UPCCode.ToLower());
+                if (upcRetVal != null)
+                {
+                    errors.Add("UPC Code already exists.");
+                }
+            }
+
+            if (import.ProductStatusId == 2 || import.ProductStatusId == 3)
+            {
+                if (string.IsNullOrEmpty(import.SKUCode) || string.IsNullOrEmpty(import.UPCCode))
+                {
+                    errors.Add("SKU code, UPC code are required for Final-wholesale & Final-consumer.");
+                }
+            }
+
+            return errors;
+        }
+
+        [Authorize]
         public ActionResult Publish(string selectedIDsHFPublish)
         {
             if (string.IsNullOrEmpty(selectedIDsHFPublish))
@@ -497,7 +586,7 @@ namespace FBG.Market.Web.Identity.Controllers
                 //var modelDBList = modelDb.ToList();
                 //return Content("<script language='javascript' type='text/javascript'>alert('Thanks for Feedback!');</script>");
                 //return Content("No product selected");
-                return Json(new { success = false, message = "No product selected", status = 500  });
+                return Json(new { success = false, message = "No product selected", status = 500 });
             }
             else
             {
@@ -510,31 +599,17 @@ namespace FBG.Market.Web.Identity.Controllers
                 var modelDBList = modelDb.ToList();
                 foreach (var prod in modelDBList)
                 {
-                    if (string.IsNullOrEmpty(prod.PColor) || prod.VID <= 0 || prod.BID <= 0 || prod.PCategory == null
-                        || prod.PCategory <= 0 || string.IsNullOrEmpty(prod.PName) || string.IsNullOrEmpty(prod.PColor))
-                        continue;
-                    //check numberic values for the msrp, fob, landed and wholesale prices
-                    decimal decimalValue;
-                    bool isDecimal = Decimal.TryParse(prod.PWholesalePrice, out decimalValue);
-                    if (!isDecimal)
+                    var validationErrors = ValidateImportRecord(prod);
+                    if (validationErrors.Count() > 0)
                     {
-                        continue;
+                        var errorMessage = "";
+                        foreach (var item in validationErrors)
+                        {
+                            errorMessage += item + "\n";
+                        }
+                        return Json(new { success = false, message = errorMessage, status = 500 });
                     }
-                    isDecimal = Decimal.TryParse(prod.PMSRPPrice, out decimalValue);
-                    if (!isDecimal)
-                    {
-                        continue;
-                    }
-                    isDecimal = Decimal.TryParse(prod.PFOBCost, out decimalValue);
-                    if (!isDecimal)
-                    {
-                        continue;
-                    }
-                    isDecimal = Decimal.TryParse(prod.PLandedCost, out decimalValue);
-                    if (!isDecimal)
-                    {
-                        continue;
-                    }
+
                     //x.SKUCode, x.UPCCode, x.BID, x.VID, x.PCategory, x.PColor, x.PName
                     var retVal = db.Products.Where(pro => pro.UPCCode.ToLower() == prod.UPCCode.ToLower() &&
                     pro.SKUCode.ToLower() == prod.SKUCode.ToLower() &&
@@ -546,7 +621,7 @@ namespace FBG.Market.Web.Identity.Controllers
                      ).FirstOrDefault();
                     //var retVal = db.Products.Where(pro => pro.UPCCode.ToLower() == prod.UPCCode.ToLower() || pro.SKUCode.ToLower() == prod.SKUCode.ToLower()).FirstOrDefault();
                     //Product does not exists in the product DB, insert it
-                    if (retVal==null)
+                    if (retVal == null)
                     {
                         //Insert a new product
                         var model = db.Products;
@@ -559,7 +634,7 @@ namespace FBG.Market.Web.Identity.Controllers
                             UPCCode = prod.UPCCode,
                             BID = prod.BID,
                             SID = prod.SID,
-                            VendorName=prod.VendorName,
+                            VendorName = prod.VendorName,
                             PCategory = Convert.ToInt16(prod.PCategory),
                             PSubCategory = prod.PSubCategory,
                             NRFColorCodeID = prod.NRFColorCodeID,
@@ -582,7 +657,8 @@ namespace FBG.Market.Web.Identity.Controllers
                             model.Add(product);
                             db.SaveChanges();
                             DeleteProductImport(prod.ID);
-                        } catch (Exception ex)
+                        }
+                        catch (Exception ex)
                         {
                             return Json(new { success = false, message = ex.Message, status = 500 });
                             /*if (!string.IsNullOrEmpty(product.SKUCode) && !string.IsNullOrEmpty(product.UPCCode))
@@ -726,7 +802,7 @@ namespace FBG.Market.Web.Identity.Controllers
             "PDescription",
             "PSpecs"};
 
-           
+
             string connectionString = db.Database.Connection.ConnectionString;
             try
             {
@@ -849,7 +925,7 @@ namespace FBG.Market.Web.Identity.Controllers
                             {
                                 row["NRFColorCodeID"] = 0;
                             }
-                            
+
                         }
                         if (GridColumnExists(myDataTable, "SID"))
                         {
@@ -889,7 +965,7 @@ namespace FBG.Market.Web.Identity.Controllers
                         {
                             var inputStr = row["PCategory"].ToString().ToLower();
 
-                            var retVal = RefCategories.FirstOrDefault(item=>inputStr.Contains(item.Category.ToLower()));
+                            var retVal = RefCategories.FirstOrDefault(item => inputStr.Contains(item.Category.ToLower()));
                             if (retVal != null)
                                 row["PCategory"] = retVal.ID;
                             else
@@ -1014,14 +1090,14 @@ namespace FBG.Market.Web.Identity.Controllers
                 Session["DataTableModel"] = model;
             }
             var modelL = db.ProductsImports;
-            foreach(var importProd in modelL.ToList())
+            foreach (var importProd in modelL.ToList())
             {
                 StringBuilder sb = new StringBuilder();
                 if (importProd.BID == null || importProd.BID <= 0)
                 {
                     sb.Append("*Invalid brand*").AppendLine();
                 }
-                if (importProd.VID==null || importProd.VID<=0 )
+                if (importProd.VID == null || importProd.VID <= 0)
                 {
                     sb.Append("*Invalid vendor*").AppendLine();
                 }
@@ -1034,7 +1110,7 @@ namespace FBG.Market.Web.Identity.Controllers
                     sb.AppendLine();
                     sb.Append("*Invalid product color*").AppendLine();
                 }
-                if (importProd.PCategory<=0)
+                if (importProd.PCategory <= 0)
                 {
                     sb.AppendLine();
                     sb.Append("*Invalid product category*").AppendLine();
@@ -1129,12 +1205,16 @@ namespace FBG.Market.Web.Identity.Controllers
             {
                 foreach (var dup in dupes)
                 {
-                    modelLL = modelLL.Select(n => { if (n.SKUCode == dup.Key.SKUCode 
-                        && n.UPCCode == dup.Key.UPCCode
-                        && n.BID == dup.Key.BID
-                        && n.VID == dup.Key.VID
-                        && n.PColor == dup.Key.PColor
-                        && n.PName == dup.Key.PName) { n.PDiscontinued = true; n.Message += "*duplicate product*"; } return n; }).ToList();
+                    modelLL = modelLL.Select(n =>
+                    {
+                        if (n.SKUCode == dup.Key.SKUCode
+&& n.UPCCode == dup.Key.UPCCode
+&& n.BID == dup.Key.BID
+&& n.VID == dup.Key.VID
+&& n.PColor == dup.Key.PColor
+&& n.PName == dup.Key.PName) { n.PDiscontinued = true; n.Message += "*duplicate product*"; }
+                        return n;
+                    }).ToList();
                 }
             }
             //modelL.ToList().ForEach(x => x.Message = "Test message goes here");
