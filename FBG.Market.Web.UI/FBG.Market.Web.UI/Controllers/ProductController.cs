@@ -277,7 +277,7 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             return View();
         }
-        
+
         public ActionResult ExportTo(string selectedIDsHF)
         {
             if (string.IsNullOrEmpty(selectedIDsHF))
@@ -293,7 +293,7 @@ namespace FBG.Market.Web.Identity.Controllers
                 return GridViewExtension.ExportToXlsx(GetGridSettings(), modelDb.ToList());
             }
         }
-        
+
         public async Task<ActionResult> BatchEditingUpdateModelAsync(MVCxGridViewBatchUpdateValues<ProductViewModel, int> updateValues)
         {
             foreach (var product in updateValues.Insert)
@@ -306,11 +306,11 @@ namespace FBG.Market.Web.Identity.Controllers
                 if (updateValues.IsValid(product))
                     await UpdateProductNewAsync(product);
             }
-            
-            return GetProductPartialView(-1); 
+
+            return GetProductPartialView(-1);
         }
 
-        public ActionResult ProductPartialView(int brandId=-1)
+        public ActionResult ProductPartialView(int brandId = -1)
         {
             return GetProductPartialView(brandId);
         }
@@ -333,7 +333,7 @@ namespace FBG.Market.Web.Identity.Controllers
                 Session["BrandId"] = brandId;
                 Session["VendorId"] = user.VID;
 
-                var products = db.Products.Select(product => new ProductViewModel
+                var products = db.Products.OrderByDescending(x => x.CreateDate).Select(product => new ProductViewModel
                 {
                     BID = product.BID,
                     ColorCategoryId = product.ColorCategoryId,
@@ -375,7 +375,7 @@ namespace FBG.Market.Web.Identity.Controllers
             return PartialView("_Products", GetEntityServerModeSource(brandId));
         }
         [HttpPost]
-        public ActionResult Delete(int productID, string operation, string item,string path)
+        public ActionResult Delete(int productID, string operation, string item, string path)
         {
             if (operation == "Delete")
             {
@@ -395,7 +395,7 @@ namespace FBG.Market.Web.Identity.Controllers
             }
             return RedirectToAction("Edit", new { Id = productID });
         }
-        
+
         public ActionResult HtmlEditorPartialImageSelectorUpload()
         {
             HtmlEditorExtension.SaveUploadedImage("ProductDescriptionHtmlEditor", PDescHtmlEditorSettings.ImageSelectorSettings);
@@ -723,7 +723,7 @@ namespace FBG.Market.Web.Identity.Controllers
             };
             return gridViewSettings;
         }
-        
+
         private async Task UpdateProductNewAsync(ProductViewModel model)
         {
             var product = db.Products.FirstOrDefault(p => p.PID == model.PID);
@@ -761,7 +761,7 @@ namespace FBG.Market.Web.Identity.Controllers
             await db.SaveChangesAsync();
             ViewData[EditResultKey] = "Product is updated successfully.";
         }
-        
+
         private async Task DownloadProductImage(string url, string path, int pid)
         {
             try
