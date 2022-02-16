@@ -1,1 +1,10 @@
 /* your styles go here */
+
+p, label, text, h1, h2, h3, h4, h5, h6, input, a, span, td, b {
+    font-family: Verdana !important;
+    font-size: 16px !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 18px !important;
+}
