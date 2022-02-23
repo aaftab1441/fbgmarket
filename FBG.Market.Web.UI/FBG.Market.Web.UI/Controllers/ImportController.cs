@@ -530,22 +530,22 @@ namespace FBG.Market.Web.Identity.Controllers
             bool isDecimal = Decimal.TryParse(import.PWholesalePrice, out decimalValue);
             if (!isDecimal)
             {
-                errors.Add("Whole Sale price should not be valid Number.");
+                errors.Add("Whole Sale price should be valid Number.");
             }
             isDecimal = Decimal.TryParse(import.PMSRPPrice, out decimalValue);
             if (!isDecimal)
             {
-                errors.Add("MSRP price should not be valid Number.");
+                errors.Add("MSRP price should be valid Number.");
             }
             isDecimal = Decimal.TryParse(import.PFOBCost, out decimalValue);
             if (!isDecimal)
             {
-                errors.Add("FOB cost should not be valid Number.");
+                errors.Add("FOB cost should be valid Number.");
             }
             isDecimal = Decimal.TryParse(import.PLandedCost, out decimalValue);
             if (!isDecimal)
             {
-                errors.Add("Landed Cost price should not be valid Number.");
+                errors.Add("Landed Cost price should be valid Number.");
             }
 
             // DB existing Data Check
