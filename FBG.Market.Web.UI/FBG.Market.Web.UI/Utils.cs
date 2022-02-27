@@ -90,6 +90,21 @@ namespace FBG.Market.Web.Identity
             return query.ToList();
         }
 
+        public List<BrandLocal> GetBrandsforVendor(int? vendorID)
+        {
+            var query = from brand in db.Brands
+                        where brand.VID == vendorID
+                        select new BrandLocal
+                        {
+                            BrandID = brand.BID,
+                            BrandName = brand.BrandName,
+                            Description = brand.BrandNotes,
+                            Picture = brand.BrandLogo
+                        };
+
+            return query.ToList();
+        }
+
         public List<ProductStatusLocal> GetProductStatus()
         {
             var query = from prodStatus in db.ProductStatus

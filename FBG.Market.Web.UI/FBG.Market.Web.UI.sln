@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31313.79
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBG.Market.Web.UI", "FBG.Market.Web.UI\FBG.Market.Web.UI.csproj", "{FCC41D1D-01AB-4C58-8D84-96E7705147A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBG.Market.Databackfiller", "FBG.Market.Databackfiller\FBG.Market.Databackfiller.csproj", "{73AF1D70-39E2-4935-8FD4-1693157D880C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FCC41D1D-01AB-4C58-8D84-96E7705147A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCC41D1D-01AB-4C58-8D84-96E7705147A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCC41D1D-01AB-4C58-8D84-96E7705147A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73AF1D70-39E2-4935-8FD4-1693157D880C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73AF1D70-39E2-4935-8FD4-1693157D880C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73AF1D70-39E2-4935-8FD4-1693157D880C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73AF1D70-39E2-4935-8FD4-1693157D880C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

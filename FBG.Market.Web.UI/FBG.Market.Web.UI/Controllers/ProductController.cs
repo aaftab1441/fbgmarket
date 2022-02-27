@@ -805,6 +805,41 @@ namespace FBG.Market.Web.Identity.Controllers
 
             }
         }
+
+        public List<BrandLocal> GetBrandsforVendor(int? vendorID)
+        {
+            IEnumerable<BrandLocal> brands = new List<BrandLocal>();
+
+
+            if (vendorID != null)
+            {
+                brands = from brand in db.Brands
+                         where brand.VID == vendorID
+                         select new BrandLocal
+                         {
+                             BrandID = brand.BID,
+                             BrandName = brand.BrandName,
+                             Description = brand.BrandNotes,
+                             Picture = brand.BrandLogo
+                         };
+            }
+            else
+            {
+                brands = from brand in db.Brands
+                         select new BrandLocal
+                         {
+                             BrandID = brand.BID,
+                             BrandName = brand.BrandName,
+                             Description = brand.BrandNotes,
+                             Picture = brand.BrandLogo
+                         };
+            }
+
+
+            return brands.ToList();
+        }
+
+
         #endregion
     }
     public class PDescHtmlEditorSettings

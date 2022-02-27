@@ -114,14 +114,14 @@
                        ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
                        ii.NestedExtension().ComboBox(s =>
                        {
-                           s.CallbackRouteValues = new { Controller = "Product", Action = "GetBrands" };
+                           s.CallbackRouteValues = new { Controller = "Product", Action = "GetBrandsforVendor" };
                            s.Properties.ClientSideEvents.BeginCallback = "BrandComboBox_BeginCallback";
                            s.Properties.ClientSideEvents.EndCallback = "BrandComboBox_EndCallback";
 
                            s.Properties.TextField = "BrandName";
                            s.Properties.ValueField = "BrandId";
                            s.Properties.ValueType = typeof(int);
-                           s.Properties.DataSource = Utils.GetBrands();
+                           s.Properties.DataSource = Utils.GetBrandsforVendor(Model.VID);
                            s.ShowModelErrors = true;
                            s.Properties.ValidationSettings.Display = Display.Dynamic;
                            s.Width = Unit.Percentage(80);
@@ -392,14 +392,14 @@
    }).GetHtml()
 
         @{ Html.DevExpress().Button(b =>
-            {
-                b.Name = "CancelBtn";
-                b.Text = "Cancel";
-                b.Style.Add("margin-right", "35%");
-                b.Style.Add("float", "right");
-                //b.ControlStyle.CssClass = "editFormButton";
-                b.ClientSideEvents.Click = "function(s, e){ document.location='" + DevExpressHelper.GetUrl(new { Controller = "Product", Action = "Index" }) + "'; }";
-            }).Render();
+              {
+                  b.Name = "CancelBtn";
+                  b.Text = "Cancel";
+                  b.Style.Add("margin-right", "35%");
+                  b.Style.Add("float", "right");
+                 //b.ControlStyle.CssClass = "editFormButton";
+                 b.ClientSideEvents.Click = "function(s, e){ document.location='" + DevExpressHelper.GetUrl(new { Controller = "Product", Action = "Index" }) + "'; }";
+              }).Render();
             Html.DevExpress().Button(b =>
             {
                 b.Name = "UpdateBtn";
