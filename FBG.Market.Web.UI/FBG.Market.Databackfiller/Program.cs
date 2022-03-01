@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
+using FBG.Market.Databackfiller.BlobStorage;
 using FBG.Market.Databackfiller.Helpers;
 using FBG.Market.Web.Identity.Models;
 
@@ -15,6 +16,10 @@ namespace FBG.Market.Databackfiller
     {
         static void Main(string[] args)
         {
+            // Testing Blob Storage
+            AzureBlobClient blobClient = new AzureBlobClient();
+            blobClient.UploadBlob("01.jpg");
+
             // Initialize
             FBGMarketEntities db = new FBGMarketEntities();
             List<ShopifyRecord> shopifyRecords = new List<ShopifyRecord>();
@@ -231,6 +236,7 @@ namespace FBG.Market.Databackfiller
 
             db.SaveChanges();
         }
+
 
 
     }
