@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
@@ -16,10 +17,6 @@ namespace FBG.Market.Databackfiller
     {
         static void Main(string[] args)
         {
-            // Testing Blob Storage
-            AzureBlobClient blobClient = new AzureBlobClient();
-            blobClient.UploadBlob("01.jpg");
-
             // Initialize
             FBGMarketEntities db = new FBGMarketEntities();
             List<ShopifyRecord> shopifyRecords = new List<ShopifyRecord>();
@@ -32,10 +29,10 @@ namespace FBG.Market.Databackfiller
                 shopifyRecords = csv.GetRecords<ShopifyRecord>().ToList();
 
                 // Insert Vendors
-                InsertVendors(GetShopifyRecordsDeepCopy(shopifyRecords), db);
+                //InsertVendors(GetShopifyRecordsDeepCopy(shopifyRecords), db);
 
                 // Insert Categories
-                InsertCategories(GetShopifyRecordsDeepCopy(shopifyRecords), db);
+                //InsertCategories(GetShopifyRecordsDeepCopy(shopifyRecords), db);
 
                 // Backfill Missing rowData
                 shopifyRecords = FillMissingData(shopifyRecords.ToList());
@@ -68,6 +65,22 @@ namespace FBG.Market.Databackfiller
                         db.Products.Add(record);
                         db.SaveChanges();
                         Console.WriteLine("Record Inserted : " + item.Handle);
+
+                        // Upload Image to Blob
+                        if (!string.IsNullOrEmpty(item.ImageSrc))
+                        {
+                            string path = record.Vendor.VendorName + "/" + record.PID.ToString();
+                            string fullpath = Path.GetFullPath("DownloadedImages/" + path);
+                            if (!Directory.Exists(fullpath))
+                            {
+                                Directory.CreateDirectory(fullpath);
+                            }
+
+                            DownloadShopifyImage(item.ImageSrc, fullpath, record.PID.ToString());
+                            AzureBlobClient blobClient = new AzureBlobClient();
+                            string blobURI = blobClient.UploadBlob(record.PID.ToString(), path);
+                            Console.WriteLine("Blob uploaded : " + blobURI);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -76,6 +89,15 @@ namespace FBG.Market.Databackfiller
                         continue;
                     }
                 }
+            }
+        }
+
+        private static void DownloadShopifyImage(string imageURL, string location, string ProductID)
+        {
+            string fullpath = location + "/" + ProductID + ".jpg";
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadFile(new Uri(imageURL), fullpath);
             }
         }
 

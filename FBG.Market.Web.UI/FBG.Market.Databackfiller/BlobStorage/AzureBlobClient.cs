@@ -17,7 +17,7 @@ namespace FBG.Market.Databackfiller.BlobStorage
         private const string basePath = "DownloadedImages/";
         private const string containerName = "development";
 
-        public void UploadBlob(string filename, string prefix)
+        public string UploadBlob(string filename, string prefix)
         {
             try
             {
@@ -28,13 +28,16 @@ namespace FBG.Market.Databackfiller.BlobStorage
                 BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
                 // Create a local file in the ./data/ directory for uploading and downloading
-                string localFilePath = Path.Combine(basePath, filename);
+
+                string localFilePath = Path.Combine(basePath, prefix, filename + ".jpg");
 
                 // Get a reference to a blob
-                BlobClient blobClient = containerClient.GetBlobClient(prefix + "/" + filename);
+                BlobClient blobClient = containerClient.GetBlobClient(prefix +"/"+ filename + ".jpg");
 
                 // Upload data from the local file
                 blobClient.Upload(localFilePath, true);
+
+                return blobClient.Uri.AbsoluteUri;
 
             }
             catch (Exception)
