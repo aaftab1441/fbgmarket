@@ -17,6 +17,10 @@ namespace FBG.Market.Databackfiller
     {
         static void Main(string[] args)
         {
+            // Check all existing elements from Blob Storage
+            // AzureBlobClient blobClient1 = new AzureBlobClient();
+            // blobClient1.ListAllBlobs();
+
             // Initialize
             FBGMarketEntities db = new FBGMarketEntities();
             List<ShopifyRecord> shopifyRecords = new List<ShopifyRecord>();
@@ -29,10 +33,10 @@ namespace FBG.Market.Databackfiller
                 shopifyRecords = csv.GetRecords<ShopifyRecord>().ToList();
 
                 // Insert Vendors
-                //InsertVendors(GetShopifyRecordsDeepCopy(shopifyRecords), db);
+                InsertVendors(GetShopifyRecordsDeepCopy(shopifyRecords), db);
 
                 // Insert Categories
-                //InsertCategories(GetShopifyRecordsDeepCopy(shopifyRecords), db);
+                InsertCategories(GetShopifyRecordsDeepCopy(shopifyRecords), db);
 
                 // Backfill Missing rowData
                 shopifyRecords = FillMissingData(shopifyRecords.ToList());
@@ -47,7 +51,12 @@ namespace FBG.Market.Databackfiller
                         record.Vendor = db.Vendors.FirstOrDefault(c => c.VendorName == item.Vendor);
                         record.PDescription = item.Body_HTML;
                         record.PCategory = Convert.ToInt16(db.RefCategories.FirstOrDefault(c => c.Category == item.CustomProductType).ID);
-                        record.PColor = item.Option1Value;
+
+                        if (item.Option1Name == "Size")
+                            record.PSize = item.Option1Value;
+                        else
+                            record.PColor = item.Option1Value;
+
                         record.SKUCode = item.VariantSKU;
                         record.UPCCode = item.VariantBarcode;
 
@@ -57,10 +66,6 @@ namespace FBG.Market.Databackfiller
                         record.PWholesalePrice = 0;
                         record.PDiscontinued = false;
                         record.PName = item.Title;
-
-                        // TODO Image src
-                        record.ProductImages = new List<ProductImage>();
-                        record.ProductImages.Add(new ProductImage { ImageUrl = item.ImageSrc, Id = new Random(Guid.NewGuid().GetHashCode()).Next() });
 
                         db.Products.Add(record);
                         db.SaveChanges();
@@ -79,6 +84,12 @@ namespace FBG.Market.Databackfiller
                             DownloadShopifyImage(item.ImageSrc, fullpath, record.PID.ToString());
                             AzureBlobClient blobClient = new AzureBlobClient();
                             string blobURI = blobClient.UploadBlob(record.PID.ToString(), path);
+
+                            // Image src
+                            record.ProductImages = new List<ProductImage>();
+                            record.ProductImages.Add(new ProductImage { ImageUrl = blobURI, Id = new Random(Guid.NewGuid().GetHashCode()).Next() });
+                            db.SaveChanges();
+
                             Console.WriteLine("Blob uploaded : " + blobURI);
                         }
                     }
