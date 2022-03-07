@@ -50,15 +50,16 @@ namespace FBG.Market.Databackfiller
 
                         record.Vendor = db.Vendors.FirstOrDefault(c => c.VendorName == item.Vendor);
                         record.PDescription = item.Body_HTML;
-                        record.PCategory = Convert.ToInt16(db.RefCategories.FirstOrDefault(c => c.Category == item.CustomProductType).ID);
+                        if (!string.IsNullOrEmpty(item.CustomProductType))
+                            record.PCategory = Convert.ToInt16(db.RefCategories.FirstOrDefault(c => c.Category == item.CustomProductType).ID);
 
                         if (item.Option1Name == "Size")
                             record.PSize = item.Option1Value;
                         else
                             record.PColor = item.Option1Value;
 
-                        record.SKUCode = item.VariantSKU;
-                        record.UPCCode = item.VariantBarcode;
+                        record.SKUCode = item.VariantSKU.Replace(@"'", "").Trim();
+                        record.UPCCode = item.VariantBarcode.Replace(@"'", "").Trim();
 
                         // Required not in Source File
                         record.SSMA_TimeStamp = Encoding.Unicode.GetBytes("");
@@ -247,7 +248,7 @@ namespace FBG.Market.Databackfiller
                 RefCategory fbgCategory = new RefCategory();
                 fbgCategory.Category = category;
 
-                if (!db.RefCategories.Any(c => c.Category == category))
+                if (!db.RefCategories.Any(c => c.Category == category) && !string.IsNullOrEmpty(category))
                     db.RefCategories.Add(fbgCategory);
             }
 
@@ -263,7 +264,7 @@ namespace FBG.Market.Databackfiller
                 fbgVendor.VendorName = vendor;
                 fbgVendor.UserId = "34efc4d3-3637-4e27-b9a9-a0a4c7a4b34c";
 
-                if (!db.Vendors.Any(c => c.VendorName == vendor))
+                if (!db.Vendors.Any(c => c.VendorName == vendor) && !string.IsNullOrEmpty(vendor))
                     db.Vendors.Add(fbgVendor);
             }
 
