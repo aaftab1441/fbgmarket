@@ -1,0 +1,12 @@
+@Html.DevExpress().CallbackPanel(settings =>
+{
+    settings.Name = "cbp";
+    settings.SettingsLoadingPanel.Enabled = false;
+    settings.CallbackRouteValues = new { Controller = "Product", Action = "CallbackPanelPartial" };
+    settings.SetContent(() =>
+    {
+            Html.RenderPartial("GridPartial");
+        
+    });
+    settings.ClientSideEvents.BeginCallback = "cbp_OnBeginCallback";
+}).GetHtml()

@@ -33,7 +33,8 @@ namespace FBG.Market.Databackfiller
                 shopifyRecords = csv.GetRecords<ShopifyRecord>().ToList();
 
                 // Insert Vendors
-                InsertVendors(GetShopifyRecordsDeepCopy(shopifyRecords), db);
+                InsertVendors(db);
+                InsertBrands(GetShopifyRecordsDeepCopy(shopifyRecords), db);
 
                 // Insert Categories
                 InsertCategories(GetShopifyRecordsDeepCopy(shopifyRecords), db);
@@ -255,23 +256,282 @@ namespace FBG.Market.Databackfiller
             db.SaveChanges();
         }
 
-        private static void InsertVendors(List<ShopifyRecord> shopifyRecords, FBGMarketEntities db)
+        private static void InsertVendors(FBGMarketEntities db)
         {
-            IEnumerable<string> vendors = shopifyRecords.Select(c => c.Vendor).Distinct().ToList();
-            foreach (string vendor in vendors)
+            var vendor = new Vendor
             {
-                Vendor fbgVendor = new Vendor();
-                fbgVendor.VendorName = vendor;
-                fbgVendor.UserId = "34efc4d3-3637-4e27-b9a9-a0a4c7a4b34c";
+                VID = 1,
+                VendorName = "Nasign",
+                VendorAcronym = "NSN",
+                VendorAddress = "서울시 광진구 동일로 286-1(군자동)",
+                VendorCityState = "Seoul",
+                VendorCountry = "Korea",
+                VendorEmail = "info@FutureBrandGroup.com",
+                VendorWebsite = "http://www.oryany.co.kr/",
+                VendorLogo = "oryany.png",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
 
-                if (!db.Vendors.Any(c => c.VendorName == vendor) && !string.IsNullOrEmpty(vendor))
-                    db.Vendors.Add(fbgVendor);
-            }
+            vendor = new Vendor
+            {
+                VID = 2,
+                VendorName = "KIWI",
+                VendorAcronym = "KIW",
+                VendorEmail = "info@FutureBrandGroup.com",
+                VendorWebsite = "http://fbgmarket.com/",
+                VendorLogo = "oryany.png",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 3,
+                VendorName = "BALIBALI",
+                VendorAcronym = "BALI",
+                VendorAddress = "Jl. Meliling No.kangin, Meliling, Kec",
+                VendorEmail = "info@FutureBrandGroup.com",
+                VendorWebsite = "http://fbgmarket.com/",
+                VendorLogo = "logobalibali.png",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 4,
+                VendorName = "FFC",
+                VendorAcronym = "FFC",
+                VendorEmail = "info@FutureBrandGroup.com",
+                VendorWebsite = "http://www.oryany.co.kr/",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 5,
+                VendorName = "FUTURE",
+                VendorAcronym = "FBG",
+                VendorAddress = "23-12 41st Street",
+                VendorCityState = "Astoria, new York",
+                VendorCountry = "USA",
+                VendorPhone = "212-665-9900",
+                VendorEmail = "info@FutureBrandGroup.com",
+                VendorWebsite = "http://www.oryany.co.kr/",
+                VendorLogo = "oryany.png",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 6,
+                VendorName = "Unplugged",
+                VendorAcronym = "UPLG",
+                VendorCityState = "Houston",
+                VendorCountry = "USA",
+                VendorPhone = "212-665-9900",
+                VendorEmail = "info@FutureBrandGroup.com",
+                VendorWebsite = "http://www.oryany.co.kr/",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 7,
+                VendorName = "Good People",
+                VendorAcronym = "GPPL",
+                VendorCityState = "Paris",
+                VendorCountry = "France",
+                VendorPhone = "(233) 434-3234",
+                VendorEmail = "info@goodpeople.com",
+                VendorWebsite = "http://www.goodpeople.com/",
+                VendorLogo = "oryany.png",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 8,
+                VendorName = "Chanour",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 9,
+                VendorName = "Code917",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 10,
+                VendorName = "Katrina Szish x JELAVU",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 11,
+                VendorName = "Lancaster",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 12,
+                VendorName = "Jelavu",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 13,
+                VendorName = "Oryany",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 14,
+                VendorName = "Saint G",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 15,
+                VendorName = "TMRW STUDIO",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 16,
+                VendorName = "UN BILLION",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 17,
+                VendorName = "FFC NEW YORK",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
+
+            vendor = new Vendor
+            {
+                VID = 18,
+                VendorName = "TMRW STUDIO",
+                UserId = "b74a6497-15bc-41e8-abe8-fb822dc42474"
+            };
+            if (!db.Brands.Any(c => c.BrandName == vendor.VendorName))
+                db.Vendors.Add(vendor);
 
             db.SaveChanges();
         }
 
+        private static void InsertBrands(List<ShopifyRecord> shopifyRecords, FBGMarketEntities db)
+        {
+            IEnumerable<string> brands = shopifyRecords.Select(c => c.Vendor).Distinct().ToList();
+            foreach (string brand in brands)
+            {
+                Brand fbgBrand = new Brand();
+                fbgBrand.BrandName = brand;
+                if (fbgBrand.BrandName.ToLower().Contains("saint"))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "kiwi").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 2;
+                }
+                else if(fbgBrand.BrandName.ToLower().Contains("oryany"))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "nasign").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 1;
+                }
+                else if (fbgBrand.BrandName.ToLower().Contains("tmrw") || fbgBrand.BrandName.ToLower().Contains("billion")
+                    || fbgBrand.BrandName.ToLower().Contains("ffc") || fbgBrand.BrandName.ToLower().Contains("unknown"))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "ffc").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 2;
+                }
+                else if (!fbgBrand.BrandName.ToLower().Contains("katrina") && (fbgBrand.BrandName.ToLower().Contains("code") || fbgBrand.BrandName.ToLower().Contains("jelavu")))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "future").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 5;
+                }
+                else if (fbgBrand.BrandName.ToLower().Contains("plugged"))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "unplugged").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 2;
+                }
+                else if (fbgBrand.BrandName.ToLower().Contains("bali"))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "balibali").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 2;
+                }
+                else if (fbgBrand.BrandName.ToLower().Contains("chanour"))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "chanour").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 2;
+                }
+                else if (fbgBrand.BrandName.ToLower().Contains("good"))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName == "Good People").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 2;
+                }
+                else if (fbgBrand.BrandName.ToLower().Contains("katrina"))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "katrina szish x jelavu").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 2;
+                }
+                else if (fbgBrand.BrandName.ToLower().Contains("lancaster"))
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "lancaster").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 2;
+                }
+                else
+                {
+                    fbgBrand.VID = db.Vendors.Where(v => v.VendorName.ToLower() == "future").FirstOrDefault().VID;
+                    fbgBrand.BrandCategory = 5;
+                }
 
+                if (!db.Brands.Any(c => c.BrandName == brand) && !string.IsNullOrEmpty(brand))
+                    db.Brands.Add(fbgBrand);
+            }
 
+            db.SaveChanges();
+        }
     }
 }

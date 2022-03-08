@@ -253,7 +253,7 @@ namespace FBG.Market.Web.Identity.Controllers
                         product.PLandedCost = model.PLandedCost;
                     }
                     product.PName = model.PName;
-                    product.PPicture = model.PPicture;
+                    
                     product.SKUCode = model.SKUCode;
                     product.UPCCode = model.UPCCode;
                     product.PMSRPPrice = model.PMSRPPrice;
@@ -268,6 +268,7 @@ namespace FBG.Market.Web.Identity.Controllers
             catch (Exception e)
             {
                 ViewData["EditError"] = e.Message;
+                return PartialView("Edit", model);
             }
 
             return RedirectToAction("Index");
@@ -282,14 +283,16 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             if (string.IsNullOrEmpty(selectedIDsHF))
             {
-                var modelDb = db.Products;
-                var modelDBList = modelDb.ToList();
                 return RedirectToAction("Index");
             }
             else
             {
                 var tokens = selectedIDsHF.Split(',');
                 var modelDb = db.Products.Where(item => tokens.ToList().Contains(item.PID.ToString())).ToList();
+                foreach (var product in modelDb)
+                {
+                    product.PPicture = db.ProductImages.Where(i => i.ProductId == product.PID).FirstOrDefault()?.ImageUrl;
+                }
                 return GridViewExtension.ExportToXlsx(GetGridSettings(), modelDb.ToList());
             }
         }

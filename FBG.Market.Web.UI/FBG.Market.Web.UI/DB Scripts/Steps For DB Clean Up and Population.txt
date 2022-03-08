@@ -1,0 +1,19 @@
+Path for files: E:\Office\FundaCerit\fbgmarket\Scripts
+--Step 1 Execute cleanup script (truncate_tables)
+--Step 2 Run script to create Roles
+--Step 4 Create user with utility Application 
+	ConnectionString
+		Data Source=192.185.7.20;Initial Catalog=fbgmaket_dev_fbgmarket;Integrated Security=false;user id=fbgmaket_dev_admin;password=Fbg_2022_devdb!
+	execute Drop script (FK_AspNetUsers_Vendor_FK_constraint)
+	create user with Email: funda.cerit@futurebrandsgroup.com pass: Fbg_2022_funda!
+	execute Add script
+--Step 5 Login User in web.ui App UserName
+	update connectionString in web.config
+		<add name="IdentityDbContext" connectionString="Data Source=192.185.7.20;Initial Catalog=fbgmaket_dev_fbgmarket;Integrated Security=false;user id=fbgmaket_dev_admin;password=Fbg_2022_devdb!;MultipleActiveResultSets=True;" providerName="System.Data.SqlClient" />
+		<add name="FBGMarketEntities" connectionString="metadata=res://*/Models.FBGMarket.csdl|res://*/Models.FBGMarket.ssdl|res://*/Models.FBGMarket.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=192.185.7.20;initial catalog=fbgmaket_dev_fbgmarket;user id=fbgmaket_dev_admin;password=Fbg_2022_devdb!;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+--Step 6 Run Backfill App 
+	Change fbgVendor.userId
+	connectionString
+		<add name="IdentityDbContext" connectionString="Data Source=192.185.7.20;Initial Catalog=fbgmaket_dev_fbgmarket;Integrated Security=false;user id=fbgmaket_dev_admin;password=Fbg_2022_devdb!;MultipleActiveResultSets=True;" providerName="System.Data.SqlClient" />
+		<add name="FBGMarketEntities" connectionString="metadata=res://*/Models.FBGMarket.csdl|res://*/Models.FBGMarket.ssdl|res://*/Models.FBGMarket.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=192.185.7.20;initial catalog=fbgmaket_dev_fbgmarket;user id=fbgmaket_dev_admin;password=Fbg_2022_devdb!;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+--Step 3 ASPNetUserRoles -> Add userId: AspNetUsers Id and RoleId: AspNetRoles SuperAdmin Id
