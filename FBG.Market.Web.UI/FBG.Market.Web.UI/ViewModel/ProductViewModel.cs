@@ -9,11 +9,9 @@ namespace FBG.Market.Web.Identity.ViewModel
 {
     public class ProductViewModel
     {
-        public const int MyInt_Default = 1;
         [Required(ErrorMessage = "Brand is required")]
-        [DefaultValue(MyInt_Default)]
         [Range(1, int.MaxValue)]
-        public Nullable<int> BID { get; set; } = 14;
+        public Nullable<int> BID { get; set; }
         public int PID { get; set; }
 
         [RegularExpression(@"^[a-zA-Z0-9_-]{1,20}$", ErrorMessage = "SKU Code is not valid, should be (1-20) characters")]
@@ -27,14 +25,11 @@ namespace FBG.Market.Web.Identity.ViewModel
         public string PSize { get; set; }
 
         [Required(ErrorMessage = "Category is required")]
-        [DefaultValue(MyInt_Default)]
         [Range(1, int.MaxValue)]
-        public short PCategory { get; set; } = MyInt_Default;
+        public short? PCategory { get; set; }
         public string PSubCategory { get; set; }
-        [DefaultValue(MyInt_Default)]
-        public Nullable<int> NRFColorCodeID { get; set; } = MyInt_Default;
-        [DefaultValue(MyInt_Default)]
-        public Nullable<int> SID { get; set; } = MyInt_Default;
+        public Nullable<int> NRFColorCodeID { get; set; }
+        public Nullable<int> SID { get; set; }
         public string PDescription { get; set; }
         public string PSpecs { get; set; }
         public string PCoutryofOrigin { get; set; }
@@ -46,18 +41,15 @@ namespace FBG.Market.Web.Identity.ViewModel
         public Nullable<decimal> PMSRPPrice { get; set; }
         public string PPicture { get; set; }
         public string Message { get; set; }
-        public Nullable<int> ProductStatusId { get; set; } = MyInt_Default;
+        public Nullable<int> ProductStatusId { get; set; }
         [Required(ErrorMessage = "Vendor is required")]
-        [DefaultValue(MyInt_Default)]
         [Range(1, int.MaxValue)]
-        public Nullable<int> VID { get; set; } = MyInt_Default;
-        [DefaultValue(MyInt_Default)]
-        public Nullable<int> ColorCategoryId { get; set; } = MyInt_Default;
+        public Nullable<int> VID { get; set; }
+        public Nullable<int> ColorCategoryId { get; set; }
         public string ShopifyPicUrl { get; set; }
         public string VendorName { get; set; }
         public Nullable<long> GroupId { get; set; }
-        [DefaultValue(MyInt_Default)]
-        public Nullable<int> BrandCategoryId { get; set; } = 14;
+        public Nullable<int> BrandCategoryId { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
     }

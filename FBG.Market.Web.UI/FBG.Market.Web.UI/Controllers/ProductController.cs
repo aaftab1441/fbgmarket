@@ -73,8 +73,8 @@ namespace FBG.Market.Web.Identity.Controllers
                     || model.PWholesalePrice <= 0 || model.PMSRPPrice <= 0 || model.PFOBCost <= 0 || model.PLandedCost <= 0)
                 {
                     ModelState.AddModelError("Error", "SKU code, UPC code, Wholesale, MSRP, FOB, and Landed cost are required for Final-wholesale & Final-consumer");
+                    return PartialView("Add", model);
                 }
-                return PartialView("Add", model);
             }
 
 
@@ -223,8 +223,8 @@ namespace FBG.Market.Web.Identity.Controllers
                     || model.PWholesalePrice <= 0 || model.PMSRPPrice <= 0 || model.PFOBCost <= 0 || model.PLandedCost <= 0)
                 {
                     ModelState.AddModelError("Error", "SKU code, UPC code, Wholesale, MSRP, FOB, and Landed cost fields are required for Final-wholesale & Final-consumer");
+                    return PartialView("Edit", model);
                 }
-                return PartialView("Edit", model);
             }
 
             try
@@ -235,7 +235,7 @@ namespace FBG.Market.Web.Identity.Controllers
                     product.BID = model.BID;
                     product.BrandCategoryId = model.BID;
                     product.VID = model.VID;
-                    product.PCategory = model.PCategory;
+                    product.PCategory = (short)model.PCategory;
                     product.PSubCategory = model.PSubCategory;
                     product.PSize = model.PSize;
                     product.NRFColorCodeID = model.NRFColorCodeID;
@@ -747,7 +747,7 @@ namespace FBG.Market.Web.Identity.Controllers
             product.GroupId = model.GroupId;
             product.Message = model.Message;
             product.NRFColorCodeID = model.NRFColorCodeID;
-            product.PCategory = model.PCategory;
+            product.PCategory = (short)model.PCategory;
             product.PColor = model.PColor;
             product.PCoutryofOrigin = model.PCoutryofOrigin;
             product.PDescription = model.PDescription;
