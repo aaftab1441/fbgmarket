@@ -384,24 +384,27 @@
     </div>
 }
 <div style="
-     margin-left: 2px;
      padding-bottom: 10px;
      padding-top: 50px;
-     ">
+     display: flex; 
+     justify-content: flex-end">
     @using (Html.BeginForm("UploadControlUpload", "Import", FormMethod.Post))
     {
         @Html.DevExpress().UploadControl(settings =>
    {
        settings.Name = "UploadControlFile";
-       settings.Width = System.Web.UI.WebControls.Unit.Percentage(60);
+       settings.Style.Add("float", "right");
+       settings.Style.Add("margin-right", "20px");
+       settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
        settings.CallbackRouteValues = new { Controller = "Import", Action = "UploadControlUpload" };
        settings.ShowUploadButton = true;
+       settings.AddUploadButtonsHorizontalPosition = AddUploadButtonsHorizontalPosition.Right;
        settings.ShowProgressPanel = true;
        settings.NullText = "Browse product excel file (XLSX)...";
        settings.PreRender = (sender, e) =>
        {
            ASPxUploadControl control = (ASPxUploadControl)sender;
-           control.BrowseButton.Text = "Import File";
+           control.BrowseButton.Text = "Browse";
        };
        settings.ClientSideEvents.FileUploadComplete = "function(s, e) { productsimport.PerformCallback({ path: e.callbackData}); }";
    }).GetHtml()}
