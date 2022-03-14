@@ -354,6 +354,7 @@
     <Content Include="Content\UploadControl\UploadFolder\sblvfwra.2jz_White Background.jpg" />
     <Content Include="DB Scripts\FK_AspNetUsers_Vendor_FK_constraint.sql" />
     <Content Include="DB Scripts\Insert_ASPNetRoles.sql" />
+    <Content Include="DB Scripts\Populate_AspnetUsers.sql" />
     <Content Include="DB Scripts\Populate_Category.sql" />
     <Content Include="DB Scripts\Populate_NRF_Color.sql" />
     <Content Include="DB Scripts\Populate_Roles.sql" />

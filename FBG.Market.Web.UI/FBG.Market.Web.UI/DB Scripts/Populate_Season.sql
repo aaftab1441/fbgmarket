@@ -1,4 +1,4 @@
-USE [fbgmaket_dev_fbgmarket]
+USE [fbgmaket_fbgmarket]
 GO
 SET IDENTITY_INSERT [dbo].[RefSeason] ON 
 GO
@@ -16,5 +16,14 @@ INSERT [dbo].[RefSeason] ([SID], [Season]) VALUES (7, N'Fall')
 GO
 INSERT [dbo].[RefSeason] ([SID], [Season]) VALUES (8, N'No Season')
 GO
+INSERT [dbo].[RefSeason] ([SID], [Season]) VALUES (9, N'SS 22')
+GO
+INSERT [dbo].[RefSeason] ([SID], [Season]) VALUES (10, N'FW 22')
+GO
+INSERT [dbo].[RefSeason] ([SID], [Season]) VALUES (11, N'SS 23')
+GO
+INSERT [dbo].[RefSeason] ([SID], [Season]) VALUES (12, N'FW 23')
+GO
 SET IDENTITY_INSERT [dbo].[RefSeason] OFF
 GO
+
