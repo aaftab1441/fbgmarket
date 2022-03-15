@@ -58,9 +58,7 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             if (string.IsNullOrEmpty(selectedIDsHF))
             {
-                var modelDb = db.Products;
-                var modelDBList = modelDb.ToList();
-                return RedirectToAction("Index");
+                return GridViewExtension.ExportToXlsx(GetGridSettings(), new List<ProductsImport>());
             }
             else
             {
@@ -1206,8 +1204,8 @@ namespace FBG.Market.Web.Identity.Controllers
                 {
                     modelLL = modelLL.Select(n =>
                     {
-                        if (n.SKUCode == dup.Key.SKUCode && n.UPCCode == dup.Key.UPCCode && n.BID == dup.Key.BID 
-                        && n.VID == dup.Key.VID && n.PColor == dup.Key.PColor && n.PName == dup.Key.PName) 
+                        if (n.SKUCode == dup.Key.SKUCode && n.UPCCode == dup.Key.UPCCode && n.BID == dup.Key.BID
+                        && n.VID == dup.Key.VID && n.PColor == dup.Key.PColor && n.PName == dup.Key.PName)
                         { n.PDiscontinued = true; n.Message += "*duplicate product*"; }
                         return n;
                     }).ToList();
