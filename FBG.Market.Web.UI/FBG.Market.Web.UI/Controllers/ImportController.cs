@@ -29,9 +29,7 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             if (string.IsNullOrEmpty(selectedIDsHF))
             {
-                var modelDb = db.Products;
-                var modelDBList = modelDb.ToList();
-                return RedirectToAction("Index");
+                return GridViewExtension.ExportToXlsx(GetGridSettings(), new List<ProductsImport>());
             }
             else
             {

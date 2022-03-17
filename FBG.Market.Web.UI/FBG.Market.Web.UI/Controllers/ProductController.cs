@@ -253,7 +253,7 @@ namespace FBG.Market.Web.Identity.Controllers
                         product.PLandedCost = model.PLandedCost;
                     }
                     product.PName = model.PName;
-                    
+
                     product.SKUCode = model.SKUCode;
                     product.UPCCode = model.UPCCode;
                     product.PMSRPPrice = model.PMSRPPrice;
@@ -283,7 +283,7 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             if (string.IsNullOrEmpty(selectedIDsHF))
             {
-                return RedirectToAction("Index");
+                return GridViewExtension.ExportToXlsx(GetGridSettings(), new List<Product>());
             }
             else
             {
