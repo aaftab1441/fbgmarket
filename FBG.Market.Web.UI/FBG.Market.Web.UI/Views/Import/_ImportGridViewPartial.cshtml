@@ -178,9 +178,8 @@ gridViewSettings.Styles.Header.Font.Size = new FontUnit(10);
             col.Caption = "Product Id";
             col.Width = System.Web.UI.WebControls.Unit.Pixel(80);
         });
-        
-        //Duplicate
-        gridViewSettings.Columns.Add(c =>
+//Duplicate
+gridViewSettings.Columns.Add(c =>
         {
             c.Width = System.Web.UI.WebControls.Unit.Pixel(130);
 
@@ -505,51 +504,40 @@ gridViewSettings.Columns.Add(col =>
             col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
     //col.GroupIndex = 0;
     col.Visible = false;
+    //col.Settings.AllowAutoFilter = DefaultBoolean.False;
+    col.FieldName = "GroupId";
+            col.Caption = "Group";
 
+        });
+        gridViewSettings.Settings.ShowGroupPanel = true;
+
+/*gridViewSettings.BeforeGetCallbackResult = (sender, e) =>
+{
+    MVCxGridView gridL = (MVCxGridView)sender;
+    //string[] columnNames = ViewBag.GroupedColumns.Split(';');
+    gridL.ClearSort();
+    //foreach (string name in columnNames)
+    {
+        gridL.GroupBy(gridL.Columns["GroupId"]);
+    }
+    gridL.ExpandAll();
+};*/
 //For tooltip
 gridViewSettings.SettingsPager.EnableAdaptivity = true;
 
-                if((string)rowValues[1]!="" && !clientData.ContainsKey(Convert.ToInt32(rowValues[0])))
-                    clientData.Add(Convert.ToInt32(rowValues[0]), rowValues[1]);
+        gridViewSettings.SettingsExport.BeforeExport = (sender, e) =>
+        {
+            MVCxGridView gridView = sender as MVCxGridView;
+    //VID
+    gridView.Columns["PID"].Visible = true;
 
-            }
-            e.Properties.Add("cpTooltipList", clientData);
-        };*/
     //ID
     gridView.Columns["ID"].Visible = false;
     //PPicture
     gridView.Columns["PDiscontinued"].Visible = false;
-    gridView.Columns["PID"].Visible = true;
 
-
-        {
-            MVCxGridView gridN = s as MVCxGridView;
-            int startIndex = gridN.VisibleStartIndex;
-            int endIndex = gridN.VisibleStartIndex + gridN.SettingsPager.PageSize;
-            var clientData = new Dictionary<int, object>();
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                var rowValues = gridN.GetRowValues(i, new string[] { "ID", "Message" }) as object[];
-                if ((string)rowValues[1] != "" && !clientData.ContainsKey(Convert.ToInt32(rowValues[0])))
-                    clientData.Add(Convert.ToInt32(rowValues[0]), rowValues[1]);
-
-            }
-            e.Properties.Add("cpTooltipList", clientData);
         };
 
-        /*gridViewSettings.HtmlDataCellPrepared = (s, e) =>
-        {
-
-            e.Cell.Attributes.Add("onmouseover", String.Format("OnMouseMove(this, event, '{0}');", e.KeyValue));
-        };*/
-        //
-
-        /*gridViewSettings.HtmlDataCellPrepared = (s, e) =>
-        {
-
-            e.Cell.Attributes.Add("onmouseover", String.Format("OnMouseMove(this, event, '{0}');", e.KeyValue));
-        };*/
-        //
         gridViewSettings.HtmlDataCellPrepared = (sender, e) =>
         {
             if (e.DataColumn.FieldName == "PDiscontinued")

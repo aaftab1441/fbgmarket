@@ -123,7 +123,6 @@
             alert(selectedIDs);
         }
         function OnSubmitClick(s, e) {
-            console.log("OnSubmitClick: " + selectedIDs);
             //Write all selected keys to hidden input. Pass them on post action.
             $("#selectedIDsHFPublish").val(selectedIDs);
             //document.getElementById("publishForm").submit();
@@ -158,15 +157,21 @@
             //Write all selected keys to hidden input. Pass them on post action.
             $("#selectedIDsHF").val(selectedIDs);
             //if (confirm('Do you really want to export the record(s
-            document.getElementById("exportForm").submit();
+            if (selectedIDs == undefined || selectedIDs == "") {
+                alert("Please select product(s) to export");
+                return;
+            }
+            else {
+                document.getElementById("exportForm").submit();
+            }
         }
-            console.log("OnDeleteClick: " + selectedIDs);
+        function OnDeleteClick(s, e) {
             //Write all selected keys to hidden input. Pass them on post action.
             $("#selectedIDsHF").val(selectedIDs);
-
             if (selectedIDs == undefined || selectedIDs == "") {
                 alert("Please select product(s) to delete");
                 return;
+            }
             const data = { selectedIDsHF: selectedIDs };
             if (confirm('Do you really want to delete the product(s)??')) {
                 fetch('/Import/Delete', {
@@ -186,7 +191,6 @@
                         productsimport.Refresh();
                         console.error('Error:', error);
                     });
-                //e.preventDefault();
             }
         }
     </script>
@@ -261,7 +265,7 @@
             }
     </style>
     <script>
-            var val = -1;
+        $(document).ready(function () {
             $('#dynamicContentContainer').empty();
             $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Import")');
         });
