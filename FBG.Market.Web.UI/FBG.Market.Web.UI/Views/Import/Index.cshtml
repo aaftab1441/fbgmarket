@@ -1,5 +1,4 @@
-﻿@model List<FBG.Market.Web.Identity.Models.ProductsImport>
-@{
+﻿@{
     ViewBag.Title = "Import Products";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -15,14 +14,12 @@
     <script src="~/Scripts/dx.all.js"></script>
     <script type="text/javascript">
         function OnContextMenuItemClick(s, e) {
-            console.log(e.item.name);
             if (e.item.name == "GroupProducts") {
                 //if (confirm('Do you really want to group the product(s)?'))
                 {
                     if (selectedIDs != undefined)
                         GroupProducts();
                 }
-
             }
             if (e.item.name == "PublishProducts") {
                 if (selectedIDs == undefined || selectedIDs == "") {
@@ -33,7 +30,6 @@
                     if (selectedIDs != undefined)
                         OnSubmitClick();
                 }
-
             } else if (e.item.name == "DeleteProducts") {
                 if (selectedIDs == undefined || selectedIDs == "") {
                     alert("Please select product(s) to delete")
@@ -55,13 +51,10 @@
             }
         }
         function GroupProducts(s, e) {
-            console.log('GroupProducts');
-            console.log("GroupProducts: " + selectedIDs);
             //Write all selected keys to hidden input. Pass them on post action.
             $("#selectedIDsHFPublish").val(selectedIDs);
             const data = { selectedIDsHFToGroup: selectedIDs };
             if (confirm('Do you really want to group the record(s)?')) {
-
                 fetch('/Import/GroupProducts', {
                     method: 'POST', // or 'PUT'
                     headers: {
@@ -74,32 +67,22 @@
                         console.log(data.message);
                         productsimport.Refresh();
                         alert(data.message);
-
                     })
                     .catch((error) => {
                         productsimport.Refresh();
                         console.error('Error:', error);
-
                     });
-            }
-            else {
-                //alert('Else called');
-                //e.preventDefault();
             }
         }
         // Required for speed-up of call backs (http://www.devexpress.com/Support/Center/Question/Details/Q569354)
         function Grid_SelectionChanged(s, e) {
-
             if (e.isChangedOnServer) return;
-
             var key = s.GetRowKey(e.visibleIndex);
             if (e.isSelected)
                 s.cpSelectedKeys.push(key);
             else
                 s.cpSelectedKeys = RemoveElementFromArray(s.cpSelectedKeys, key);
-
             // do custom action with the s.cpSelectedKeys
-
             selectedIDs = "";
             for (var index = 0; index < s.cpSelectedKeys.length; index++) {
                 selectedIDs += s.cpSelectedKeys[index] + ",";
@@ -108,7 +91,6 @@
                 selectedIDs = selectedIDs.substring(0, selectedIDs.length - 1);
             }
         }
-
         // Required for speed-up of call backs (http://www.devexpress.com/Support/Center/Question/Details/Q569354)
         function RemoveElementFromArray(array, element) {
             var index = array.indexOf(element);
@@ -129,22 +111,18 @@
             e.customArgs["selectedIDs"] = selectedIDs;
         }
         function OnSelectionChanged(s, e) {
-
             s.GetSelectedFieldValues("ID", GetSelectedFieldValuesCallback);
         }
         function GetSelectedFieldValuesCallback(values) {
             //Capture all selected keys
             selectedIDs = values.join(',');
             console.log("GetSelectedFieldValuesCallback: " + selectedIDs);
-
         }
         function OnClick(s, e) {
             //Show all selected keys on client side
             alert(selectedIDs);
         }
         function OnSubmitClick(s, e) {
-            console.log('OnSubmitClick');
-            console.log("OnSubmitClick: " + selectedIDs);
             //Write all selected keys to hidden input. Pass them on post action.
             $("#selectedIDsHFPublish").val(selectedIDs);
             //document.getElementById("publishForm").submit();
@@ -155,7 +133,6 @@
             }
             const data = { selectedIDsHFPublish: selectedIDs };
             if (confirm('Do you really want to publish the record(s)?')) {
-
                 fetch('/Import/Publish', {
                     method: 'POST', // or 'PUT'
                     headers: {
@@ -168,17 +145,11 @@
                         console.log(data.message);
                         productsimport.Refresh();
                         alert(data.message);
-
                     })
                     .catch((error) => {
                         productsimport.Refresh();
                         console.error('Error:', error);
-
                     });
-            }
-            else {
-                //alert('Else called');
-                //e.preventDefault();
             }
         }
         function OnExportClick(s, e) {
@@ -195,23 +166,32 @@
             }
         }
         function OnDeleteClick(s, e) {
-            console.log('OnDeleteClick');
-            console.log("OnDeleteClick: " + selectedIDs);
-            console.log("OnDeleteClick: " + selectedIDs);
             //Write all selected keys to hidden input. Pass them on post action.
             $("#selectedIDsHF").val(selectedIDs);
             if (selectedIDs == undefined || selectedIDs == "") {
                 alert("Please select product(s) to delete");
                 return;
             }
-            else if (confirm('Do you really want to delete the product(s)?')) {
-                document.getElementById("deleteForm").submit();
+            const data = { selectedIDsHF: selectedIDs };
+            if (confirm('Do you really want to delete the product(s)??')) {
+                fetch('/Import/Delete', {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        productsimport.Refresh();
+                        alert(data.message);
+                    })
+                    .catch((error) => {
+                        productsimport.Refresh();
+                        console.error('Error:', error);
+                    });
             }
-            else {
-                //alert('Else called');
-                //e.preventDefault();
-            }
-
         }
     </script>
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/GridView.css")" />
@@ -286,24 +266,9 @@
     </style>
     <script>
         $(document).ready(function () {
-            debugger
-            var val = -1;
             $('#dynamicContentContainer').empty();
-            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Product")?brandId=' + val);
-            console.log("brandlistcombo.GetValue(): " + val);
+            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Import")');
         });
-        function selectBox_valueChanged(data) {
-            console.log("brandlistcombo data: " + data);
-            $('#dynamicContentContainer').empty();
-            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Product")?brandId=' + data);
-        }
-        function SelectedIndexChanged() {
-           // var val = brandlistcombo.GetValue();
-            var val = -1;
-            console.log("brandlistcombo.GetValue(): " + val);
-            $('#dynamicContentContainer').empty();
-            $('#dynamicContentContainer').load('@Url.Action("GridViewPartial", "Product")?brandId=' + val);
-        }
     </script>
 }
 
@@ -386,7 +351,7 @@
 <div style="
      padding-bottom: 10px;
      padding-top: 50px;
-     display: flex; 
+     display: flex;
      justify-content: flex-end">
     @using (Html.BeginForm("UploadControlUpload", "Import", FormMethod.Post))
     {
@@ -466,7 +431,7 @@
         settings.UseSubmitBehavior = false;
         settings.ClientSideEvents.Click = "OnSubmitClick";
     }).GetHtml()
-@Html.Action("ImportGridViewPartial", Model)
+
 
 @{ Html.EndForm(); }
 @Html.DevExpress().PopupControl(settings =>
@@ -489,24 +454,10 @@
         }).Render();
     });
 }).GetHtml()
-@*@Html.DevExpress().PopupControl(settings =>
-    {
-        settings.Name = "PopupControl2";
-        settings.ShowHeader = false;
-        settings.AllowDragging = false;
-        settings.AllowResize = false;
-        settings.Width = 200;
-        settings.Height = 200;
-        settings.ScrollBars = ScrollBars.Auto;
-        settings.SetContent(() =>
-        {
-            Html.DevExpress().Label(ls =>
-            {
-                ls.Name = "ToolTipLabel2";
-                ls.Properties.EnableClientSideAPI = true;
-                ls.ControlStyle.Wrap = DefaultBoolean.True;
-            }).Render();
-        });
-    }).GetHtml()
-*@
 
+@{ Html.BeginForm();}
+
+<div class="row" id="dynamicContentContainer">
+</div>
+
+@{ Html.EndForm(); }

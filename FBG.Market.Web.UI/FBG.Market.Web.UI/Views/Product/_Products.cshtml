@@ -96,14 +96,13 @@
             //c.GroupIndex = 0;
             c.FieldName = "VID";
             c.Caption = "Vendor";
-            c.Visible = false;
-            c.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+            c.Width = System.Web.UI.WebControls.Unit.Pixel(100);
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
             c.EditorProperties().ComboBox(p =>
             {
-                p.TextField = "VendorName";
-                p.ValueField = "VendorId";
-                p.ValueType = typeof(int);
+                p.TextField = "Name";
+                p.ValueField = "Id";
+                p.ValueType = typeof(int?);
                 p.DataSource = Utils.GetVendors();
             });
         });
@@ -178,16 +177,16 @@
             col.Caption = "Sub Category";
 
         });
-        gridViewSettings.Columns.Add(col =>
-        {
-            col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        //gridViewSettings.Columns.Add(col =>
+        //{
+        //    col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-            //col.Visible = false;
-            //col.Settings.AllowAutoFilter = DefaultBoolean.False;
-            col.FieldName = "VendorName";
-            col.Caption = "Vendor Style #";
+        //    //col.Visible = false;
+        //    //col.Settings.AllowAutoFilter = DefaultBoolean.False;
+        //    col.FieldName = "VendorName";
+        //    col.Caption = "Vendor Style #";
 
-        });
+        //});
         gridViewSettings.Columns.Add(col =>
         {
             col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
@@ -450,7 +449,7 @@
         {
             MVCxGridView gridView = sender as MVCxGridView;
             //VID
-            //gridView.Columns["VID"].Visible = true;
+            gridView.Columns["VID"].Visible = true;
 
             gridView.Columns[0].Visible = false;
             gridView.Columns[1].Visible = false;

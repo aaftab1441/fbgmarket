@@ -34,7 +34,7 @@ namespace FBG.Market.Databackfiller
 
                 // Insert Vendors
                 InsertVendors(db);
-                InsertBrands(GetShopifyRecordsDeepCopy(shopifyRecords), db);
+                InsertBrands(GetShopifyRecordsDeepCopy(shopifyRecords), db); 
 
                 // Insert Categories
                 InsertCategories(GetShopifyRecordsDeepCopy(shopifyRecords), db);

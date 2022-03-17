@@ -138,13 +138,13 @@ namespace FBG.Market.Web.Identity
             return query.ToList();
         }
 
-        public List<VendorLocal> GetVendors()
+        public List<VendorLookupViewModel> GetVendors()
         {
             var query = from vendor in db.Vendors
-                        select new VendorLocal
+                        select new VendorLookupViewModel
                         {
-                            VendorId = vendor.VID,
-                            VendorName = vendor.VendorName,
+                            Id = vendor.VID,
+                            Name = vendor.VendorName,
 
                         };
             return query.ToList();
