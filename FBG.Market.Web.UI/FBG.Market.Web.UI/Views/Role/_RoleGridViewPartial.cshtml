@@ -14,8 +14,8 @@
         settings.SettingsBehavior.ConfirmDelete = true;
 
         settings.CommandColumn.Visible = true;
-//settings.CommandColumn.ShowNewButton = true;
-settings.CommandColumn.ShowNewButton = false;
+        //settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowNewButton = false;
         settings.CommandColumn.ShowNewButtonInHeader = true;
 
         settings.CommandColumn.ShowDeleteButton = true;
@@ -23,9 +23,9 @@ settings.CommandColumn.ShowNewButton = false;
 
         settings.KeyFieldName = "Id";
 
-//
-settings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
-settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
+        //
+        settings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
+        settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
         settings.ControlStyle.BorderBottom.BorderWidth = 2;
         settings.Width = Unit.Percentage(30);
         settings.Styles.Row.CssClass = "customRow";
@@ -35,9 +35,10 @@ settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.Borde
         settings.SettingsBehavior.AllowFocusedRow = true;
         settings.SettingsBehavior.AllowSelectByRowClick = true;
         settings.SettingsBehavior.AllowEllipsisInText = true;
+        settings.Styles.BatchEditModifiedCell.BackColor = System.Drawing.Color.LimeGreen;
 
-//
-settings.SettingsPager.Visible = true;
+        //
+        settings.SettingsPager.Visible = true;
         settings.Settings.ShowGroupPanel = true;
         settings.Settings.ShowFilterRow = true;
         settings.SettingsBehavior.AllowSelectByRowClick = true;
@@ -48,17 +49,17 @@ settings.SettingsPager.Visible = true;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
 
-//settings.Columns.Add("Id").Visible = false;
-/*settings.Columns.Add(col =>
-{
-    col.EditFormSettings.Visible = DefaultBoolean.False;
+        //settings.Columns.Add("Id").Visible = false;
+        /*settings.Columns.Add(col =>
+        {
+            col.EditFormSettings.Visible = DefaultBoolean.False;
 
-    col.ReadOnly = true;
-    //col.Settings.AllowAutoFilter = DefaultBoolean.False;
-    col.FieldName = "Id";
-    col.Caption = "Id";
+            col.ReadOnly = true;
+            //col.Settings.AllowAutoFilter = DefaultBoolean.False;
+            col.FieldName = "Id";
+            col.Caption = "Id";
 
-});*/
+        });*/
         settings.Columns.Add("Name");
 
         settings.CustomJSProperties = (s, e) =>

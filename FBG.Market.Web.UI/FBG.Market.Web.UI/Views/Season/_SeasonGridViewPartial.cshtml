@@ -16,8 +16,8 @@
         settings.SettingsBehavior.ConfirmDelete = true;
 
         settings.CommandColumn.Visible = true;
-//settings.CommandColumn.ShowNewButton = true;
-settings.CommandColumn.ShowNewButton = false;
+        //settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowNewButton = false;
         settings.CommandColumn.ShowNewButtonInHeader = true;
         settings.CommandColumn.ShowDeleteButton = true;
         settings.CommandColumn.ShowEditButton = true;
@@ -28,9 +28,9 @@ settings.CommandColumn.ShowNewButton = false;
         settings.Settings.ShowGroupPanel = true;
         settings.Settings.ShowFilterRow = true;
         settings.SettingsBehavior.AllowSelectByRowClick = true;
-//
-settings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
-settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
+        //
+        settings.ControlStyle.BorderBottom.BorderColor = System.Drawing.ColorTranslator.FromHtml("#337ab7"); //System.Drawing.Color.OrangeRed;
+        settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
         settings.ControlStyle.BorderBottom.BorderWidth = 2;
         settings.Width = Unit.Percentage(30);
         settings.Styles.Row.CssClass = "customRow";
@@ -40,9 +40,10 @@ settings.ControlStyle.BorderBottom.BorderStyle = System.Web.UI.WebControls.Borde
         settings.SettingsBehavior.AllowFocusedRow = true;
         settings.SettingsBehavior.AllowSelectByRowClick = true;
         settings.SettingsBehavior.AllowEllipsisInText = true;
+        settings.Styles.BatchEditModifiedCell.BackColor = System.Drawing.Color.LimeGreen;
 
-//
-settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        //
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
         settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
@@ -56,7 +57,7 @@ settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
         });
         settings.Columns.Add("Season");
         settings.CustomJSProperties = (s, e) =>
-    {
+        {
             if (ViewData[SeasonController.EditResultKey] != null)
             {
                 e.Properties["cpMessage"] = ViewData[SeasonController.EditResultKey].ToString();

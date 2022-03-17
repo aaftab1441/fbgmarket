@@ -7,7 +7,6 @@ namespace FBG.Market.Web.Identity.ViewModel
     {
         public int ID { get; set; }
         [Required(ErrorMessage = "Brand is required")]
-        [Range(1, int.MaxValue)]
         public Nullable<int> BID { get; set; }
         public string PID { get; set; }
         public string SKUCode { get; set; }
@@ -19,7 +18,6 @@ namespace FBG.Market.Web.Identity.ViewModel
         public string PColor { get; set; }
         public string PSize { get; set; }
         [Required(ErrorMessage = "Category is required")]
-        [Range(1, int.MaxValue)]
         public Nullable<short> PCategory { get; set; }
         public string PSubCategory { get; set; }
         public Nullable<int> NRFColorCodeID { get; set; }
@@ -34,7 +32,6 @@ namespace FBG.Market.Web.Identity.ViewModel
         public string PMSRPPrice { get; set; }
         public string PPicture { get; set; }
         public Nullable<int> ProductStatusId { get; set; }
-        [Range(1, int.MaxValue)]
         public Nullable<int> VID { get; set; }
         public Nullable<int> ColorCategoryId { get; set; }
         public string ShopifyPicUrl { get; set; }
