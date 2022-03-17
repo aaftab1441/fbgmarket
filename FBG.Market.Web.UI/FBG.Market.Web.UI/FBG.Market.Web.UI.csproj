@@ -689,6 +689,7 @@
     <Compile Include="Models\ImageSliderFeaturesDemoOptions.cs" />
     <Compile Include="ViewModel\ColorCategoryViewModel.cs" />
     <Compile Include="ViewModel\ColorViewModel.cs" />
+    <Compile Include="ViewModel\ImportViewModel.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
     <Compile Include="ViewModel\UserRoleViewModel.cs" />
     <Compile Include="Models\Vendor.cs">

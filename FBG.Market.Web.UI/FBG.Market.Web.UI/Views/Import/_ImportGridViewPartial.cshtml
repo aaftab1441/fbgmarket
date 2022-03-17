@@ -177,13 +177,6 @@
             col.Caption = "Product Id";
             col.Width = System.Web.UI.WebControls.Unit.Pixel(80);
         });
-        gridViewSettings.Columns.Add(col =>
-        {
-            //col.Visible = false;
-            col.FieldName = "Message";
-            col.Caption = "Message";
-            col.Width = System.Web.UI.WebControls.Unit.Pixel(80);
-        });
         //Duplicate
         gridViewSettings.Columns.Add(c =>
         {
@@ -534,22 +527,7 @@
         };*/
         //For tooltip
         gridViewSettings.SettingsPager.EnableAdaptivity = true;
-        /*gridViewSettings.CustomJSProperties = (s, e) =>
-        {
-            MVCxGridView gridN = s as MVCxGridView;
-            int startIndex = gridN.VisibleStartIndex;
-            int endIndex = gridN.VisibleStartIndex + gridN.SettingsPager.PageSize;
-            var clientData = new Dictionary<int, object>();
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                var rowValues = gridN.GetRowValues(i, new string[] { "ID", "Message" }) as object[];
-                if((string)rowValues[1]!="" && !clientData.ContainsKey(Convert.ToInt32(rowValues[0])))
-                    clientData.Add(Convert.ToInt32(rowValues[0]), rowValues[1]);
-
-            }
-            e.Properties.Add("cpTooltipList", clientData);
-        };*/
-
+        
         gridViewSettings.SettingsExport.BeforeExport = (sender, e) =>
         {
             MVCxGridView gridView = sender as MVCxGridView;
@@ -559,32 +537,10 @@
             //ID
             gridView.Columns["ID"].Visible = false;
             //PPicture
-            gridView.Columns["Message"].Visible = false;
             gridView.Columns["PDiscontinued"].Visible = false;
 
         };
-        gridViewSettings.CustomJSProperties = (s, e) =>
-        {
-            MVCxGridView gridN = s as MVCxGridView;
-            int startIndex = gridN.VisibleStartIndex;
-            int endIndex = gridN.VisibleStartIndex + gridN.SettingsPager.PageSize;
-            var clientData = new Dictionary<int, object>();
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                var rowValues = gridN.GetRowValues(i, new string[] { "ID", "Message" }) as object[];
-                if ((string)rowValues[1] != "" && !clientData.ContainsKey(Convert.ToInt32(rowValues[0])))
-                    clientData.Add(Convert.ToInt32(rowValues[0]), rowValues[1]);
 
-            }
-            e.Properties.Add("cpTooltipList", clientData);
-        };
-
-        /*gridViewSettings.HtmlDataCellPrepared = (s, e) =>
-        {
-
-            e.Cell.Attributes.Add("onmouseover", String.Format("OnMouseMove(this, event, '{0}');", e.KeyValue));
-        };*/
-        //
         gridViewSettings.HtmlDataCellPrepared = (sender, e) =>
         {
             if (e.DataColumn.FieldName == "PDiscontinued")
@@ -596,13 +552,6 @@
                 }
             }
 
-            if (e.DataColumn.FieldName == "Message")
-            {
-                e.Cell.Attributes.Add("onmouseover", String.Format("OnMouseMove(this, event, '{0}');", e.KeyValue));
-                e.Cell.ForeColor = System.Drawing.Color.Red;
-
-            }
-            e.Cell.Attributes.Remove("onmouseover");
             if (e.DataColumn.FieldName == "BID")
             {
                 if (e.CellValue == null || string.IsNullOrEmpty(e.CellValue.ToString()) || Convert.ToInt32(e.CellValue.ToString()) <= 0)

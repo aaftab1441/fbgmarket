@@ -14,6 +14,7 @@ using System.Data;
 using System.Text;
 using DevExpress.Web;
 using DevExpress.Utils;
+using FBG.Market.Web.Identity.ViewModel;
 
 namespace FBG.Market.Web.Identity.Controllers
 {
@@ -25,32 +26,7 @@ namespace FBG.Market.Web.Identity.Controllers
         // GET: Import
         public ActionResult Index()
         {
-            //if (Session["DataTableModel"] == null)
-            //    Session["DataTableModel"] = InMemoryModel.OpenExcelFile("");
-            var modelDb = db.ProductsImports;
-            var modelDBList = modelDb.ToList();
-            modelDBList.ForEach(item => item.PDiscontinued = false);
-            var dupes = modelDBList.GroupBy(x => new { x.SKUCode, x.UPCCode, x.BID, x.VID, x.PCategory, x.PColor, x.PName })
-                   .Where(x => x.Skip(1).Any());
-            var hasDupes = modelDBList.GroupBy(x => new { x.SKUCode, x.UPCCode, x.BID, x.VID, x.PCategory, x.PColor, x.PName })
-                   .Where(x => x.Skip(1).Any()).Any();
-            if (dupes != null && dupes.Any())
-            {
-                foreach (var dup in dupes)
-                {
-                    modelDBList = modelDBList.Select(n =>
-                    {
-                        if (n.SKUCode == dup.Key.SKUCode
-&& n.UPCCode == dup.Key.UPCCode
-&& n.BID == dup.Key.BID
-&& n.VID == dup.Key.VID
-&& n.PColor == dup.Key.PColor
-&& n.PName == dup.Key.PName) { n.PDiscontinued = true; }
-                        return n;
-                    }).ToList();
-                }
-            }
-            return PartialView(modelDBList);
+            return View();
         }
 
         // This action method sends a PDF document with the exported Grid to response.
@@ -217,16 +193,6 @@ namespace FBG.Market.Web.Identity.Controllers
                 columnSettings.Width = System.Web.UI.WebControls.Unit.Pixel(130);
                 columnSettings.FieldName = "SKUCode";
                 columnSettings.Caption = "SKU Code";
-                /*columnSettings.SetDataItemTemplateContent(c =>
-                {
-                    Html.DevExpress().HyperLink(hyperLinkSettings =>
-                    {
-                        hyperLinkSettings.Properties.Text = (string)DataBinder.Eval(c.DataItem, "SKUCode");
-                        hyperLinkSettings.NavigateUrl = Url.Action("ExternalEditFormEdit", "Product", new { ProductID = DataBinder.Eval(c.DataItem, "PID") });
-
-                    }).Render()
-                });*/
-
             });
 
             //gridViewSettings.Columns.Add("UPCCode").Caption = "UPC Code";
@@ -394,43 +360,8 @@ namespace FBG.Market.Web.Identity.Controllers
             gridViewSettings.SettingsExport.BeforeExport = (sender, e) =>
             {
                 MVCxGridView gridView = sender as MVCxGridView;
-                //VID
-                //gridView.Columns["VID"].Visible = true;
-
-                //ID
-                //gridView.Columns["ID"].Visible = false;
-                //PPicture
-                //gridView.Columns["Message"].Visible = false;
-
             };
-            //settings.SettingsExport.PaperKind = System.Drawing.Printing.PaperKind.A4;
-            /*gridViewSettings.KeyFieldName = "BID";
-            gridViewSettings.KeyFieldName = "PID";
-            gridViewSettings.KeyFieldName = "SKUCode";
-            gridViewSettings.KeyFieldName = "UPCCode";
-            gridViewSettings.KeyFieldName = "PName";
-            gridViewSettings.KeyFieldName = "VendorName";
-            gridViewSettings.KeyFieldName = "PColor";
-            gridViewSettings.KeyFieldName = "PSize";
-            gridViewSettings.KeyFieldName = "PCategory";
-            gridViewSettings.KeyFieldName = "PSubCategory";
-            gridViewSettings.KeyFieldName = "NRFColorCodeID";
-            gridViewSettings.KeyFieldName = "SID";
-            gridViewSettings.KeyFieldName = "PDescription";
-            gridViewSettings.KeyFieldName = "PSpecs";
-            gridViewSettings.KeyFieldName = "PCoutryofOrigin";
-            gridViewSettings.KeyFieldName = "PDiscontinued";
-            gridViewSettings.KeyFieldName = "PFOBCost";
-            gridViewSettings.KeyFieldName = "PLandedCost";
-            gridViewSettings.KeyFieldName = "PWholesalePrice";
-            gridViewSettings.KeyFieldName = "PMSRPPrice";
-            gridViewSettings.KeyFieldName = "PPicture";
-            gridViewSettings.KeyFieldName = "ProductStatusId";
-            gridViewSettings.KeyFieldName = "VID";
-            gridViewSettings.KeyFieldName = "ColorCategoryId";
-            gridViewSettings.KeyFieldName = "ShopifyPicUrl";
-            gridViewSettings.KeyFieldName = "ID";
-            */
+            
             return gridViewSettings;
         }
 
@@ -443,8 +374,10 @@ namespace FBG.Market.Web.Identity.Controllers
                 {
                     var item = model.FirstOrDefault(it => it.ID == Id);
                     if (item != null)
+                    {
                         model.Remove(item);
-                    db.SaveChanges();
+                        db.SaveChanges();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -469,7 +402,6 @@ namespace FBG.Market.Web.Identity.Controllers
                 {
                     DeleteProductImport(prod.ID);
                 }
-                //return PartialView("Index", modelDb.ToList(),);
                 return Json(new { success = true, message = "Product(s) deleted successfully", status = 200 });
             }
         }
@@ -478,10 +410,6 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             if (string.IsNullOrEmpty(selectedIDsHFToGroup))
             {
-                //var modelDb = db.ProductsImports;
-                //var modelDBList = modelDb.ToList();
-                //return Content("<script language='javascript' type='text/javascript'>alert('Thanks for Feedback!');</script>");
-                //return Content("No product selected");
                 return Json(new { success = false, message = "No product selected", status = 500 });
             }
             else
@@ -491,85 +419,55 @@ namespace FBG.Market.Web.Identity.Controllers
             }
         }
 
-        private List<string> ValidateImportRecord(ProductsImport import)
+        private List<string> ValidateImportRecord(ProductsImport model)
         {
             List<string> errors = new List<string>();
 
-            if (string.IsNullOrEmpty(import.PColor))
-            {
-                errors.Add("Product Color should not be empty.");
-            }
-            if (import.VID <= 0)
-            {
-                errors.Add("Vendor ID should not be less than 0.");
-            }
-            if (import.BID <= 0)
-            {
-                errors.Add("Brand ID should not be less than 0.");
-            }
-            if (import.PCategory == null)
-            {
-                errors.Add("Category should not be Null.");
-            }
-            if (import.PCategory == null || import.PCategory <= 0)
-            {
-                errors.Add("Category should not be Null or less than 0.");
-            }
-            if (string.IsNullOrEmpty(import.PName))
-            {
-                errors.Add("Product Name should not be Null or Empty.");
-            }
-            if (string.IsNullOrEmpty(import.PColor))
-            {
-                errors.Add("Product Color should not be Null or Empty.");
-            }
-
-
             // Check Numberic values for the MSRP, FOB, Landed and Wholesale Prices
             decimal decimalValue;
-            bool isDecimal = Decimal.TryParse(import.PWholesalePrice, out decimalValue);
+            bool isDecimal = Decimal.TryParse(model.PWholesalePrice.Replace("$",""), out decimalValue);
             if (!isDecimal)
             {
-                errors.Add("Whole Sale price should be valid Number.");
+                errors.Add("Please enter valid whole sale price.");
             }
-            isDecimal = Decimal.TryParse(import.PMSRPPrice, out decimalValue);
+            isDecimal = Decimal.TryParse(model.PMSRPPrice.Replace("$", ""), out decimalValue);
             if (!isDecimal)
             {
-                errors.Add("MSRP price should be valid Number.");
+                errors.Add("Please enter valid MSRP price.");
             }
-            isDecimal = Decimal.TryParse(import.PFOBCost, out decimalValue);
+            isDecimal = Decimal.TryParse(model.PFOBCost.Replace("$", ""), out decimalValue);
             if (!isDecimal)
             {
-                errors.Add("FOB cost should be valid Number.");
+                errors.Add("Please enter valid FOB cost.");
             }
-            isDecimal = Decimal.TryParse(import.PLandedCost, out decimalValue);
+            isDecimal = Decimal.TryParse(model.PLandedCost.Replace("$", ""), out decimalValue);
             if (!isDecimal)
             {
-                errors.Add("Landed Cost price should be valid Number.");
+                errors.Add("Please enter valid landed Cost price.");
             }
 
             // DB existing Data Check
-            if (!string.IsNullOrEmpty(import.SKUCode))
+            if (!string.IsNullOrEmpty(model.SKUCode))
             {
-                var skuRetVal = db.Products.FirstOrDefault(item => item.SKUCode.ToLower() == import.SKUCode.ToLower());
+                var skuRetVal = db.Products.FirstOrDefault(item => item.SKUCode.ToLower() == model.SKUCode.ToLower());
                 if (skuRetVal != null)
                 {
                     errors.Add("SKU Code already exists.");
                 }
             }
 
-            if (!string.IsNullOrEmpty(import.UPCCode))
+            if (!string.IsNullOrEmpty(model.UPCCode))
             {
-                var upcRetVal = db.Products.FirstOrDefault(item => item.UPCCode.ToLower() == import.UPCCode.ToLower());
+                var upcRetVal = db.Products.FirstOrDefault(item => item.UPCCode.ToLower() == model.UPCCode.ToLower());
                 if (upcRetVal != null)
                 {
                     errors.Add("UPC Code already exists.");
                 }
             }
 
-            if (import.ProductStatusId == 2 || import.ProductStatusId == 3)
+            if (model.ProductStatusId == 2 || model.ProductStatusId == 3)
             {
-                if (string.IsNullOrEmpty(import.SKUCode) || string.IsNullOrEmpty(import.UPCCode))
+                if (string.IsNullOrEmpty(model.SKUCode) || string.IsNullOrEmpty(model.UPCCode))
                 {
                     errors.Add("SKU code, UPC code are required for Final-wholesale & Final-consumer.");
                 }
@@ -583,10 +481,6 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             if (string.IsNullOrEmpty(selectedIDsHFPublish))
             {
-                //var modelDb = db.ProductsImports;
-                //var modelDBList = modelDb.ToList();
-                //return Content("<script language='javascript' type='text/javascript'>alert('Thanks for Feedback!');</script>");
-                //return Content("No product selected");
                 return Json(new { success = false, message = "No product selected", status = 500 });
             }
             else
@@ -596,11 +490,11 @@ namespace FBG.Market.Web.Identity.Controllers
                 if (prodStatus != null)
                     prodStatusId = prodStatus.Id;
                 var tokens = selectedIDsHFPublish.Split(',');
-                var modelDb = db.ProductsImports.Where(item => tokens.ToList().Contains(item.ID.ToString())).ToList();
-                var modelDBList = modelDb.ToList();
-                foreach (var prod in modelDBList)
+
+                var productsImport = db.ProductsImports.Where(item => tokens.ToList().Contains(item.ID.ToString())).ToList();
+                foreach (var import in productsImport)
                 {
-                    var validationErrors = ValidateImportRecord(prod);
+                    var validationErrors = ValidateImportRecord(import);
                     if (validationErrors.Count() > 0)
                     {
                         var errorMessage = "";
@@ -612,68 +506,58 @@ namespace FBG.Market.Web.Identity.Controllers
                     }
 
                     //x.SKUCode, x.UPCCode, x.BID, x.VID, x.PCategory, x.PColor, x.PName
-                    var retVal = db.Products.Where(pro => pro.UPCCode.ToLower() == prod.UPCCode.ToLower() &&
-                    pro.SKUCode.ToLower() == prod.SKUCode.ToLower() &&
-                    pro.BID == prod.BID &&
-                    pro.VID == prod.VID &&
-                     pro.PCategory == prod.PCategory &&
-                     pro.PColor.ToLower() == prod.PColor.ToLower() &&
-                     pro.PName.ToLower() == prod.PName.ToLower()
+                    var retVal = db.Products.Where(pro => pro.UPCCode.ToLower() == import.UPCCode.ToLower() &&
+                    pro.SKUCode.ToLower() == import.SKUCode.ToLower() &&
+                    pro.BID == import.BID &&
+                    pro.VID == import.VID &&
+                     pro.PCategory == import.PCategory &&
+                     pro.PColor.ToLower() == import.PColor.ToLower() &&
+                     pro.PName.ToLower() == import.PName.ToLower()
                      ).FirstOrDefault();
                     //var retVal = db.Products.Where(pro => pro.UPCCode.ToLower() == prod.UPCCode.ToLower() || pro.SKUCode.ToLower() == prod.SKUCode.ToLower()).FirstOrDefault();
                     //Product does not exists in the product DB, insert it
-                    var skuOrUpc = db.Products.Where(pro => pro.UPCCode.ToLower() == prod.UPCCode.ToLower() ||
-                   pro.SKUCode.ToLower() == prod.SKUCode.ToLower()).FirstOrDefault();
+                    var skuOrUpc = db.Products.Where(pro => pro.UPCCode.ToLower() == import.UPCCode.ToLower() ||
+                   pro.SKUCode.ToLower() == import.SKUCode.ToLower()).FirstOrDefault();
                     if (retVal == null && skuOrUpc == null)
                     {
-                        //Insert a new product
-                        var model = db.Products;
+                        var products = db.Products;
                         Product product = new Product
                         {
                             //PID = Convert.ToInt32(prod.PID),
-                            PName = prod.PName,
-                            PPicture = prod.PPicture,
-                            SKUCode = prod.SKUCode,
-                            UPCCode = prod.UPCCode,
-                            BID = prod.BID,
-                            SID = prod.SID,
-                            VendorName = prod.VendorName,
-                            PCategory = Convert.ToInt16(prod.PCategory),
-                            PSubCategory = prod.PSubCategory,
-                            NRFColorCodeID = prod.NRFColorCodeID,
-                            PCoutryofOrigin = prod.PCoutryofOrigin,
-                            PDescription = prod.PDescription,
-                            VID = prod.VID,
-                            PSize = prod.PSize,
-                            PFOBCost = Convert.ToDecimal(prod.PFOBCost),
-                            PLandedCost = Convert.ToDecimal(prod.PLandedCost),
-                            PWholesalePrice = Convert.ToDecimal(prod.PWholesalePrice),
-                            PMSRPPrice = Convert.ToDecimal(prod.PMSRPPrice),
+                            PName = import.PName,
+                            PPicture = import.PPicture,
+                            SKUCode = import.SKUCode,
+                            UPCCode = import.UPCCode,
+                            BID = import.BID,
+                            SID = import.SID,
+                            VendorName = import.VendorName,
+                            PCategory = Convert.ToInt16(import.PCategory),
+                            PSubCategory = import.PSubCategory,
+                            NRFColorCodeID = import.NRFColorCodeID,
+                            PCoutryofOrigin = import.PCoutryofOrigin,
+                            PDescription = import.PDescription,
+                            VID = import.VID,
+                            PSize = import.PSize,
+                            PFOBCost = Convert.ToDecimal(import.PFOBCost.Replace("$", "")),
+                            PLandedCost = Convert.ToDecimal(import.PLandedCost.Replace("$", "")),
+                            PWholesalePrice = Convert.ToDecimal(import.PWholesalePrice.Replace("$", "")),
+                            PMSRPPrice = Convert.ToDecimal(import.PMSRPPrice.Replace("$", "")),
                             //ProductStatusId = prod.ProductStatusId,
                             ProductStatusId = prodStatusId, // Draft for all
-                            PColor = prod.PColor,
-                            PSpecs = prod.PSpecs,
+                            PColor = import.PColor,
+                            PSpecs = import.PSpecs,
                             CreateDate = DateTime.UtcNow,
                         };
                         try
                         {
                             Utils.CreateBrandProdDir(product);
-                            model.Add(product);
+                            products.Add(product);
                             db.SaveChanges();
-                            DeleteProductImport(prod.ID);
+                            DeleteProductImport(import.ID);
                         }
                         catch (Exception ex)
                         {
                             return Json(new { success = false, message = ex.Message, status = 500 });
-                            /*if (!string.IsNullOrEmpty(product.SKUCode) && !string.IsNullOrEmpty(product.UPCCode))
-                            {
-                                var pr = db.Products.Where(pro => pro.SKUCode == product.SKUCode).FirstOrDefault();
-                                if (pr != null)
-                                {
-                                    product.PID = pr.PID;
-                                    UpdateProduct(product);
-                                }
-                            }*/
                         }
                     }
                     //Update the existing product with PID
@@ -682,37 +566,38 @@ namespace FBG.Market.Web.Identity.Controllers
                         Product product = new Product
                         {
                             PID = Convert.ToInt32(retVal.PID),
-                            PName = prod.PName,
-                            PPicture = prod.PPicture,
-                            SKUCode = prod.SKUCode,
-                            UPCCode = prod.UPCCode,
-                            BID = prod.BID,
-                            VID = prod.VID,
-                            SID = prod.SID,
-                            VendorName = prod.VendorName,
-                            PCategory = Convert.ToInt16(prod.PCategory),
-                            PSubCategory = prod.PSubCategory,
-                            NRFColorCodeID = prod.NRFColorCodeID,
-                            PCoutryofOrigin = prod.PCoutryofOrigin,
-                            PSize = prod.PSize,
-                            PFOBCost = Convert.ToDecimal(prod.PFOBCost),
-                            PLandedCost = Convert.ToDecimal(prod.PLandedCost),
-                            PWholesalePrice = Convert.ToDecimal(prod.PWholesalePrice),
-                            PMSRPPrice = Convert.ToDecimal(prod.PMSRPPrice),
+                            PName = import.PName,
+                            PPicture = import.PPicture,
+                            SKUCode = import.SKUCode,
+                            UPCCode = import.UPCCode,
+                            BID = import.BID,
+                            VID = import.VID,
+                            SID = import.SID,
+                            VendorName = import.VendorName,
+                            PCategory = Convert.ToInt16(import.PCategory),
+                            PSubCategory = import.PSubCategory,
+                            NRFColorCodeID = import.NRFColorCodeID,
+                            PCoutryofOrigin = import.PCoutryofOrigin,
+                            PSize = import.PSize,
+                            PFOBCost = Convert.ToDecimal(import.PFOBCost),
+                            PLandedCost = Convert.ToDecimal(import.PLandedCost),
+                            PWholesalePrice = Convert.ToDecimal(import.PWholesalePrice),
+                            PMSRPPrice = Convert.ToDecimal(import.PMSRPPrice),
                             //ProductStatusId = prod.ProductStatusId,
                             ProductStatusId = prodStatusId, // Draft for all
-                            PColor = prod.PColor,
-                            PDescription = prod.PDescription,
-                            PSpecs = prod.PSpecs,
+                            PColor = import.PColor,
+                            PDescription = import.PDescription,
+                            PSpecs = import.PSpecs,
                         };
                         var retValU = UpdateProduct(product);
                         if (retValU)
-                            DeleteProductImport(prod.ID);
+                        {
+                            DeleteProductImport(import.ID);
+                        }
 
                     }
                 }
                 return Json(new { success = true, message = "Product(s) published successfully", status = 200 });
-                //return PartialView("Index", modelDBList);
             }
         }
         [Authorize]
@@ -914,10 +799,6 @@ namespace FBG.Market.Web.Identity.Controllers
                             var retVal = Brands.FirstOrDefault(item => inputStr.Contains(item.BrandName.ToLower()));
                             if (retVal != null)
                                 row["BID"] = retVal.BID;
-                            else
-                            {
-                                row["BID"] = 0;
-                            }
                         }
                         if (GridColumnExists(myDataTable, "NRFColorCodeID"))
                         {
@@ -925,10 +806,6 @@ namespace FBG.Market.Web.Identity.Controllers
                             var retVal = RefNRFColorCodes.FirstOrDefault(item => inputStr.Contains(item.NRFColorName.ToLower()));
                             if (retVal != null)
                                 row["NRFColorCodeID"] = retVal.NRFColorCodeID;
-                            else
-                            {
-                                row["NRFColorCodeID"] = 0;
-                            }
 
                         }
                         if (GridColumnExists(myDataTable, "SID"))
@@ -937,10 +814,6 @@ namespace FBG.Market.Web.Identity.Controllers
                             var retVal = RefSeasons.FirstOrDefault(item => inputStr.Contains(item.Season.ToLower()));
                             if (retVal != null)
                                 row["SID"] = retVal.SID;
-                            else
-                            {
-                                row["SID"] = 0;
-                            }
                         }
                         if (GridColumnExists(myDataTable, "ProductStatusId"))
                         {
@@ -948,10 +821,6 @@ namespace FBG.Market.Web.Identity.Controllers
                             var retVal = ProductStatus.FirstOrDefault(item => inputStr.Contains(item.Status.ToLower()));
                             if (retVal != null)
                                 row["ProductStatusId"] = retVal.Id;
-                            else
-                            {
-                                row["ProductStatusId"] = 0;
-                            }
                         }
                         if (GridColumnExists(myDataTable, "VID"))
                         {
@@ -960,10 +829,6 @@ namespace FBG.Market.Web.Identity.Controllers
                             var retVal = Vendors.FirstOrDefault(item => inputStr.Contains(item.VendorName.ToLower()));
                             if (retVal != null)
                                 row["VID"] = retVal.VID;
-                            else
-                            {
-                                row["VID"] = 0;
-                            }
                         }
                         if (GridColumnExists(myDataTable, "PCategory"))
                         {
@@ -972,13 +837,9 @@ namespace FBG.Market.Web.Identity.Controllers
                             var retVal = RefCategories.FirstOrDefault(item => inputStr.Contains(item.Category.ToLower()));
                             if (retVal != null)
                                 row["PCategory"] = retVal.ID;
-                            else
-                            {
-                                row["PCategory"] = 0;
-                            }
                         }
                     }
-                    bulkCopy.DestinationTableName = "ProductsImport";//myDataTable.TableName;
+                    bulkCopy.DestinationTableName = "ProductsImport";
                     try
                     {
                         bulkCopy.WriteToServer(myDataTable);
@@ -993,18 +854,9 @@ namespace FBG.Market.Web.Identity.Controllers
 
         [Authorize]
         [ValidateInput(false)]
-        public ActionResult GridViewPartial(string path)
+        public ActionResult GridViewPartial()
         {
-            var model = Session["DataTableModel"];
-            if (!string.IsNullOrEmpty(path))
-            {
-                model = InMemoryModel.OpenExcelFile(path);
-                BulkImport((DataTable)model);
-                Session["DataTableModel"] = model;
-            }
-            //return PartialView(model);
-            var modelL = db.ProductsImports;
-            return PartialView("_ImportGridViewPartial", modelL.ToList());
+            return ImportGridViewPartial("");
         }
 
         [Authorize]
@@ -1085,135 +937,66 @@ namespace FBG.Market.Web.Identity.Controllers
         [ValidateInput(false)]
         public ActionResult ImportGridViewPartial(string path)
         {
-            decimal decimalValue;
-
             if (!string.IsNullOrEmpty(path))
             {
                 var model = InMemoryModel.OpenExcelFile(path);
                 BulkImport((DataTable)model);
                 Session["DataTableModel"] = model;
             }
-            var modelL = db.ProductsImports;
-            foreach (var importProd in modelL.ToList())
+            var products = db.ProductsImports.Select(product => new ImportViewModel
             {
-                StringBuilder sb = new StringBuilder();
-                if (importProd.BID == null || importProd.BID <= 0)
-                {
-                    sb.Append("*Invalid brand*").AppendLine();
-                }
-                if (importProd.VID == null || importProd.VID <= 0)
-                {
-                    sb.Append("*Invalid vendor*").AppendLine();
-                }
-                if (importProd.PCategory == null || importProd.PCategory <= 0)
-                {
-                    sb.Append("*Invalid category*").AppendLine();
-                }
-                if (string.IsNullOrEmpty(importProd.PColor))
-                {
-                    sb.AppendLine();
-                    sb.Append("*Invalid product color*").AppendLine();
-                }
-                if (importProd.PCategory <= 0)
-                {
-                    sb.AppendLine();
-                    sb.Append("*Invalid product category*").AppendLine();
-                }
-                if (string.IsNullOrEmpty(importProd.PName))
-                {
-                    sb.AppendLine();
-                    sb.Append("*Invalid product name*").AppendLine();
-                }
-                if (!String.IsNullOrEmpty((importProd.PWholesalePrice)))
-                {
-                    bool isDecimal = Decimal.TryParse(importProd.PWholesalePrice, out decimalValue);
-                    if (isDecimal)
-                    {
-                        if (Convert.ToDecimal(importProd.PWholesalePrice) < 0)
-                        {
-                            sb.AppendLine();
-                            sb.Append("*Invalid wholesale price*").AppendLine();
-                        }
-                    }
-                    else
-                    {
-                        sb.AppendLine();
-                        sb.Append("*Invalid wholesale price*").AppendLine();
-                    }
-                }
-                if (!String.IsNullOrEmpty((importProd.PMSRPPrice)))
-                {
-                    bool isDecimal = Decimal.TryParse(importProd.PMSRPPrice, out decimalValue);
-                    if (isDecimal)
-                    {
-                        if (Convert.ToDecimal(importProd.PMSRPPrice) < 0)
-                        {
-                            sb.AppendLine();
-                            sb.Append("*Invalid MSRP price*").AppendLine();
-                        }
-                    }
-                    else
-                    {
-                        sb.AppendLine();
-                        sb.Append("*Invalid MSRP price*").AppendLine();
-                    }
-                }
-                if (!String.IsNullOrEmpty((importProd.PLandedCost)))
-                {
-                    bool isDecimal = Decimal.TryParse(importProd.PLandedCost, out decimalValue);
-                    if (isDecimal)
-                    {
-                        if (Convert.ToDecimal(importProd.PLandedCost) < 0)
-                        {
-                            sb.AppendLine();
-                            sb.Append("*Invalid landed cost*").AppendLine();
-                        }
-                    }
-                    else
-                    {
-                        sb.AppendLine();
-                        sb.Append("*Invalid landed cost*").AppendLine();
-                    }
-                }
-                if (!String.IsNullOrEmpty((importProd.PFOBCost)))
-                {
-                    bool isDecimal = Decimal.TryParse(importProd.PFOBCost, out decimalValue);
-                    if (isDecimal)
-                    {
-                        if (Convert.ToDecimal(importProd.PFOBCost) < 0)
-                        {
-                            sb.AppendLine();
-                            sb.Append("*Invalid FOB cost*").AppendLine();
-                        }
-                    }
-                    else
-                    {
-                        sb.AppendLine();
-                        sb.Append("*Invalid FOB cost*").AppendLine();
-                    }
-                }
-                importProd.Message = sb.ToString();
-            }
-            var modelLL = modelL.ToList();
-            modelLL.ForEach(item => item.PDiscontinued = false);
-            var dupes = modelLL.GroupBy(x => new { x.SKUCode, x.UPCCode, x.BID, x.VID, x.PCategory, x.PColor, x.PName })
-                  .Where(x => x.Skip(1).Any());
-            var hasDupes = modelLL.GroupBy(x => new { x.SKUCode, x.UPCCode, x.BID, x.VID, x.PCategory, x.PColor, x.PName })
+                ID = product.ID,
+                BID = product.BID,
+                ColorCategoryId = product.ColorCategoryId,
+                NRFColorCodeID = product.NRFColorCodeID,
+                PCategory = product.PCategory,
+                PColor = product.PColor,
+                PCoutryofOrigin = product.PCoutryofOrigin,
+                PDescription = product.PDescription,
+                PDiscontinued = false,
+                PFOBCost = product.PFOBCost,
+                PID = product.PID,
+                PLandedCost = product.PLandedCost,
+                PMSRPPrice = product.PMSRPPrice,
+                PName = product.PName,
+                PPicture = product.PPicture,
+                ProductStatusId = product.ProductStatusId,
+                PSize = product.PSize,
+                PSpecs = product.PSpecs,
+                PSubCategory = product.PSubCategory,
+                PWholesalePrice = product.PWholesalePrice,
+                ShopifyPicUrl = product.ShopifyPicUrl,
+                SID = product.SID,
+                SKUCode = product.SKUCode,
+                UPCCode = product.UPCCode,
+                VID = product.VID,
+                Brand_Category = product.Brand_Category,
+                VendorName = product.VendorName,
+                GroupId = product.GroupId
+            }).ToList();
+
+            var dupes = products.GroupBy(x => new { x.SKUCode, x.UPCCode, x.BID, x.VID, x.PCategory, x.PColor, x.PName })
+                   .Where(x => x.Skip(1).Any());
+            var hasDupes = products.GroupBy(x => new { x.SKUCode, x.UPCCode, x.BID, x.VID, x.PCategory, x.PColor, x.PName })
                    .Where(x => x.Skip(1).Any()).Any();
             if (dupes != null && dupes.Any())
             {
                 foreach (var dup in dupes)
                 {
-                    modelLL = modelLL.Select(n =>
+                    products = products.Select(n =>
                     {
-                        if (n.SKUCode == dup.Key.SKUCode && n.UPCCode == dup.Key.UPCCode && n.BID == dup.Key.BID 
-                        && n.VID == dup.Key.VID && n.PColor == dup.Key.PColor && n.PName == dup.Key.PName) 
-                        { n.PDiscontinued = true; n.Message += "*duplicate product*"; }
+                        if (n.SKUCode == dup.Key.SKUCode && n.UPCCode == dup.Key.UPCCode 
+                            && n.BID == dup.Key.BID && n.VID == dup.Key.VID && n.PColor == dup.Key.PColor 
+                            && n.PName == dup.Key.PName) 
+                        { 
+                            n.PDiscontinued = true; 
+                        }
                         return n;
                     }).ToList();
                 }
             }
-            return PartialView("_ImportGridViewPartial", modelLL);
+
+            return PartialView("_ImportGridViewPartial", products);
         }
 
         [HttpPost, ValidateInput(false)]
@@ -1345,10 +1128,7 @@ namespace FBG.Market.Web.Identity.Controllers
                     UpdateProductImport(product);
                 //UpdateProduct(product, updateValues);
             }
-            //foreach (var productID in updateValues.DeleteKeys)
-            //{
-            //    //DeleteProduct(productID, updateValues);
-            //}
+
             return PartialView("_ImportGridViewPartial", db.ProductsImports.ToList());
         }
     }
