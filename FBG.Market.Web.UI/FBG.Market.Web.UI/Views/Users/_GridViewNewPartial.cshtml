@@ -186,8 +186,8 @@
             c.Caption = "Vendor";
             c.EditorProperties().ComboBox(p =>
             {
-                p.TextField = "VendorName";
-                p.ValueField = "VendorId";
+                p.TextField = "Name";
+                p.ValueField = "Id";
                 p.ValueType = typeof(int);
                 p.ClientSideEvents.SelectedIndexChanged = "OnSelectedVendorChanged";
                 p.DataSource = Utils.GetVendors();

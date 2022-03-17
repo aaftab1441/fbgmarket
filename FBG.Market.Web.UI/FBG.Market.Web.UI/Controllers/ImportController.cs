@@ -75,8 +75,8 @@ namespace FBG.Market.Web.Identity.Controllers
                 c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
                 c.EditorProperties().ComboBox(p =>
                 {
-                    p.TextField = "VendorName";
-                    p.ValueField = "VendorId";
+                    p.TextField = "Name";
+                    p.ValueField = "Id";
                     p.ValueType = typeof(int);
                     p.DataSource = Utils.GetVendors();
                 });

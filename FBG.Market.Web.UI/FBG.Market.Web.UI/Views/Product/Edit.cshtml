@@ -94,8 +94,8 @@
                        ii.VerticalAlign = FormLayoutVerticalAlign.Middle;
                        ii.NestedExtension().ComboBox(s =>
                        {
-                           s.Properties.TextField = "VendorName";
-                           s.Properties.ValueField = "VendorId";
+                           s.Properties.TextField = "Name";
+                           s.Properties.ValueField = "Id";
                            s.Properties.ValueType = typeof(int);
                            s.Properties.DataSource = Utils.GetVendors();
                            s.ShowModelErrors = true;
