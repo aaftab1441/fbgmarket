@@ -10,6 +10,7 @@ using System.Data;
 using DevExpress.Web;
 using DevExpress.Utils;
 using FBG.Market.Web.Identity.ViewModel;
+using AutoMapper;
 
 namespace FBG.Market.Web.Identity.Controllers
 {
@@ -29,16 +30,60 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             if (string.IsNullOrEmpty(selectedIDsHF))
             {
-                var modelDb = db.Products;
-                var modelDBList = modelDb.ToList();
-                return RedirectToAction("Index");
+                //var modelDb = db.Products;
+                //var modelDBList = modelDb.ToList();
+                //return RedirectToAction("Index");
+                return GridViewExtension.ExportToXlsx(GetGridSettings(), new List<ProductsImport>());
             }
             else
             {
                 //var model = db.ProductsImports;
                 var tokens = selectedIDsHF.Split(',');
                 var modelDb = db.ProductsImports.Where(item => tokens.ToList().Contains(item.ID.ToString())).ToList();
-                return GridViewExtension.ExportToXlsx(GetGridSettings(), modelDb.ToList());
+
+
+                // New science
+
+                // Automapper brilliance
+                var config = new MapperConfiguration(cfg => cfg.CreateMap<ProductsImport, ProductImportViewModel>());
+                var mapper = config.CreateMapper();
+
+                // Load Related Data
+                List<Brand> Brands = db.Brands.ToList();
+                List<RefNRFColorCode> RefNRFColorCodes = db.RefNRFColorCodes.ToList();
+                List<RefSeason> RefSeasons = db.RefSeasons.ToList();
+                List<ProductStatu> ProductStatus = db.ProductStatus.ToList();
+                List<Vendor> Vendors = db.Vendors.ToList();
+                List<RefCategory> RefCategories = db.RefCategories.ToList();
+                List<ColorCategory> ColorCategories = db.ColorCategories.ToList();
+
+                List<ProductImportViewModel> productsVM = new List<ProductImportViewModel>();
+                foreach (var product in modelDb)
+                {
+                    var productImportVM = mapper.Map<ProductsImport, ProductImportViewModel>(product);
+
+                    productImportVM.BID = Brands.FirstOrDefault(item => item.BID == product.BID)?.BrandName;
+
+                    var colorDetails = RefNRFColorCodes.FirstOrDefault(item => item.NRFColorCodeID == product.NRFColorCodeID);
+
+                    productImportVM.NRFColorCodeID =
+                        ColorCategories.FirstOrDefault(item => item.ColorCategoryID == colorDetails.ColorCategoryID)?.ColorCategoryName + " " +
+                        colorDetails?.NRFColorCode + " " +
+                        colorDetails?.NRFColorName;
+
+                    productImportVM.SID = RefSeasons.FirstOrDefault(item => item.SID == product.SID)?.Season;
+                    productImportVM.ProductStatusId = ProductStatus.FirstOrDefault(item => item.Id == product.ProductStatusId)?.Status;
+                    productImportVM.VID = Vendors.FirstOrDefault(item => item.VID == product.VID)?.VendorName;
+                    productImportVM.PCategory = RefCategories.FirstOrDefault(item => item.ID == product.PCategory)?.Category;
+                    productImportVM.BrandCategoryId = Brands.FirstOrDefault(item => item.BID == product.BID)?.BrandName + "_"
+                        + db.RefCategories.FirstOrDefault(s => s.ID == product.PCategory)?.Category;
+
+                    productsVM.Add(productImportVM);
+                }
+
+                return GridViewExtension.ExportToXlsx(GetGridSettings(), productsVM.ToList());
+
+                // End New Science
             }
         }
         // Returns the settings of the exported GridView.
@@ -668,7 +713,7 @@ namespace FBG.Market.Web.Identity.Controllers
         private void BulkImport(DataTable myDataTable)
         {
             var listOfColumns = new List<string>(){
-            "Brand_Category",
+            "BrandCategoryId",
             "BID",
             "VID",
             "VendorName",
@@ -847,6 +892,10 @@ namespace FBG.Market.Web.Identity.Controllers
                             productsImport.PCategory = null;
                         }
                     }
+
+                    //var config = new MapperConfiguration(cfg => cfg.CreateMap<ProductImportViewModel, ProductsImport>());
+                    //var mapper = config.CreateMapper();
+                    //var productImport = mapper.Map<ProductImportViewModel, ProductsImport>(productsImportVM);
 
                     db.ProductsImports.Add(productsImport);
 

@@ -691,6 +691,7 @@
     <Compile Include="ViewModel\ColorViewModel.cs" />
     <Compile Include="ViewModel\ImportViewModel.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
+    <Compile Include="ViewModel\ProductImportViewModel.cs" />
     <Compile Include="ViewModel\UserRoleViewModel.cs" />
     <Compile Include="Models\Vendor.cs">
       <DependentUpon>FBGMarket.tt</DependentUpon>

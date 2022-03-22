@@ -90,14 +90,14 @@
             //Write all selected keys to hidden input. Pass them on post action.
             $("#selectedIDsHF").val(selectedIDs);
             //if (confirm('Do you really want to export the record(s
-            if (selectedIDs == undefined || selectedIDs == "") {
-                alert("Please select product(s) to export");
-                return;
-            }
-            else {
-                document.getElementById("exportForm").submit();
-            }
-
+            //if (selectedIDs == undefined || selectedIDs == "") {
+            //    alert("Please select product(s) to export");
+            //    return;
+            //}
+            //else {
+            //    document.getElementById("exportForm").submit();
+            //}
+            document.getElementById("exportForm").submit();
 
         }
         function OnEditProductClick(s, e) {

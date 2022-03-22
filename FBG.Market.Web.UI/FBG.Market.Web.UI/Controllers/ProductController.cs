@@ -18,6 +18,7 @@ using HtmlAgilityPack;
 using DevExpress.Utils;
 using AutoMapper;
 using FBG.Market.Web.Identity.ViewModel;
+using DevExpress.XtraPrinting;
 
 namespace FBG.Market.Web.Identity.Controllers
 {
@@ -253,7 +254,7 @@ namespace FBG.Market.Web.Identity.Controllers
                         product.PLandedCost = model.PLandedCost;
                     }
                     product.PName = model.PName;
-                    
+
                     product.SKUCode = model.SKUCode;
                     product.UPCCode = model.UPCCode;
                     product.PMSRPPrice = model.PMSRPPrice;
@@ -283,7 +284,8 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             if (string.IsNullOrEmpty(selectedIDsHF))
             {
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+                return GridViewExtension.ExportToXlsx(GetGridSettings(), new List<Product>());
             }
             else
             {
@@ -293,7 +295,45 @@ namespace FBG.Market.Web.Identity.Controllers
                 {
                     product.PPicture = db.ProductImages.Where(i => i.ProductId == product.PID).FirstOrDefault()?.ImageUrl;
                 }
-                return GridViewExtension.ExportToXlsx(GetGridSettings(), modelDb.ToList());
+
+                // Automapper brilliance
+                var config = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductImportViewModel>());
+                var mapper = config.CreateMapper();
+
+                // Load Related Data
+                List<Brand> Brands = db.Brands.ToList();
+                List<RefNRFColorCode> RefNRFColorCodes = db.RefNRFColorCodes.ToList();
+                List<RefSeason> RefSeasons = db.RefSeasons.ToList();
+                List<ProductStatu> ProductStatus = db.ProductStatus.ToList();
+                List<Vendor> Vendors = db.Vendors.ToList();
+                List<RefCategory> RefCategories = db.RefCategories.ToList();
+                List<ColorCategory> ColorCategories = db.ColorCategories.ToList();
+
+                List<ProductImportViewModel> productsVM = new List<ProductImportViewModel>();
+                foreach (var product in modelDb)
+                {
+                    var productImportVM = mapper.Map<Product, ProductImportViewModel>(product);
+
+                    productImportVM.BID = Brands.FirstOrDefault(item => item.BID == product.BID)?.BrandName;
+
+                    var colorDetails = RefNRFColorCodes.FirstOrDefault(item => item.NRFColorCodeID == product.NRFColorCodeID);
+
+                    productImportVM.NRFColorCodeID =
+                        ColorCategories.FirstOrDefault(item => item.ColorCategoryID == colorDetails.ColorCategoryID)?.ColorCategoryName + " " +
+                        colorDetails?.NRFColorCode + " " +
+                        colorDetails?.NRFColorName;
+
+                    productImportVM.SID = RefSeasons.FirstOrDefault(item => item.SID == product.SID)?.Season;
+                    productImportVM.ProductStatusId = ProductStatus.FirstOrDefault(item => item.Id == product.ProductStatusId)?.Status;
+                    productImportVM.VID = Vendors.FirstOrDefault(item => item.VID == product.VID)?.VendorName;
+                    productImportVM.PCategory = RefCategories.FirstOrDefault(item => item.ID == product.PCategory)?.Category;
+                    productImportVM.BrandCategoryId = Brands.FirstOrDefault(item => item.BID == product.BID)?.BrandName + "_"
+                        + db.RefCategories.FirstOrDefault(s => s.ID == product.PCategory)?.Category;
+
+                    productsVM.Add(productImportVM);
+                }
+
+                return GridViewExtension.ExportToXlsx(GetGridSettings(), productsVM.ToList());
             }
         }
 
