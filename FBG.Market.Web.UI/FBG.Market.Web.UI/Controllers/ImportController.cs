@@ -417,12 +417,12 @@ namespace FBG.Market.Web.Identity.Controllers
         {
             List<string> errors = new List<string>();
 
-            if (string.IsNullOrEmpty(model.PColor) || model.VID is null || model.VID == 0 || model.BID is null || model.BID == 0 || model.PCategory is null 
-                || model.PCategory == 0  || string.IsNullOrEmpty(model.PName) || string.IsNullOrEmpty(model.PColor))
+            if (string.IsNullOrEmpty(model.PColor) || model.VID is null || model.VID == 0 || model.BID is null || model.BID == 0 || model.PCategory is null
+                || model.PCategory == 0 || string.IsNullOrEmpty(model.PName) || string.IsNullOrEmpty(model.PColor))
             {
                 errors.Add("Please fix data issue in the selected row(s) before proceeding with publish.");
             }
-            
+
             // Check Numberic values for the MSRP, FOB, Landed and Wholesale Prices
             decimal decimalValue;
             bool isDecimal = Decimal.TryParse(model.PWholesalePrice.Replace("$", ""), out decimalValue);
@@ -668,9 +668,9 @@ namespace FBG.Market.Web.Identity.Controllers
         private void BulkImport(DataTable myDataTable)
         {
             var listOfColumns = new List<string>(){
-                "Brand_Category",
+            "Brand_Category",
             "BID",
-             "VID",
+            "VID",
             "VendorName",
             "SKUCode",
             "UPCCode",
@@ -698,158 +698,169 @@ namespace FBG.Market.Web.Identity.Controllers
                 db.Database.ExecuteSqlCommand("TRUNCATE TABLE dbo.[ProductsImport]");
             }
             catch (Exception ex) { }
-            using (SqlConnection connection = new SqlConnection(connectionString))
+
+            // Load Related Data
+            List<Brand> Brands = db.Brands.ToList();
+            List<RefNRFColorCode> RefNRFColorCodes = db.RefNRFColorCodes.ToList();
+            List<RefSeason> RefSeasons = db.RefSeasons.ToList();
+            List<ProductStatu> ProductStatus = db.ProductStatus.ToList();
+            List<Vendor> Vendors = db.Vendors.ToList();
+            List<RefCategory> RefCategories = db.RefCategories.ToList();
+
+            foreach (DataRow row in myDataTable.Rows)
             {
-                connection.Open();
-                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
+
+                try
                 {
+
+                    // Create Product
+                    ProductsImport productsImport = new ProductsImport();
+
+                    // String Fields
                     if (GridColumnExists(myDataTable, "Color"))
-                        myDataTable.Columns["Color"].ColumnName = "PColor";
-                    if (GridColumnExists(myDataTable, "Brand"))
-                        myDataTable.Columns["Brand"].ColumnName = "BID";
-                    if (GridColumnExists(myDataTable, "Vendor"))
-                        myDataTable.Columns["Vendor"].ColumnName = "VID";
-                    //myDataTable.Columns["SKU Code"].ColumnName = "SKUCode";
+                        productsImport.PColor = row["Color"].ToString();
+
                     if (GridColumnExists(myDataTable, "SKU Code"))
-                        myDataTable.Columns["SKU Code"].ColumnName = "SKUCode";
+                        productsImport.SKUCode = row["SKU Code"].ToString();
+
                     if (GridColumnExists(myDataTable, "UPC Code"))
-                        myDataTable.Columns["UPC Code"].ColumnName = "UPCCode";
+                        productsImport.UPCCode = row["UPC Code"].ToString();
+
                     if (GridColumnExists(myDataTable, "Style"))
-                        myDataTable.Columns["Style"].ColumnName = "PName";
+                        productsImport.PName = row["Style"].ToString();
+
                     if (GridColumnExists(myDataTable, "Color"))
-                        myDataTable.Columns["Color"].ColumnName = "PColor";
+                        productsImport.PColor = row["Color"].ToString();
 
-                    if (GridColumnExists(myDataTable, "NRF Color"))
-                        myDataTable.Columns["NRF Color"].ColumnName = "NRFColorCodeID";
-
-                    if (GridColumnExists(myDataTable, "Season"))
-
-                        myDataTable.Columns["Season"].ColumnName = "SID";
-
-                    if (GridColumnExists(myDataTable, "Status"))
-
-                        myDataTable.Columns["Status"].ColumnName = "ProductStatusId";
                     if (GridColumnExists(myDataTable, "Picture"))
+                        productsImport.PPicture = row["Picture"].ToString();
 
-                        myDataTable.Columns["Picture"].ColumnName = "PPicture";
                     if (GridColumnExists(myDataTable, "Product Size"))
-
-                        myDataTable.Columns["Product Size"].ColumnName = "PSize";
+                        productsImport.PSize = row["Product Size"].ToString();
 
                     if (GridColumnExists(myDataTable, "Vendor Style #"))
-
-                        myDataTable.Columns["Vendor Style #"].ColumnName = "VendorName";
-
-                    if (GridColumnExists(myDataTable, "Category"))
-
-                        myDataTable.Columns["Category"].ColumnName = "PCategory";
+                        productsImport.VendorName = row["Vendor Style #"].ToString();
 
                     if (GridColumnExists(myDataTable, "Sub Category"))
-
-                        myDataTable.Columns["Sub Category"].ColumnName = "PSubCategory";
+                        productsImport.PSubCategory = row["Sub Category"].ToString();
 
                     if (GridColumnExists(myDataTable, "Country of Origin"))
-
-                        myDataTable.Columns["Country of Origin"].ColumnName = "PCoutryofOrigin";
+                        productsImport.PCoutryofOrigin = row["Country of Origin"].ToString();
 
                     if (GridColumnExists(myDataTable, "FOB Cost"))
+                        productsImport.PFOBCost = row["FOB Cost"].ToString();
 
-                        myDataTable.Columns["FOB Cost"].ColumnName = "PFOBCost";
                     if (GridColumnExists(myDataTable, "Landed Cost"))
-                        myDataTable.Columns["Landed Cost"].ColumnName = "PLandedCost";
+                        productsImport.PLandedCost = row["Landed Cost"].ToString();
 
                     if (GridColumnExists(myDataTable, "MSRP"))
-
-                        myDataTable.Columns["MSRP"].ColumnName = "PMSRPPrice";
+                        productsImport.PMSRPPrice = row["MSRP"].ToString();
 
                     if (GridColumnExists(myDataTable, "Wholesale Price"))
-
-                        myDataTable.Columns["Wholesale Price"].ColumnName = "PWholesalePrice";
+                        productsImport.PWholesalePrice = row["Wholesale Price"].ToString();
 
                     if (GridColumnExists(myDataTable, "Description"))
+                        productsImport.PDescription = row["Description"].ToString();
 
-                        myDataTable.Columns["Description"].ColumnName = "PDescription";
-                    if (GridColumnExists(myDataTable, "Specs"))
 
-                        myDataTable.Columns["Specs"].ColumnName = "PSpecs";
-
-                    //Remove the extra columns
-                    var toRemove = myDataTable.Columns.Cast<DataColumn>().Select(x => x.ColumnName).Except(listOfColumns).ToList();
-
-                    foreach (var col in toRemove) myDataTable.Columns.Remove(col);
-                    myDataTable.AcceptChanges();
-
-                    bulkCopy.ColumnMappings.Clear();
-                    foreach (DataColumn c in myDataTable.Columns)
+                    // Navigation fields
+                    if (GridColumnExists(myDataTable, "Brand"))
                     {
-                        bulkCopy.ColumnMappings.Add(c.ColumnName, c.ColumnName);
-                    }
-                    var Brands = db.Brands.ToList();
-                    var RefNRFColorCodes = db.RefNRFColorCodes.ToList();
-                    var RefSeasons = db.RefSeasons.ToList();
-                    var ProductStatus = db.ProductStatus.ToList();
-                    var Vendors = db.Vendors.ToList();
-                    var RefCategories = db.RefCategories.ToList();
-
-                    foreach (DataRow row in myDataTable.Rows)
-                    {
-                        if (GridColumnExists(myDataTable, "BID"))
+                        try
                         {
-                            var inputStr = row["BID"].ToString().ToLower();
-                            var retVal = Brands.FirstOrDefault(item => inputStr.Contains(item.BrandName.ToLower()));
+                            var retVal = Brands.FirstOrDefault(item => item.BrandName == row["Brand"]?.ToString());
                             if (retVal != null)
-                                row["BID"] = retVal.BID;
+                                productsImport.BID = retVal.BID;
                         }
-                        if (GridColumnExists(myDataTable, "NRFColorCodeID"))
+                        catch (Exception)
                         {
-                            var inputStr = row["NRFColorCodeID"].ToString().ToLower();
-                            var retVal = RefNRFColorCodes.FirstOrDefault(item => inputStr.Contains(item.NRFColorName.ToLower()));
-                            if (retVal != null)
-                                row["NRFColorCodeID"] = retVal.NRFColorCodeID;
-
-                        }
-                        if (GridColumnExists(myDataTable, "SID"))
-                        {
-                            var inputStr = row["SID"].ToString().ToLower();
-                            var retVal = RefSeasons.FirstOrDefault(item => inputStr.Contains(item.Season.ToLower()));
-                            if (retVal != null)
-                                row["SID"] = retVal.SID;
-                        }
-                        if (GridColumnExists(myDataTable, "ProductStatusId"))
-                        {
-                            var inputStr = row["ProductStatusId"].ToString().ToLower();
-                            var retVal = ProductStatus.FirstOrDefault(item => inputStr.Contains(item.Status.ToLower()));
-                            if (retVal != null)
-                                row["ProductStatusId"] = retVal.Id;
-                        }
-                        if (GridColumnExists(myDataTable, "VID"))
-                        {
-                            var inputStr = row["VID"].ToString().ToLower();
-
-                            var retVal = Vendors.FirstOrDefault(item => inputStr.Contains(item.VendorName.ToLower()));
-                            if (retVal != null)
-                                row["VID"] = retVal.VID;
-                        }
-                        if (GridColumnExists(myDataTable, "PCategory"))
-                        {
-                            var inputStr = row["PCategory"].ToString().ToLower();
-
-                            var retVal = RefCategories.FirstOrDefault(item => inputStr.Contains(item.Category.ToLower()));
-                            if (retVal != null)
-                                row["PCategory"] = retVal.ID;
+                            productsImport.BID = null;
                         }
                     }
-                    bulkCopy.DestinationTableName = "ProductsImport";
-                    try
+
+                    if (GridColumnExists(myDataTable, "NRF Color"))
                     {
-                        bulkCopy.WriteToServer(myDataTable);
+                        try
+                        {
+                            var retVal = RefNRFColorCodes.FirstOrDefault(item => item.NRFColorName == row["NRF Color"]?.ToString());
+                            if (retVal != null)
+                                productsImport.NRFColorCodeID = retVal.NRFColorCodeID;
+                        }
+                        catch (Exception)
+                        {
+                            productsImport.NRFColorCodeID = null;
+                        }
                     }
-                    catch (Exception ex)
+
+                    if (GridColumnExists(myDataTable, "Season"))
                     {
-                        Console.WriteLine(ex.Message);
+                        try
+                        {
+                            var retVal = RefSeasons.FirstOrDefault(item => item.Season == row["Season"]?.ToString());
+                            if (retVal != null)
+                                productsImport.SID = retVal.SID;
+                        }
+                        catch (Exception)
+                        {
+                            productsImport.SID = null;
+                        }
                     }
+
+                    if (GridColumnExists(myDataTable, "Status"))
+                    {
+                        try
+                        {
+                            var retVal = ProductStatus.FirstOrDefault(item => item.Status == row["Status"]?.ToString());
+                            if (retVal != null)
+                                productsImport.ProductStatusId = retVal.Id;
+                        }
+                        catch (Exception)
+                        {
+                            productsImport.ProductStatusId = null;
+                        }
+                    }
+
+                    if (GridColumnExists(myDataTable, "Vendor"))
+                    {
+                        try
+                        {
+                            var retVal = Vendors.FirstOrDefault(item => item.VendorName == row["Vendor"]?.ToString());
+                            if (retVal != null)
+                                productsImport.VID = retVal.VID;
+                        }
+                        catch (Exception)
+                        {
+                            productsImport.VID = null;
+                        }
+                    }
+
+                    if (GridColumnExists(myDataTable, "Category"))
+                    {
+                        try
+                        {
+                            var retVal = RefCategories.FirstOrDefault(item => item.Category == row["Category"]?.ToString());
+                            if (retVal != null)
+                                productsImport.PCategory = (short)retVal.ID;
+                        }
+                        catch (Exception)
+                        {
+                            productsImport.PCategory = null;
+                        }
+                    }
+
+                    db.ProductsImports.Add(productsImport);
+
                 }
+                catch (Exception ex)
+                {
+                    // Todo : Log and then skip and move on to the next Product
+                    continue;
+                }
+
             }
+
+            db.SaveChanges();
+
         }
 
         [Authorize]
